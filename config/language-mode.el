@@ -11,5 +11,6 @@
 (load-config "config/language/rust.el")
 (load-config "config/language/scheme.el")
 (load-config "config/language/zig.el")
+(load-config "config/language/nix.el")
 
 ;;; language-mode.el ends here

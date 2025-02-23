@@ -26,7 +26,7 @@
 ;; setup the font
 (set-face-attribute 'default nil
                     :family "Lilex Nerd Font Mono"
-                    :height 140)
+                    :height 160)
 
 ;; boo! it doesn't work yet.
 (use-package ligature
