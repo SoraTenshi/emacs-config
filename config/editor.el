@@ -1,5 +1,6 @@
-;;; editor.el ---
-;; Basic configuration / Setup for emacs
+;;; editor.el --- Editor tweaking. -*- lexical-binding: t; -*-
+;;; Commentary:
+;; Basic configuration / Setup for EMACS
 ;;; Code:
 
 ;; enable line (relative) numbers

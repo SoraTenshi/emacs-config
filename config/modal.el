@@ -1,4 +1,5 @@
-;;; modal.el ---
+;;; modal.el --- Modal editing configuration. -*- lexical-binding: t; -*-
+;;; Commentary:
 ;; Modal editing configuration (generic, because subject to change)
 ;;; Code:
 

@@ -1,4 +1,4 @@
-;;; init.el --- init
+;;; init.el --- init -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;; Basic entry point for my EMACS config
 ;;; Code:
