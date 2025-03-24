@@ -63,8 +63,8 @@
    '(base16-theme centaur-tabs company-box diminish doom-themes
                   elixir-mode evil-collection flycheck format-all
                   geiser go-mode ligature lsp-ui nix-mode org-modern
-                  rainbow-delimiters rainbow-mode rust-mode sly
-                  zig-mode)))
+                  org-tempo rainbow-delimiters rainbow-mode rust-mode
+                  sly zig-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

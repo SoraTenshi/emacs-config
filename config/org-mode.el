@@ -12,14 +12,23 @@
    '(("t" "Todo" entry (file+headline "~/org/todo.org" "Tasks")
       "* TODO %?\n")
      ("n" "Note" entry (file+headline "~/org/notes.org" "Notes")
-      "* %^{Note Title}\n[%U]\n")))
+      "* %^{Note Title} :NOTE:\n<%U>\n%?")))
   (org-agenda-window-setup 'current-window)
-  (org-agenda-restore-windows-after-quit t))
+  (org-agenda-restore-windows-after-quit t)
+  (org-agenda-custom-commands
+   '(("n" "Notes" tags "NOTE" ((org-agenda-overriding-header "All Notes")
+                               (org-agenda-files '("~/org/notes.org")))))))
+
+(require 'org-tempo)
+(add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+(add-to-list 'org-structure-template-alist '("cl" . "src common-lisp"))
 
 (use-package org-modern
   :hook ((org-mode . org-modern-mode)
          (org-agenda-finalize . org-modern-agenda))
-  :config (setq org-modern-table nil))
+  :config (setq org-modern-table nil
+                org-modern-hide-stars nil))
 
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c c") 'org-capture)
