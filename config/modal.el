@@ -11,4 +11,7 @@
   :config
   (evil-collection-init))
 
+(define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
+(define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
+
 ;;; modal.el ends here

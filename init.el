@@ -59,7 +59,12 @@
  '(custom-safe-themes
    '("4594d6b9753691142f02e67b8eb0fda7d12f6cc9f1299a49b819312d6addad1d"
      default))
- '(package-selected-packages nil))
+ '(package-selected-packages
+   '(base16-theme centaur-tabs company-box diminish doom-themes
+                  elixir-mode evil-collection flycheck format-all
+                  geiser go-mode ligature lsp-ui nix-mode org-modern
+                  rainbow-delimiters rainbow-mode rust-mode sly
+                  zig-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

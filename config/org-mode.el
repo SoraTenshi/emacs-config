@@ -2,12 +2,31 @@
 ;;; Commentary:
 ;; Possibly some stuff for org mode? Not sure.
 ;;; Code:
-(require 'org)
 
-(setq org-directory "~/org"
-      org-default-notes-file (concat org-directory "/notes.org")
-      org-agenda-files '("~/org/todo.org" "~/org/notes.org"))
+(use-package org
+  :custom
+  (org-directory "~/org")
+  (org-default-notes-file "~/org/notes.org")
+  (org-agenda-files '("~/org/todo.org" "~/org/notes.org"))
+  (org-capture-templates
+   '(("t" "Todo" entry (file+headline "~/org/todo.org" "Tasks")
+      "* TODO %?\n")
+     ("n" "Note" entry (file+headline "~/org/notes.org" "Notes")
+      "* %^{Note Title}\n[%U]\n")))
+  (org-agenda-window-setup 'current-window)
+  (org-agenda-restore-windows-after-quit t))
 
+(use-package org-modern
+  :hook ((org-mode . org-modern-mode)
+         (org-agenda-finalize . org-modern-agenda))
+  :config (setq org-modern-table nil))
+
+(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c c") 'org-capture)
+(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c b") 'org-switchb)
+
+;; Cheatsheet:
 ;; %?	Cursor position after insertion (usually goes at the end)
 ;; %t	Timestamp (<2025-03-24 Mon>)
 ;; %T	Timestamp with time (<2025-03-24 Mon 14:32>)
@@ -34,14 +53,5 @@
 ;; %^{Prompt}	Custom prompt. E.g., %^{Title} will ask for title
 ;; %[file]	Insert content of file
 ;; %(sexp)	Evaluate elisp expression and insert the result
-(setq org-capture-templates '(("t" "Todo" entry (file+headline "~/org/todo.org" "Tasks")
-                               "* TODO %?\n %i\n %a")
-                              ("n" "Note" entry (file+headline "~/org/notes.org" "Notes")
-                               "* %^{Note Title}\n[%U]\n %i\n%?")))
-
-(global-set-key (kbd "C-c a") 'org-agenda)
-(global-set-key (kbd "C-c c") 'org-capture)
-(global-set-key (kbd "C-c l") 'org-store-link)
-(global-set-key (kbd "C-c b") 'org-switchb)
 
 ;;; org-mode.el ends here
