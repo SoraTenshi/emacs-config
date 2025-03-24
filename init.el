@@ -22,9 +22,9 @@
   "Load a FILE from the base EMACS directory and prints success / failure state."
   (let ((path (expand-file-name file user-emacs-directory)))
     (if (file-exists-p path)
-	(progn
-	  (message "Loading file %s..." path)
-	  (load-file path))
+        (progn
+          (message "Loading file %s..." path)
+          (load-file path))
       (message "Config file %s not found.." path))))
 
 (use-package flycheck
@@ -56,9 +56,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("4594d6b9753691142f02e67b8eb0fda7d12f6cc9f1299a49b819312d6addad1d" default))
- '(package-selected-packages
-   '(nix-mode company-box company lsp-ui flycheck diminish counsel ivy zig-mode geiser rust-mode jai-mode go-mode elixir-mode sly delight centaur-tabs doom-themes tokyo-night-theme rainbow-mode rainbow-delimiters evil ligature)))
+   '("4594d6b9753691142f02e67b8eb0fda7d12f6cc9f1299a49b819312d6addad1d"
+     default))
+ '(package-selected-packages nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

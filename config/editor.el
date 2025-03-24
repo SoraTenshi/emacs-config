@@ -9,6 +9,7 @@
 ;; remove the "tool" bar on top
 (tool-bar-mode -1)
 (menu-bar-mode -1)
+(scroll-bar-mode -1)
 
 ;; no more tabs..
 (setq-default indent-tabs-mode nil
@@ -28,13 +29,23 @@
                     :family "Lilex Nerd Font Mono"
                     :height 160)
 
+(set-frame-font "Lilex Nerd Font Mono-16" nil t)
 ;; boo! it doesn't work yet.
 (use-package ligature
+  :ensure t
   :config
-  (global-ligature-mode t)
-  (ligature-set-ligatures 't '("www")))
-;;("++" "+++" "&&" "%%" "{|" "|}" "[|" "|]" "|>" "<|" "<>" "::=" "--" "~~" "#[" "]#" "!=" ".." "..." ".<" ".?" ".=" "..=" "::" ":::" ":=" ";;" "!!" "!==" "/=" "<*>" "/**" "/*" "#(" ")#" "#!" "/>" "</" "</>" "<<" "<<<" "~~" ">=" "<=" "//" "///" "**" "^=" "?=" "#=")))
-
-
+  ;; Enable all ligatures in programming modes
+  (ligature-set-ligatures 'prog-mode
+                          '("www" "**" "***" "**/" "*>" "*/" "\\\\" "\\\\\\" "{-" "[]" "::"
+                            ":::" ":=" "!!" "!=" "!==" "-}" "--" "---" "-->" "->" "->>"
+                            "-<" "-<<" "-~" "#{" "#[" "##" "###" "####" "#(" "#?" "#_" "#_("
+                            ".-" ".=" ".." "..<" "..." "??" "?:" "?=" "?>" "???" "<-" "<--"
+                            "<->" "<+" "<*>" "<|" "<|>" "<$" "<$>" "<!--" "<#>" "<%" "<&>"
+                            "<@" "<^>" "</" "</>" "<~" "<<-" "<<=" "<<<" "<<" ">>" ">>="
+                            ">>-" ">>>" ">-" ">=" ">>=" ">=>" "<=" "=/=" "=<<" "=="
+                            "===" "==>" "=>" "=>>" "<=>" "<=<" "<==" "<=>" "<==>" "!!" "_|_"
+                            "|||"
+                            "||" "|->" "|=>" "|=" "||=" "~=" "~~" "~~>" "~>" "%%"))
+  (global-ligature-mode 't))
 
 ;;; editor.el ends here
