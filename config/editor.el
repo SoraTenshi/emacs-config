@@ -30,7 +30,6 @@
                     :height 160)
 
 (set-frame-font "Lilex Nerd Font Mono-16" nil t)
-;; boo! it doesn't work yet.
 (use-package ligature
   :ensure t
   :config

@@ -37,6 +37,7 @@
 (load-config "config/lsp.el")
 (load-config "config/language-mode.el")
 (load-config "config/user.el")
+(load-config "config/org-mode.el")
 
 ;; Of course, not every information has to be seen in the mode line...
 (use-package diminish)
