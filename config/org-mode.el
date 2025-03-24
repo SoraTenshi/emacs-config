@@ -28,7 +28,8 @@
   :hook ((org-mode . org-modern-mode)
          (org-agenda-finalize . org-modern-agenda))
   :config (setq org-modern-table nil
-                org-modern-hide-stars nil))
+                org-modern-hide-stars nil
+                org-pretty-entities t))
 
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c c") 'org-capture)
