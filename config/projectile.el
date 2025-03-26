@@ -4,6 +4,7 @@
 ;;; Code:
 
 (use-package projectile
+  :straight t
   :init (setq projectile-project-search-path '("~/dev" "~/source/repos/"))
   :config
   (global-set-key (kbd "C-c p") 'projectile-command-map)

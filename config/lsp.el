@@ -27,6 +27,8 @@
 (use-package company-box
   :hook (company-mode . company-box-mode))
 
+(straight-use-package 'eldoc-box)
+
 (defun ui/show-popup-doc ()
   "Show the popup for the symbol under cursor."
   (interactive)
@@ -36,9 +38,8 @@
          (fboundp 'lsp-ui-doc-show))
     (lsp-ui-doc-show))
 
-   ((and sym (fboundp 'eldoc-message)
-         (fboundp 'symbol-function))
-    (eldoc-message (documentation (symbol-function sym))))
+   ((and sym (fboundp 'eldoc-box-help-at-point))
+    (eldoc-box-help-at-point))
 
    ((and sym (fboundp 'describe-symbol))
     (describe-symbol sym))

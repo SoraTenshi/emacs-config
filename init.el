@@ -17,23 +17,22 @@
 (require 'use-package)
 
 ;; use-package with straight
-;;(defvar bootstrap-version)
-;;(let ((bootstrap-file
-       ;;(expand-file-name
-        ;;"straight/repos/straight.el/bootstrap.el"
-        ;;(or (bound-and-true-p straight-base-dir)
-            ;;user-emacs-directory)))
-      ;;(bootstrap-version 7))
-  ;;(unless (file-exists-p bootstrap-file)
-    ;;(with-current-buffer
-        ;;(url-retrieve-synchronously
-         ;;"https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-         ;;'silent 'inhibit-cookies)
-      ;;(goto-char (point-max))
-      ;;(eval-print-last-sexp)))
-  ;;(load bootstrap-file nil 'nomessage))
-;;(straight-use-package 'use-package)
-;;(setq straight-use-package-by-default t)
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+(straight-use-package 'use-package)
 
 ;; setup load paths
 (defun load-config (file)
@@ -59,6 +58,7 @@
 (load-config "config/templates.el")
 (load-config "config/projectile.el")
 (load-config "config/dashboard.el")
+(load-config "config/file-management.el")
 
 ;; Of course, not every information has to be seen in the mode line...
 (use-package diminish)
