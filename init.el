@@ -78,14 +78,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("4594d6b9753691142f02e67b8eb0fda7d12f6cc9f1299a49b819312d6addad1d"
-     default))
+   '("ce0aeeb5350a53e85a2a7d4a5bc33cf3952b88fabb84dd2ec5ba4e2fd40053df" "4d0573a42fa8811959d6ceb9a74432d3f601f6f7e3be521ee9ade4a9dc441afe" "4594d6b9753691142f02e67b8eb0fda7d12f6cc9f1299a49b819312d6addad1d" default))
  '(package-selected-packages
-   '(base16-theme centaur-tabs company-box diminish doom-themes
-                  elixir-mode evil-collection eyebrowse flycheck
-                  format-all geiser go-mode ligature lsp-ui nix-mode
-                  org-modern org-tempo rainbow-delimiters rainbow-mode
-                  rust-mode sly zig-mode)))
+   '(base16-theme centaur-tabs company-box diminish doom-themes elixir-mode evil-collection eyebrowse flycheck format-all geiser go-mode ligature lsp-ui nix-mode org-modern org-tempo rainbow-delimiters rainbow-mode rust-mode sly zig-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
