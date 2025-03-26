@@ -10,3 +10,4 @@ projects
 recentf
 helix/**
 helix-mode/**
+.cache/**

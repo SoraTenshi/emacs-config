@@ -1,5 +1,4 @@
-;;; file-management.el ---
-;;; file-management.el --- Everything about managing files. -*- lexical-binding: t; -*-
+ ;;; file-management.el --- Everything about managing files. -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;; Fuzzy finder, whatever...
 ;;; Code:
@@ -32,7 +31,6 @@
   ;; SPC mode
   (evil-define-key 'normal 'global (kbd "SPC f") #'find-file)
   (evil-define-key 'normal 'global (kbd "SPC b") #'ibuffer)
-  (evil-define-key 'normal 'global (kbd "SPC k") #'kill-buffer)
   (evil-define-key 'normal 'global (kbd "SPC /") #'nav/global-search)
 
   ;; g mode

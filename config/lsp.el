@@ -4,95 +4,75 @@
 ;; corresponding auto-completion window.
 ;;; Code:
 
-(use-package lsp-mode
-  :commands lsp
-  :hook ((go-mode rust-mode zig-mode) . lsp)
-  :config (setq lsp-prefer-flymake nil))
-
-(use-package lsp-ui
+(use-package eglot
+  :hook ((go-mode rust-mode zig-mode) . eglot)
   :config
-  (setq lsp-ui-sideline-enable t
-        lsp-ui-sideline-show-hover t
-        lsp-ui-sideline-show-code-actions t
-        lsp-ui-doc-enable t
-        lsp-ui-doc-position 'at-point))
+  (setq eglot-autoshutdown t
+        eglot-confirm-server-initiated-edits nil))
 
-;; Setup Company mode
-(use-package company
-  :config
-  (setq company-idle-delay 0.5
-        company-minimum-prefix-length 2)
-  (global-company-mode))
+(use-package corfu
+  :straight (:files (:defaults "extensions/*"))
+  :init
+  (global-corfu-mode)
+  (corfu-popupinfo-mode)
+  :custom
+  (corfu-auto t)
+  (corfu-auto-prefix 2)
+  (corfu-cycle t)
+  (corfu-preview-current 'insert)
+  (corfu-popupinfo-delay 5))
 
-(use-package company-box
-  :hook (company-mode . company-box-mode))
+(use-package yasnippet
+  :straight t
+  :hook (prog-mode . yas-minor-mode))
 
-(straight-use-package 'eldoc-box)
+(use-package yasnippet-snippets
+  :straight t
+  :after yasnippet)
+
+(use-package cape
+  :straight t)
+
+(setq completion-at-point-functions
+      (list (cape-capf-buster #'eglot-completion-at-point)
+            #'cape-yasnippet))
+
+(use-package eldoc-box
+  :straight t)
+
+(defun lsp/corfu-yasnippet-expand ()
+  (when (yas-expand)
+    t))
+(add-hook 'corfu-after-completion-hook #'lsp/corfu-yasnippet-expand)
 
 (defun nav/next-diagnostic ()
+  "Go to next diagnostic."
   (interactive)
-  (cond
-   ((and (bound-and-true-p lsp-mode)
-         (fboundp 'lsp-next-diagnostic))
-    (lsp-next-diagnostic))
-   ((fboundp 'lsp-ui-flycheck-next)
-    (lsp-ui-flycheck-next))
-   ((fboundp 'flycheck-next-error)
-    (flycheck-next-error))
-   ((fboundp 'flymake-goto-next-error)
-    (flymake-goto-next-error))
-   (t
-    (message "No diagnostic navigation function available."))))
+  (flycheck-next-error))
 
 (defun nav/previous-diagnostic ()
+  "Go to previous diagnostic."
   (interactive)
-  (cond
-   ((and (bound-and-true-p lsp-mode)
-         (fboundp 'lsp-previous-diagnostic))
-    (lsp-previous-diagnostic))
-   ((fboundp 'lsp-ui-flycheck-previous)
-    (lsp-ui-flycheck-previous))
-   ((fboundp 'flycheck-previous-error)
-    (flycheck-previous-error))
-   ((fboundp 'flymake-goto-previous-error)
-    (flymake-goto-previous-error))
-   (t
-    (message "No diagnostic navigation function available."))))
+  (flycheck-previous-error))
 
 (defun ui/diagnostic-list ()
+  "Open a list of all diagnostics."
   (interactive)
-  (cond
-   ((and (bound-and-true-p lsp-mode)
-         (fboundp 'lsp-treemacs-errors-list))
-    (lsp-treemacs-errors-list))
-   ((and (bound-and-true-p lsp-mode)
-         (fboundp 'lsp-ui-flycheck-list))
-    (lsp-ui-flycheck-list))
-   ((bound-and-true-p flycheck-mode)
-    (flycheck-list-errors))
-   ((bound-and-true-p flymake-mode)
-    (flymake-show-diagnostics-buffer))
-   (t
-    (message "No diagnostics list viewer available."))))
+  (flymake-show-diagnostics-buffer))
 
 (defun ui/show-popup-doc ()
   "Show the popup for the symbol under cursor."
   (interactive)
-  (let ((sym (symbol-at-point)))
-    (cond
-     ((and (bound-and-true-p lsp-mode)
-           (fboundp 'lsp-ui-doc-show))
-      (lsp-ui-doc-show))
-     ((and sym (fboundp 'eldoc-box-help-at-point))
-      (eldoc-box-help-at-point))
-     ((and sym (fboundp 'describe-symbol))
-      (describe-symbol sym))
-     (sym (message "No Documentation available for '%s'." sym)))))
+  (if (bound-and-true-p eglot--managed-mode)
+      (eldoc-box-help-at-point)
+    (describe-symbol (symbol-at-point))))
 
 (with-eval-after-load 'evil
   (evil-define-key 'normal 'global
     (kbd "SPC k") #'ui/show-popup-doc
     (kbd "SPC d") #'ui/diagnostic-list
+    (kbd "SPC r") #'eglot-rename
+    (kbd "SPC a") #'eglot-code-action
     (kbd "] d") #'nav/next-diagnostic
     (kbd "[ d") #'nav/previous-diagnostic))
 
