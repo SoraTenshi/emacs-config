@@ -4,7 +4,7 @@
 ;;; Code:
 
 (defun create-file-with-elisp-header (filename)
-  "Creates a simple elisp file that satisfies flycheck."
+  "Create a simple elisp file with FILENAME that satisfies flycheck."
   (interactive "FCreate new .el file: ")
   (let* ((buffer (find-file filename))
          (basename (file-name-nondirectory filename)))

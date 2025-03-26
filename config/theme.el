@@ -1,4 +1,5 @@
-;;; theme.el ---
+;;; theme.el --- Anything visual -*- lexical-binding: t; -*-
+;;; Commentary:
 ;; Basically, the settings for themeing and everything related
 ;;; Code:
 
@@ -10,12 +11,8 @@
   :hook (prog-mode . rainbow-mode))
 
 (use-package doom-themes
+  :vc (:url "https://github.com/foster-hangdaan/doom-emacs-themes")
   :config
-  (load-theme 'doom-tokyo-night t)
-  (doom-themes-visual-bell-config)
-  (custom-theme-set-faces
-   'doom-tokyo-night
-   `(default ((t (:background "#24283b"))))
-   `(fringe ((t (:background "#24283b"))))))
+  (load-theme 'doom-tokyo-night-storm t))
 
 ;;; theme.el ends here

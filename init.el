@@ -15,7 +15,25 @@
   (package-refresh-contents)
   (package-install 'use-package))
 (require 'use-package)
-(setq use-package-always-ensure t)
+
+;; use-package with straight
+;;(defvar bootstrap-version)
+;;(let ((bootstrap-file
+       ;;(expand-file-name
+        ;;"straight/repos/straight.el/bootstrap.el"
+        ;;(or (bound-and-true-p straight-base-dir)
+            ;;user-emacs-directory)))
+      ;;(bootstrap-version 7))
+  ;;(unless (file-exists-p bootstrap-file)
+    ;;(with-current-buffer
+        ;;(url-retrieve-synchronously
+         ;;"https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         ;;'silent 'inhibit-cookies)
+      ;;(goto-char (point-max))
+      ;;(eval-print-last-sexp)))
+  ;;(load bootstrap-file nil 'nomessage))
+;;(straight-use-package 'use-package)
+;;(setq straight-use-package-by-default t)
 
 ;; setup load paths
 (defun load-config (file)
@@ -38,6 +56,9 @@
 (load-config "config/language-mode.el")
 (load-config "config/user.el")
 (load-config "config/org-mode.el")
+(load-config "config/templates.el")
+(load-config "config/projectile.el")
+(load-config "config/dashboard.el")
 
 ;; Of course, not every information has to be seen in the mode line...
 (use-package diminish)
@@ -49,7 +70,7 @@
 (diminish 'company-box-mode)
 (diminish 'company-mode)
 (diminish 'evil-collection-unimpaired-mode)
-
+(diminish 'projectile)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -61,10 +82,10 @@
      default))
  '(package-selected-packages
    '(base16-theme centaur-tabs company-box diminish doom-themes
-                  elixir-mode evil-collection flycheck format-all
-                  geiser go-mode ligature lsp-ui nix-mode org-modern
-                  org-tempo rainbow-delimiters rainbow-mode rust-mode
-                  sly zig-mode)))
+                  elixir-mode evil-collection eyebrowse flycheck
+                  format-all geiser go-mode ligature lsp-ui nix-mode
+                  org-modern org-tempo rainbow-delimiters rainbow-mode
+                  rust-mode sly zig-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -30,7 +30,7 @@
                     :family "Lilex Nerd Font Mono"
                     :height 160)
 
-(set-frame-font "Lilex Nerd Font Mono-16" nil t)
+(set-frame-font "Lilex Nerd Font Mono-15" nil t)
 (use-package ligature
   :ensure t
   :config

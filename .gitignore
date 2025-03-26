@@ -3,4 +3,10 @@ auto-save-list/**
 elpa/**
 eln-cache/**
 transient/**
+straight/**
 *.elc
+projectile-bookmarks.eld
+projects
+recentf
+helix/**
+helix-mode/**
