@@ -31,13 +31,12 @@
   (set-face-attribute 'whitespace-newline nil
                       :foreground "#3b4261"
                       :background nil)
-  (set-face-attribute 'whitespace-trailing nil
-                      :foreground "#db4b4b"
-                      :background "#1f2335")
   (set-face-attribute 'whitespace-line nil
                       :foreground nil
-                      :background nil))
+                      :background nil
+                      :weight 'normal))
 
+(global-whitespace-mode 1)
 (set-fringe-mode 0)
 
 ;;; theme.el ends here
