@@ -12,7 +12,10 @@
 
 (use-package doom-themes
   :straight (doom-themes :type git :host github :repo "foster-hangdaan/doom-emacs-themes")
+  :ensure t
   :config
   (load-theme 'doom-tokyo-night-storm t))
+
+(set-fringe-mode 0)
 
 ;;; theme.el ends here

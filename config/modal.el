@@ -14,6 +14,8 @@
 
 (evil-set-initial-state 'org-agenda-mode 'motion)
 
+(setq evil-undo-system 'undo-redo)
+
 (evil-define-key 'normal 'global (kbd "C-u") #'evil-scroll-up)
 (evil-define-key 'visual 'global (kbd "C-u") #'evil-scroll-up)
 (evil-define-key 'motion 'global (kbd "RET") #'org-agenda-switch-to)

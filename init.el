@@ -1,6 +1,8 @@
 ;;; init.el --- init -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;; Basic entry point for my EMACS config
+
+
 ;;; Code:
 (require 'package)
 
@@ -44,12 +46,8 @@
           (load-file path))
       (message "Config file %s not found.." path))))
 
-(use-package flycheck
-  :init (global-flycheck-mode))
-
 (load-config "config/editor.el")
 (load-config "config/modal.el")
-(load-config "config/theme.el")
 (load-config "config/buffer-line.el")
 (load-config "config/lsp.el")
 (load-config "config/language-mode.el")
@@ -60,17 +58,19 @@
 (load-config "config/dashboard.el")
 (load-config "config/file-management.el")
 
+(load-config "config/theme.el")
+
 ;; Of course, not every information has to be seen in the mode line...
-(use-package diminish)
+(use-package diminish
+  :ensure t)
 (diminish 'rainbow-mode)
 (diminish 'eldoc-mode)
 (diminish 'ivy-mode)
 (diminish 'format-all-mode)
 (diminish 'flycheck-mode)
-(diminish 'company-box-mode)
-(diminish 'company-mode)
 (diminish 'evil-collection-unimpaired-mode)
-(diminish 'projectile)
+(diminish 'projectile-mode)
+(diminish 'yas-minor-mode)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

@@ -10,6 +10,8 @@
   (setq eglot-autoshutdown t
         eglot-confirm-server-initiated-edits nil))
 
+(add-hook 'prog-mode-hook #'flymake-mode)
+
 (use-package corfu
   :straight (:files (:defaults "extensions/*"))
   :init
@@ -41,6 +43,7 @@
   :straight t)
 
 (defun lsp/corfu-yasnippet-expand ()
+  "Expand function for completion hook."
   (when (yas-expand)
     t))
 (add-hook 'corfu-after-completion-hook #'lsp/corfu-yasnippet-expand)
@@ -58,8 +61,8 @@
 (defun ui/diagnostic-list ()
   "Open a list of all diagnostics."
   (interactive)
-  (flymake-show-diagnostics-buffer))
-
+  (flymake-show-buffer-diagnostics))
+  
 (defun ui/show-popup-doc ()
   "Show the popup for the symbol under cursor."
   (interactive)
@@ -70,7 +73,7 @@
 (with-eval-after-load 'evil
   (evil-define-key 'normal 'global
     (kbd "SPC k") #'ui/show-popup-doc
-    (kbd "SPC d") #'ui/diagnostic-list
+    (kbd "SPC D") #'ui/diagnostic-list
     (kbd "SPC r") #'eglot-rename
     (kbd "SPC a") #'eglot-code-action
     (kbd "] d") #'nav/next-diagnostic
