@@ -12,6 +12,9 @@
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 
+;; enforce unix-style lf
+(add-hook 'before-save-hook (lambda () (set-buffer-file-coding-system 'utf-8-unix)))
+
 ;; no more tabs..
 (setq-default indent-tabs-mode nil
               tab-width 4)

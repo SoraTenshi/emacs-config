@@ -21,6 +21,10 @@
         (newline-mark 10 [?\u21B5 10] [?$ 10])
         (tab-mark 9 [187 9] [92 9])))
 
+(setq-default buffer-display-table (make-display-table))
+(aset buffer-display-table 10 (vector ?⏎))
+
+(global-whitespace-mode 1)
 (with-eval-after-load 'whitespace
   (set-face-attribute 'whitespace-space nil
                       :foreground "#565f89"
@@ -36,7 +40,6 @@
                       :background nil
                       :weight 'normal))
 
-(global-whitespace-mode 1)
 (set-fringe-mode 0)
 
 ;;; theme.el ends here
