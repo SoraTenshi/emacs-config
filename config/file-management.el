@@ -32,6 +32,7 @@
   (evil-define-key 'normal 'global (kbd "SPC f") #'find-file)
   (evil-define-key 'normal 'global (kbd "SPC b") #'ibuffer)
   (evil-define-key 'normal 'global (kbd "SPC /") #'nav/global-search)
+  (evil-define-key 'normal 'global (kbd "SPC w") #'evil-delete-buffer)
 
   ;; g mode
   (evil-define-key 'normal 'global (kbd "g n") #'next-buffer)

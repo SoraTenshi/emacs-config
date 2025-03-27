@@ -16,7 +16,7 @@
       (insert "お帰りなさい～\n")
       (insert ";; → Press SPC f to open a file\n")
       (insert ";; → Press SPC b to switch buffers\n")
-      (insert ";; → Press SPC k to kill a buffer\n")
+      (insert ";; → Press SPC w to kill buffers\n")
       (insert "\n"))))
 
 (add-hook 'emacs-startup-hook #'initial/scratch-buffer)
