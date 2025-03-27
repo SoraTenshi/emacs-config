@@ -16,6 +16,28 @@
   :config
   (load-theme 'doom-tokyo-night-storm t))
 
+(setq whitespace-display-mappings
+      '((space-mark 32 [?\u00B7] [46])
+        (newline-mark 10 [?\u21B5 10] [?$ 10])
+        (tab-mark 9 [187 9] [92 9])))
+
+(with-eval-after-load 'whitespace
+  (set-face-attribute 'whitespace-space nil
+                      :foreground "#565f89"
+                      :background nil)
+  (set-face-attribute 'whitespace-tab nil
+                      :foreground "#565f89"
+                      :background nil)
+  (set-face-attribute 'whitespace-newline nil
+                      :foreground "#3b4261"
+                      :background nil)
+  (set-face-attribute 'whitespace-trailing nil
+                      :foreground "#db4b4b"
+                      :background "#1f2335")
+  (set-face-attribute 'whitespace-line nil
+                      :foreground nil
+                      :background nil))
+
 (set-fringe-mode 0)
 
 ;;; theme.el ends here

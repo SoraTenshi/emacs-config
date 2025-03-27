@@ -20,5 +20,4 @@
 (evil-define-key 'visual 'global (kbd "C-u") #'evil-scroll-up)
 (evil-define-key 'motion 'global (kbd "RET") #'org-agenda-switch-to)
 
-
 ;;; modal.el ends here
