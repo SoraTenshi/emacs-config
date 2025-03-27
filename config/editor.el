@@ -25,8 +25,7 @@
 
 ;; format all..
 (use-package format-all
-  :hook (prog-mode . format-all-mode)
-  :bind (("C-c f" . format-all-buffer)))
+  :hook (prog-mode . format-all-mode))
 
 ;; setup the font
 (set-face-attribute 'default nil
