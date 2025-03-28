@@ -57,6 +57,8 @@
 (load-config "config/file-management.el")
 (load-config "config/discord.el")
 (load-config "config/mpv.el")
+(load-config "config/sticky.el")
+(load-config "config/magit.el")
 
 (load-config "config/theme.el")
 
