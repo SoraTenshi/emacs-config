@@ -3,6 +3,6 @@
 ;;; Code:
 
 (use-package rust-mode
-  :hook (rust-mode . lsp))
+  :hook (rust-mode . eglot-mode))
 
 ;;; rust.el ends here

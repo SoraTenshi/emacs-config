@@ -41,43 +41,22 @@
         (goto-char beginning)
         (insert (string open))))))
 
-(defun manipulation/unsurround ()
-  "Unsurrounds the innermost given characters."
+(defun replace-region-with-clipboard ()
+  "Replace the selected region with the contents of the clipboard."
   (interactive)
-  (let* ((pairs '((?\( . ?\))
-                  (?\[ . ?\])
-                  (?\{ . ?\})
-                  (?\< . ?\>)))
-         (open (read-char "Unsurrond with: "))
-         (close (or (cdr (assoc open pairs)) open))
-         (has-region (use-region-p))
-         (beginning (if has-region (region-beginning) (point)))
-         (end (if has-region (region-end) (min (1+ (point)) (point-max))))
-         open-pos close-pos)
-    (save-excursion
-      ;; Search backwards
-      (if (and (> beginning (point-min)) (eq (char-before beginning) open))
-          (setq open-pos (1- beginning))
-        (goto-char beginning)
-        (when (search-backward (char-to-string open) nil t)
-          (setq open-pos (point))))
-      ;; Search forwards
-      (goto-char end)
-      (if (and (< end (point-max)) (eq (char-after end) close))
-          (setq close-pos end)
-        (goto-char end)
-        (when (search-forward (char-to-string close) nil t)
-          (setq close-pos (1- (point))))))
-    (if (and open-pos close-pos (<= open-pos beginning) (>= close-pos end))
-        (progn
-          (save-excursion
-            (goto-char close-pos)
-            (delete-char 1)
-            (goto-char open-pos)
-            (delete-char 1))
-          (message "Removed surrounding %c ... %c" open close))
-      (message "No surrounding delimiters matching %c and %c found" open close))))
+  (if (use-region-p)
+      (let ((clip (current-kill 0)))
+        (if (use-region-p)
+            (progn
+              (delete-region (region-beginning) (region-end))
+              (insert clip))
+          (if (< (point) (point-max))
+              (progn
+                (delete-region (point) (min (point-max) (+ (point) 1)))
+                (insert clip))
+            (message "No character to replace at end-of-buffer."))))))
 
+(evil-define-key 'normal 'global (kbd "SPC r") #'replace-region-with-clipboard)
 (evil-define-key 'normal 'global (kbd "C-u") #'evil-scroll-up)
 (evil-define-key 'visual 'global (kbd "C-u") #'evil-scroll-up)
 (evil-define-key 'motion 'global (kbd "RET") #'org-agenda-switch-to)

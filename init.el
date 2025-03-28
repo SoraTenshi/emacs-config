@@ -55,6 +55,8 @@
 (load-config "config/projectile.el")
 (load-config "config/dashboard.el")
 (load-config "config/file-management.el")
+(load-config "config/discord.el")
+(load-config "config/mpv.el")
 
 (load-config "config/theme.el")
 
@@ -84,5 +86,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(flymake-error ((t (:background "#24283b" :underline (:color "#f7768e" :style wave :position nil)))))
+ '(flymake-warning ((t (:background "#24283b" :underline (:color "#ff9e64" :style wave :position nil))))))
 ;;; init.el ends here
