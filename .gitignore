@@ -11,3 +11,4 @@ recentf
 helix/**
 helix-mode/**
 .cache/**
+eshell/**
