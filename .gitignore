@@ -12,3 +12,6 @@ helix/**
 helix-mode/**
 .cache/**
 eshell/**
+secrets/
+smudge/
+request/

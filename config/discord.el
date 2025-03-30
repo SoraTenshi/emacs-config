@@ -3,6 +3,7 @@
 ;; Rich presence..
 ;;; Code:
 
-(use-package elcord)
+(use-package elcord
+  :straight t)
 
 ;;; discord.el ends here

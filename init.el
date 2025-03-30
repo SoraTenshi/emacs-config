@@ -4,6 +4,10 @@
 ;;; Code:
 (require 'package)
 
+(defconst configuration-root
+  "The configuration root directory."
+  (expand-file-name "."))
+
 ;; add melpa
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
@@ -46,18 +50,19 @@
 
 (load-config "config/editor.el")
 (load-config "config/modal.el")
-(load-config "config/buffer-line.el")
+(load-config "config/buffer-management.el")
 (load-config "config/lsp.el")
 (load-config "config/language-mode.el")
 (load-config "config/user.el")
 (load-config "config/org-mode.el")
 (load-config "config/templates.el")
-(load-config "config/projectile.el")
+(load-config "config/project.el")
 (load-config "config/dashboard.el")
 (load-config "config/file-management.el")
 (load-config "config/discord.el")
 (load-config "config/mpv.el")
 (load-config "config/sticky.el")
+;; (load-config "config/spotify.el") ;; no worky yet
 (load-config "config/magit.el")
 
 (load-config "config/theme.el")

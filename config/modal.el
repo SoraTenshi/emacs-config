@@ -56,16 +56,17 @@
                 (insert clip))
             (message "No character to replace at end-of-buffer."))))))
 
-(evil-define-key 'normal 'global (kbd "SPC r") #'replace-region-with-clipboard)
-(evil-define-key 'normal 'global (kbd "C-u") #'evil-scroll-up)
-(evil-define-key 'visual 'global (kbd "C-u") #'evil-scroll-up)
-(evil-define-key 'motion 'global (kbd "RET") #'org-agenda-switch-to)
+(with-eval-after-load 'evil
+    (evil-define-key 'normal 'global (kbd "SPC r") #'replace-region-with-clipboard)
+    (evil-define-key 'normal 'global (kbd "C-u") #'evil-scroll-up)
+    (evil-define-key 'visual 'global (kbd "C-u") #'evil-scroll-up)
+    (evil-define-key 'motion 'global (kbd "RET") #'org-agenda-switch-to)
 
-(evil-define-key '(normal visual) 'global (kbd "m") (make-sparse-keymap))
-(evil-define-key '(normal visual) 'global (kbd "m d") #'manipulation/unsurround)
-(evil-define-key '(normal visual) 'global (kbd "m s") #'manipulation/surround)
-(evil-define-key '(normal visual) 'global (kbd "m m") #'evil-jump-item)
-(evil-define-key 'normal 'global (kbd "=") #'format-all-buffer)
-(evil-define-key '(normal visual) 'global (kbd "C-c") #'comment/toggle)
+    (evil-define-key '(normal visual) 'global (kbd "m") (make-sparse-keymap))
+    (evil-define-key '(normal visual) 'global (kbd "m d") #'manipulation/unsurround)
+    (evil-define-key '(normal visual) 'global (kbd "m s") #'manipulation/surround)
+    (evil-define-key '(normal visual) 'global (kbd "m m") #'evil-jump-item)
+    (evil-define-key 'normal 'global (kbd "=") #'format-all-buffer)
+    (evil-define-key '(normal visual) 'global (kbd "C-c") #'comment/toggle))
 
 ;;; modal.el ends here
