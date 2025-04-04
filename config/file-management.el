@@ -35,7 +35,7 @@
   (evil-define-key 'normal 'global (kbd "SPC w") #'evil-delete-buffer)
 
   ;; g mode
-  (evil-define-key 'normal 'global (kbd "g n") #'next-buffer)
-  (evil-define-key 'normal 'global (kbd "g p") #'previous-buffer))
+  (evil-define-key 'normal 'global (kbd "g n") #'centaur-tabs-forward)
+  (evil-define-key 'normal 'global (kbd "g p") #'centaur-tabs-backward))
 
 ;;; file-management.el ends here

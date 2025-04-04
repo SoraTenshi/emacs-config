@@ -15,3 +15,5 @@ eshell/**
 secrets/
 smudge/
 request/
+semanticdb/**
+tabsession.el

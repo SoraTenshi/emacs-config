@@ -14,4 +14,6 @@
 (add-to-list 'project-vc-backend-markers-alist '(jj . ".jj"))
 (setq project-vc-extra-root-markers '(".jj"))
 
+(evil-define-key 'normal 'global (kbd "SPC p") #'project-switch-project)
+
 ;;; project.el ends here

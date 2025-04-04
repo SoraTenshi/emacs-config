@@ -5,6 +5,7 @@
 
 (use-package mpv
   :ensure t
+  :straight t
   ;; 1.1 volume-step seems to be the most sane
   :config (setq mpv-volume-step 1.1))
 

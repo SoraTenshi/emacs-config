@@ -8,6 +8,7 @@
   :config (evil-mode 1))
 
 (use-package evil-collection
+  :straight t
   :after evil
   :config
   (evil-collection-init))
