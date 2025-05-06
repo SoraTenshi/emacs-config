@@ -26,4 +26,33 @@
 
 (global-tab-line-mode 1)
 
+(defun buffer/centaur-tabs-all-groups ()
+  "List all centaur-tab groups."
+  (let* ((raw (delete-dups
+               (apply #'append
+                      (mapcar (lambda (buf)
+                                (with-current-buffer buf
+                                  (funcall centaur-tabs-buffer-groups-function)))
+                              (buffer-list)))))
+         (blacklist '("Common")))
+    (seq-remove (lambda (g) (member g blacklist)) raw)))
+
+(defun buffer/centaur-switch-to-group ()
+  "Open a minibuffer to select a buffer group."
+  (interactive)
+  (let* ((groups (buffer/centaur-tabs-all-groups))
+         (g (completing-read "Group: " groups nil t)))
+    (when (and g (not (string-empty-p g)))
+      (let ((b (seq-find
+                (lambda (buf)
+                  (with-current-buffer buf
+                    (member g (funcall centaur-tabs-buffer-groups-function))))
+                (buffer-list))))
+        (when b
+          (switch-to-buffer b)
+          (centaur-tabs-update))
+        (message "Switched to group: %s" g)))))
+
+(evil-define-key '(normal visual) 'global (kbd "SPC B") #'buffer/centaur-switch-to-group)
+
 ;;; buffer-management.el ends here

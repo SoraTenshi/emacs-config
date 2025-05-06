@@ -62,12 +62,13 @@
   "Open a list of all diagnostics."
   (interactive)
   (flymake-show-buffer-diagnostics))
-  
+
 (defun ui/show-popup-doc ()
   "Show the popup for the symbol under cursor."
   (interactive)
   (if (bound-and-true-p eglot--managed-mode)
-      (eldoc-box-help-at-point)
+      (let ((eldoc-display-functions '(eldoc-display-in-echo-area)))
+        (eldoc t))
     (describe-symbol (symbol-at-point))))
 
 (with-eval-after-load 'evil
@@ -77,6 +78,7 @@
     ;; (kbd "SPC S-d") #'ui/project-diagnostic-list
     (kbd "SPC r") #'eglot-rename
     (kbd "SPC a") #'eglot-code-action
+    (kbd "g r") #'xref-find-references
     (kbd "] d") #'nav/next-diagnostic
     (kbd "[ d") #'nav/previous-diagnostic))
 

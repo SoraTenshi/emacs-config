@@ -1,4 +1,4 @@
- ;;; file-management.el --- Everything about managing files. -*- lexical-binding: t; -*-
+;;; file-management.el --- Everything about managing files. -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;; Fuzzy finder, whatever...
 ;;; Code:
@@ -24,6 +24,7 @@
               "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --with-filename --line-number --search-zip --no-ignore-dot --no-require-git"))
 
 (defun nav/global-search (dir)
+  "Search a DIR for a matching regex."
   (interactive "DDirectory: ")
   (consult-ripgrep dir))
 
@@ -35,7 +36,10 @@
   (evil-define-key 'normal 'global (kbd "SPC w") #'evil-delete-buffer)
 
   ;; g mode
+  (evil-define-key 'normal 'global (kbd "g n") #'next-buffer)
+  (evil-define-key 'normal 'global (kbd "g p") #'previous-buffer))
   (evil-define-key 'normal 'global (kbd "g n") #'centaur-tabs-forward)
   (evil-define-key 'normal 'global (kbd "g p") #'centaur-tabs-backward))
+;; (evil-define-key 'normal 'global (kbd "g b") #'centaur-tabs-buffer-list))
 
 ;;; file-management.el ends here

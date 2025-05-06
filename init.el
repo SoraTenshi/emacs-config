@@ -63,8 +63,6 @@
 (load-config "config/dashboard.el")
 (load-config "config/file-management.el")
 (load-config "config/discord.el")
-(load-config "config/mpv.el")
-;; (load-config "config/spotify.el") ;; no worky yet
 (load-config "config/magit.el")
 
 (load-config "config/theme.el")

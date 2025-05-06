@@ -3,6 +3,24 @@
 ;; Project setup or something
 ;;; Code:
 
+(defun project/switch ()
+  "Browse through projects & their folder structure."
+  (interactive)
+  (with-current-buffer (get-buffer-create "*Project exploration*")
+    (erase-buffer)
+    (let ((f (lambda ()
+               (interactive)
+               (dired (ffap-file-at-point)))))
+      (mapc (lambda (i)
+              (insert (propertize i
+                                  'face 'link
+                                  'mouse-face 'highlight
+                                  'help-echo "Mouse-1: Visit this directory"
+                                  'keymap (define-keymap "RET" f "<mouse-1>" f))
+                      "\n"))
+            (project-known-project-roots)))
+    (switch-to-buffer (current-buffer))))
+
 (setq project-search-path '(("~/dev" . 2)
                             ("~/source/repos" . 2)))
 

@@ -22,5 +22,4 @@
 (make-compile-command rust "cargo build")
 (make-compile-command go "go build")
 (make-compile-command zig "zig build")
-
 ;;; language-mode.el ends here

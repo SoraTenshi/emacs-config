@@ -5,7 +5,11 @@
 
 (use-package evil
   :init (setq evil-want-keybinding nil)
-  :config (evil-mode 1))
+  :config
+  (evil-mode 1))
+
+(setq evil-cross-lines t
+      evil-move-beyond-eol t)
 
 (use-package evil-collection
   :straight t
@@ -13,9 +17,13 @@
   :config
   (evil-collection-init))
 
-(evil-set-initial-state 'org-agenda-mode 'motion)
+(use-package which-key
+  :ensure t
+  :config
+  (setq which-key-idle-delay 0.5)
+  (which-key-mode))
 
-(setq evil-undo-system 'undo-redo)
+(evil-set-initial-state 'org-agenda-mode 'motion)
 
 (defun comment/toggle ()
   "Toggle between commenting a line or uncommenting it."
@@ -57,17 +65,25 @@
                 (insert clip))
             (message "No character to replace at end-of-buffer."))))))
 
-(with-eval-after-load 'evil
-    (evil-define-key 'normal 'global (kbd "SPC r") #'replace-region-with-clipboard)
-    (evil-define-key 'normal 'global (kbd "C-u") #'evil-scroll-up)
-    (evil-define-key 'visual 'global (kbd "C-u") #'evil-scroll-up)
-    (evil-define-key 'motion 'global (kbd "RET") #'org-agenda-switch-to)
+(defun select/whole-buffer ()
+  "Select the whole buffer."
+  (interactive)
+  (evil-goto-first-line)
+  (evil-visual-line)
+  (evil-goto-line))
 
-    (evil-define-key '(normal visual) 'global (kbd "m") (make-sparse-keymap))
-    (evil-define-key '(normal visual) 'global (kbd "m d") #'manipulation/unsurround)
-    (evil-define-key '(normal visual) 'global (kbd "m s") #'manipulation/surround)
-    (evil-define-key '(normal visual) 'global (kbd "m m") #'evil-jump-item)
-    (evil-define-key 'normal 'global (kbd "=") #'format-all-buffer)
-    (evil-define-key '(normal visual) 'global (kbd "C-c") #'comment/toggle))
+(with-eval-after-load 'evil
+  (evil-define-key 'normal 'global (kbd "SPC r") #'replace-region-with-clipboard)
+  (evil-define-key '(normal visual) 'global (kbd "C-u") #'evil-scroll-up)
+  (evil-define-key 'motion 'global (kbd "RET") #'org-agenda-switch-to)
+
+  (evil-define-key '(normal visual) 'global (kbd "m") (make-sparse-keymap))
+  (evil-define-key '(normal visual) 'global (kbd "m d") #'manipulation/unsurround)
+  (evil-define-key '(normal visual) 'global (kbd "m s") #'manipulation/surround)
+  (evil-define-key '(normal visual) 'global (kbd "m m") #'evil-jump-item)
+  (evil-define-key 'normal 'global (kbd "=") #'format-all-buffer)
+  (evil-define-key '(normal visual) 'global (kbd "C-c") #'comment/toggle)
+  (evil-define-key 'normal 'global (kbd "SPC c") #'compile)
+  (evil-define-key 'normal 'global (kbd "%") #'select/whole-buffer))
 
 ;;; modal.el ends here
