@@ -72,10 +72,20 @@
   (evil-visual-line)
   (evil-goto-line))
 
+(defun quit/safe-exit ()
+  "Delete this window, but don't ever kill EMACS."
+  (interactive)
+  (if (one-window-p t)
+      (message "Saved your startup time ;)")
+    (evil-window-delete)))
+
 (with-eval-after-load 'evil
+  (define-key evil-window-map (kbd "q") #'quit/safe-exit)
   (evil-define-key 'normal 'global (kbd "SPC r") #'replace-region-with-clipboard)
   (evil-define-key '(normal visual) 'global (kbd "C-u") #'evil-scroll-up)
   (evil-define-key 'motion 'global (kbd "RET") #'org-agenda-switch-to)
+  (evil-define-key '(normal visual) 'global (kbd "C-o") #'evil-jump-backward)
+  (evil-define-key '(normal visual) 'global (kbd "C-i") #'evil-jump-forward)
 
   (evil-define-key '(normal visual) 'global (kbd "m") (make-sparse-keymap))
   (evil-define-key '(normal visual) 'global (kbd "m d") #'manipulation/unsurround)
