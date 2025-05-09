@@ -44,6 +44,21 @@
           (centaur-tabs-update))
         (message "Switched to group: %s" g)))))
 
-(evil-define-key '(normal visual) 'global (kbd "SPC B") #'buffer/centaur-switch-to-group)
+(defun buffer/centaur-tabs-remove-group (group)
+  "Kill all buffers in the centaur-tabs GROUP, then update tabs."
+  (interactive
+   (list (completing-read
+          "Remove group: "
+          (buffer/centaur-tabs-all-groups)
+          nil t)))
+  (dolist (buf (buffer/centaur-tabs-all-groups))
+    (when (buffer-live-p buf)
+      (kill-buffer buf)))
+  (centaur-tabs-delete-tab buf)
+  (message "Removed group %s" group))
+
+(with-eval-after-load 'evil
+  (evil-define-key '(normal visual) 'global (kbd "SPC B") #'buffer/centaur-switch-to-group)
+  (evil-define-key '(normal visual) 'global (kbd "SPC W") #'buffer/centaur-tabs-remove-group))
 
 ;;; buffer-management.el ends here

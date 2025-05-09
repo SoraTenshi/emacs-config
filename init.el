@@ -53,7 +53,6 @@
 (load-config "config/project.el")
 (load-config "config/editor.el")
 (load-config "config/modal.el")
-(load-config "config/sticky.el")
 (load-config "config/buffer-management.el")
 (load-config "config/lsp.el")
 (load-config "config/language-mode.el")
@@ -66,6 +65,9 @@
 (load-config "config/magit.el")
 
 (load-config "config/theme.el")
+
+(use-package meow
+  :ensure t)
 
 ;; Of course, not every information has to be seen in the mode line...
 (use-package diminish

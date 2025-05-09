@@ -35,8 +35,9 @@
   (set-face-attribute 'whitespace-line nil
                       :foreground nil
                       :background nil
-                      :weight 'normal))
-
-(set-fringe-mode 0)
+                      :weight 'normal)
+  (set-face-attribute 'fringe nil
+                      :foreground (face-foreground 'default)
+                      :background (face-background 'default)))
 
 ;;; theme.el ends here
