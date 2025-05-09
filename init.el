@@ -50,6 +50,7 @@
           (load-file path))
       (message "Config file %s not found.." path))))
 
+(load-config "config/project.el")
 (load-config "config/editor.el")
 (load-config "config/modal.el")
 (load-config "config/sticky.el")
@@ -59,7 +60,6 @@
 (load-config "config/user.el")
 (load-config "config/org-mode.el")
 (load-config "config/templates.el")
-(load-config "config/project.el")
 (load-config "config/dashboard.el")
 (load-config "config/file-management.el")
 (load-config "config/discord.el")

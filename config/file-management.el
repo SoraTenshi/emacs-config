@@ -28,10 +28,19 @@
   (interactive "DDirectory: ")
   (consult-ripgrep dir))
 
+(defun nav/find-file-rec ()
+  "Search a base-dir which either is the project root or the directory of the current buffer."
+  (interactive "sFile: ")
+  (if (project-current)
+      (project-find-file)
+    (let* ((files (directory-files-recursively default-directory ".*" t))
+           (choice (completing-read "Find file: " files nil t)))
+      (when choice (find-file choice)))))
+
 (with-eval-after-load 'evil
   ;; SPC mode
   (evil-define-key 'normal 'global (kbd "SPC f") #'find-file)
-  (evil-define-key 'normal 'global (kbd "SPC b") #'ibuffer)
+  (evil-define-key 'normal 'global (kbd "SPC b") #'consult-project-buffer)
   (evil-define-key 'normal 'global (kbd "SPC /") #'nav/global-search)
   (evil-define-key 'normal 'global (kbd "SPC w") #'evil-delete-buffer)
 

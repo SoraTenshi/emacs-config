@@ -7,6 +7,9 @@
 (setq display-line-numbers-type 'relative)
 (global-display-line-numbers-mode t)
 
+(setq display-line-numbers-exempt-mode nil
+      whitespace-global-modes t)
+
 ;; remove the "tool" bar on top
 (tool-bar-mode -1)
 (menu-bar-mode -1)

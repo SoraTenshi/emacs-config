@@ -17,3 +17,4 @@ smudge/
 request/
 semanticdb/**
 tabsession.el
+*.lsp-*

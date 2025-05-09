@@ -50,7 +50,7 @@
         (goto-char beginning)
         (insert (string open))))))
 
-(defun replace-region-with-clipboard ()
+(defun clipboard/replace-region ()
   "Replace the selected region with the contents of the clipboard."
   (interactive)
   (if (use-region-p)
@@ -81,7 +81,7 @@
 
 (with-eval-after-load 'evil
   (define-key evil-window-map (kbd "q") #'quit/safe-exit)
-  (evil-define-key 'normal 'global (kbd "SPC r") #'replace-region-with-clipboard)
+  (evil-define-key 'normal 'global (kbd "SPC r") #'clipboard/replace-region)
   (evil-define-key '(normal visual) 'global (kbd "C-u") #'evil-scroll-up)
   (evil-define-key 'motion 'global (kbd "RET") #'org-agenda-switch-to)
   (evil-define-key '(normal visual) 'global (kbd "C-o") #'evil-jump-backward)
