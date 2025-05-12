@@ -92,7 +92,7 @@
   (evil-define-key '(normal visual) 'global (kbd "m s") #'manipulation/surround)
   (evil-define-key '(normal visual) 'global (kbd "m m") #'evil-jump-item)
   (evil-define-key 'normal 'global (kbd "=") #'format-all-buffer)
-  (evil-define-key '(normal visual) 'global (kbd "C-c") #'comment/toggle)
+  (evil-define-key '(normal visual) 'global (kbd "SPC s") #'comment/toggle)
   (evil-define-key 'normal 'global (kbd "SPC c") #'compile)
   (evil-define-key 'normal 'global (kbd "%") #'select/whole-buffer))
 
