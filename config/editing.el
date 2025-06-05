@@ -53,7 +53,7 @@
 (defun quit/safe-exit ()
   "Delete this window, but don't ever kill EMACS."
   (interactive)
-  (if (one-window-p t)
+  (if (one-window-p)
       (message "Saved your startup time ;)")
     (evil-window-delete)))
 

@@ -51,6 +51,7 @@
       (message "Config file %s not found.." path))))
 
 (load-config "config/evil.el")
+(load-config "config/editing.el")
 (load-config "config/project.el")
 (load-config "config/editor.el")
 (load-config "config/buffer-management.el")
