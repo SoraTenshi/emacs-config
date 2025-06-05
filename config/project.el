@@ -48,6 +48,4 @@
     (when (and choice (not (string-empty-p choice)))
       (dired choice))))
 
-(evil-define-key 'normal 'global (kbd "SPC p") #'project/switch)
-
 ;;; project.el ends here

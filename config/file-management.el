@@ -37,16 +37,4 @@
            (choice (completing-read "Find file: " files nil t)))
       (when choice (find-file choice)))))
 
-(with-eval-after-load 'evil
-  ;; SPC mode
-  (evil-define-key 'normal 'global (kbd "SPC f") #'find-file)
-  (evil-define-key 'normal 'global (kbd "SPC b") #'consult-project-buffer)
-  (evil-define-key 'normal 'global (kbd "SPC /") #'nav/global-search)
-  (evil-define-key 'normal 'global (kbd "SPC w") #'evil-delete-buffer)
-
-  ;; g mode
-  (evil-define-key 'normal 'global (kbd "g n") #'centaur-tabs-forward)
-  (evil-define-key 'normal 'global (kbd "g p") #'centaur-tabs-backward))
-;; (evil-define-key 'normal 'global (kbd "g b") #'centaur-tabs-buffer-list))
-
 ;;; file-management.el ends here

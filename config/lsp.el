@@ -71,15 +71,4 @@
         (eldoc t))
     (describe-symbol (symbol-at-point))))
 
-(with-eval-after-load 'evil
-  (evil-define-key 'normal 'global
-    (kbd "SPC k") #'ui/show-popup-doc
-    (kbd "SPC d") #'ui/diagnostic-list
-    ;; (kbd "SPC S-d") #'ui/project-diagnostic-list
-    (kbd "SPC r") #'eglot-rename
-    (kbd "SPC a") #'eglot-code-action
-    (kbd "g r") #'xref-find-references
-    (kbd "] d") #'nav/next-diagnostic
-    (kbd "[ d") #'nav/previous-diagnostic))
-
 ;;; lsp.el ends here

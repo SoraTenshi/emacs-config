@@ -31,11 +31,6 @@
                 org-modern-hide-stars nil
                 org-pretty-entities t))
 
-(evil-define-key 'global 'normal (kbd "g a") #'org-agenda)
-(evil-define-key 'global 'normal (kbd "g c") #'org-capture)
-(evil-define-key 'global 'normal (kbd "g l") #'org-store-link)
-(evil-define-key 'global 'normal (kbd "g s") #'org-switchb)
-
 ;; Cheatsheet:
 ;; %?	Cursor position after insertion (usually goes at the end)
 ;; %t	Timestamp (<2025-03-24 Mon>)

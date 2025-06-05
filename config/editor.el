@@ -37,6 +37,9 @@
                     :family "Lilex Nerd Font Mono"
                     :height 160)
 
+(add-to-list 'default-frame-alist '(width . 157))
+(add-to-list 'default-frame-alist '(height . 37))
+
 (set-frame-font "Lilex Nerd Font Mono-15" nil t)
 (use-package ligature
   :ensure t
@@ -55,5 +58,11 @@
                             "|||"
                             "||" "~~" "~~>" "~>" "%%"))
   (global-ligature-mode 't))
+
+(use-package which-key
+  :ensure t
+  :config
+  (setq which-key-idle-delay 0.5)
+  (which-key-mode))
 
 ;;; editor.el ends here

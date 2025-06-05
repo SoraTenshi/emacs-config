@@ -1,6 +1,6 @@
-;;; evil.el --- Evil mode configuration. -*- lexical-binding: t; -*-
+;;; modal.el --- Modal editing configuration. -*- lexical-binding: t; -*-
 ;;; Commentary:
-;; evil mode configuration
+;; Modal editing configuration (generic, because subject to change)
 ;;; Code:
 
 (use-package evil
@@ -17,6 +17,12 @@
   :config
   (evil-collection-init))
 
+(use-package which-key
+  :ensure t
+  :config
+  (setq which-key-idle-delay 0.5)
+  (which-key-mode))
+
 (evil-set-initial-state 'org-agenda-mode 'motion)
 
-;;; evil.el ends here
+;;; modal.el ends here

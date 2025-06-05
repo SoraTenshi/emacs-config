@@ -7,6 +7,4 @@
   :straight t
   :ensure t)
 
-(evil-define-key 'normal 'global (kbd "SPC g") 'magit-status)
-
 ;;; magit.el ends here

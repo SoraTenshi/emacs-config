@@ -50,9 +50,9 @@
           (load-file path))
       (message "Config file %s not found.." path))))
 
+(load-config "config/evil.el")
 (load-config "config/project.el")
 (load-config "config/editor.el")
-(load-config "config/modal.el")
 (load-config "config/buffer-management.el")
 (load-config "config/lsp.el")
 (load-config "config/language-mode.el")
@@ -63,11 +63,10 @@
 (load-config "config/file-management.el")
 (load-config "config/discord.el")
 (load-config "config/magit.el")
-
 (load-config "config/theme.el")
 
-(use-package meow
-  :ensure t)
+;; now setup all keybinds..
+(load-config "config/keybinds.el")
 
 ;; Of course, not every information has to be seen in the mode line...
 (use-package diminish
@@ -98,7 +97,8 @@
                   org-modern org-tempo rainbow-delimiters rainbow-mode
                   rust-mode sly zig-mode))
  '(package-vc-selected-packages
-   '((window-stool :vc-backend Git :url
+   '((helix :url "https://github.com/anuvyklack/helix.el")
+     (window-stool :vc-backend Git :url
                    "https://github.com/JasZhe/window-stool"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

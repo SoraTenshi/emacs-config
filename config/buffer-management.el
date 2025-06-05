@@ -57,8 +57,4 @@
   (centaur-tabs-delete-tab buf)
   (message "Removed group %s" group))
 
-(with-eval-after-load 'evil
-  (evil-define-key '(normal visual) 'global (kbd "SPC B") #'buffer/centaur-switch-to-group)
-  (evil-define-key '(normal visual) 'global (kbd "SPC W") #'buffer/centaur-tabs-remove-group))
-
 ;;; buffer-management.el ends here
