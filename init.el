@@ -50,7 +50,8 @@
           (load-file path))
       (message "Config file %s not found.." path))))
 
-(load-config "config/evil.el")
+(load-config "config/helix.el")
+;; (load-config "config/evil.el")
 (load-config "config/editing.el")
 (load-config "config/project.el")
 (load-config "config/editor.el")
@@ -67,7 +68,8 @@
 (load-config "config/theme.el")
 
 ;; now setup all keybinds..
-(load-config "config/keybinds.el")
+;; (load-config "config/keybinds-evil.el")
+(load-config "config/keybinds-helix.el")
 
 ;; Of course, not every information has to be seen in the mode line...
 (use-package diminish

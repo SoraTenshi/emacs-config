@@ -53,7 +53,7 @@
   (interactive)
   (flycheck-next-error))
 
-(defun nav/previous-diagnostic ()
+(defun nav/prev-diagnostic ()
   "Go to previous diagnostic."
   (interactive)
   (flycheck-previous-error))
