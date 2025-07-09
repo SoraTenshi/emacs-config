@@ -189,15 +189,13 @@ and jump to the corresponding one."
 (defun select/whole-buffer ()
   "Select the whole buffer."
   (interactive)
-  (evil-goto-first-line)
-  (evil-visual-line)
-  (evil-goto-line))
+  (helix--select-region (point-min) (point-max)))
 
 (defun quit/safe-exit ()
-  "Delete this window, but don't ever kill EMACS."
-  (interactive)
-  (if (one-window-p)
-      (message "Saved your startup time ;)")
-    (delete-window)))
+"Delete this window, but don't ever kill EMACS."
+(interactive)
+(if (one-window-p)
+    (message "Saved your startup time ;)")
+  (delete-window)))
 
 ;;; editing.el ends here

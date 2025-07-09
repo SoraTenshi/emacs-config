@@ -8,6 +8,7 @@
 
 (use-package helix
   :ensure t
+  :defer nil
   :after multiple-cursors
   :config
   (helix-multiple-cursors-setup)

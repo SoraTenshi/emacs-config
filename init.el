@@ -4,6 +4,26 @@
 ;;; Code:
 (require 'package)
 
+(setq custom-file "~/.emacs.d/emacs-custom-file.el")
+(setq ring-bell-function 'ignore)
+
+;; Create directories for autosaves and backups
+ (dolist (dir '("backups" "autosaves"))
+   (let ((full-path (expand-file-name dir user-emacs-directory)))
+     (unless (file-exists-p full-path)
+       (make-directory full-path t))))
+
+;; Redirect #file# .file~ to the location at home
+(setq backup-directory-alist
+      `(("." . ,(expand-file-name "backups/" user-emacs-directory)))
+      backup-by-copying t
+      delete-old-versions t
+      kept-new-versions 6
+      kept-old-versions 2
+      version-control t)
+(setq auto-save-file-name-transforms
+      `((".*" ,(expand-file-name "autosaves/" user-emacs-directory) t)))
+
 (defconst configuration-root
   "The configuration root directory."
   (expand-file-name "."))
@@ -38,6 +58,7 @@
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
+
 (straight-use-package 'use-package)
 
 ;; setup load paths
@@ -82,32 +103,13 @@
 (diminish 'evil-collection-unimpaired-mode)
 (diminish 'projectile-mode)
 (diminish 'yas-minor-mode)
+(diminish 'whitespace-mode)
+(diminish 'which-key-mode)
+(diminish 'better-jumper-local-mode)
+(diminish 'helix-normal-mode)
+(diminish 'helix-insert-mode)
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("ce0aeeb5350a53e85a2a7d4a5bc33cf3952b88fabb84dd2ec5ba4e2fd40053df"
-     "4d0573a42fa8811959d6ceb9a74432d3f601f6f7e3be521ee9ade4a9dc441afe"
-     "4594d6b9753691142f02e67b8eb0fda7d12f6cc9f1299a49b819312d6addad1d"
-     default))
- '(package-selected-packages
-   '(base16-theme centaur-tabs company-box diminish doom-themes
-                  elixir-mode evil-collection eyebrowse flycheck
-                  format-all geiser go-mode ligature lsp-ui nix-mode
-                  org-modern org-tempo rainbow-delimiters rainbow-mode
-                  rust-mode sly zig-mode))
- '(package-vc-selected-packages
-   '((helix :url "https://github.com/anuvyklack/helix.el")
-     (window-stool :vc-backend Git :url
-                   "https://github.com/JasZhe/window-stool"))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(flymake-error ((t (:background "#24283b" :underline (:color "#f7768e" :style wave :position nil)))))
- '(flymake-warning ((t (:background "#24283b" :underline (:color "#ff9e64" :style wave :position nil))))))
+(require 'helix)
+(helix-mode)
+
 ;;; init.el ends here

@@ -51,12 +51,12 @@
 (defun nav/next-diagnostic ()
   "Go to next diagnostic."
   (interactive)
-  (flycheck-next-error))
+  (flymake-goto-next-error))
 
 (defun nav/prev-diagnostic ()
   "Go to previous diagnostic."
   (interactive)
-  (flycheck-previous-error))
+  (flymake-goto-prev-error))
 
 (defun ui/diagnostic-list ()
   "Open a list of all diagnostics."
