@@ -25,22 +25,18 @@
   (corfu-popupinfo-delay 5))
 
 (use-package yasnippet
-  :straight t
   :hook (prog-mode . yas-minor-mode))
 
 (use-package yasnippet-snippets
-  :straight t
   :after yasnippet)
 
-(use-package cape
-  :straight t)
+(use-package cape)
 
-(setq completion-at-point-functions
+(setq-local completion-at-point-functions
       (list (cape-capf-buster #'eglot-completion-at-point)
             #'cape-yasnippet))
 
-(use-package eldoc-box
-  :straight t)
+(use-package eldoc-box)
 
 (defun lsp/corfu-yasnippet-expand ()
   "Expand function for completion hook."

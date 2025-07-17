@@ -2,7 +2,16 @@
 ;;; Commentary:
 ;; Basic entry point for my EMACS config
 ;;; Code:
-(require 'package)
+(menu-bar-mode 0)
+(tool-bar-mode 0)
+(scroll-bar-mode 0)
+(setq inhibit-startup-screen t
+      use-file-dialog nil
+      use-dialog-box nil)
+(blink-cursor-mode 0)
+
+(global-display-line-numbers-mode 1)
+(setq display-line-numbers-type 'relative)
 
 (setq custom-file "~/.emacs.d/emacs-custom-file.el")
 (setq ring-bell-function 'ignore)
@@ -28,21 +37,7 @@
   "The configuration root directory."
   (expand-file-name "."))
 
-;; add melpa
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
-(unless package-archive-contents
-  (package-refresh-contents))
-
-;; use-package util
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-
-(require 'use-package)
-(setq use-package-always-ensure t)
-
-;; use-package with straight
+;; straight for github stuff (basically only the theme for now...
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name
@@ -71,26 +66,26 @@
           (load-file path))
       (message "Config file %s not found.." path))))
 
-(load-config "config/helix.el")
+;; (load-config "config/helix.el")
 ;; (load-config "config/evil.el")
 (load-config "config/editing.el")
 (load-config "config/project.el")
 (load-config "config/editor.el")
-(load-config "config/buffer-management.el")
+;; (load-config "config/buffer-management.el")
 (load-config "config/lsp.el")
 (load-config "config/language-mode.el")
-(load-config "config/user.el")
+;; (load-config "config/user.el")
 (load-config "config/org-mode.el")
-(load-config "config/templates.el")
-(load-config "config/dashboard.el")
+;; (load-config "config/templates.el")
+;; (load-config "config/dashboard.el")
 (load-config "config/file-management.el")
 (load-config "config/discord.el")
-(load-config "config/magit.el")
+;; (load-config "config/magit.el")
 (load-config "config/theme.el")
 
 ;; now setup all keybinds..
 ;; (load-config "config/keybinds-evil.el")
-(load-config "config/keybinds-helix.el")
+;; (load-config "config/keybinds-helix.el")
 
 ;; Of course, not every information has to be seen in the mode line...
 (use-package diminish
@@ -108,8 +103,5 @@
 (diminish 'better-jumper-local-mode)
 (diminish 'helix-normal-mode)
 (diminish 'helix-insert-mode)
-
-(require 'helix)
-(helix-mode)
 
 ;;; init.el ends here
