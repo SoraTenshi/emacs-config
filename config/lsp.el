@@ -57,7 +57,11 @@
 (defun ui/diagnostic-list ()
   "Open a list of all diagnostics."
   (interactive)
-  (flymake-show-buffer-diagnostics))
+  (flymake-show-buffer-diagnostics)
+  (switch-to-buffer-other-window
+   (seq-find (lambda (buf)
+               (string-match-p "\\*Flymake diagnostics" (buffer-name buf)))
+             (buffer-list))))
 
 (defun ui/show-popup-doc ()
   "Show the popup for the symbol under cursor."
@@ -65,6 +69,7 @@
   (if (bound-and-true-p eglot--managed-mode)
       (let ((eldoc-display-functions '(eldoc-display-in-echo-area)))
         (eldoc t))
-    (describe-symbol (symbol-at-point))))
+    (describe-symbol (symbol-at-point)))
+  (pop-to-buffer "*Help*"))
 
 ;;; lsp.el ends here

@@ -86,11 +86,11 @@
 ;; now setup all keybinds..
 ;; (load-config "config/keybinds-evil.el")
 ;; (load-config "config/keybinds-helix.el")
+(load-config "config/keybinds.el")
 
 ;; Of course, not every information has to be seen in the mode line...
 (use-package diminish
   :ensure t)
-(diminish 'rainbow-mode)
 (diminish 'eldoc-mode)
 (diminish 'ivy-mode)
 (diminish 'format-all-mode)
