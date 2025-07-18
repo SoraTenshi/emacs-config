@@ -3,21 +3,33 @@
 ;; Possibly some stuff for org mode? Not sure.
 ;;; Code:
 
+(make-directory "~/org/roam" t)
+
 (use-package org
+  :ensure t
+  :config
+  (setq org-directory "~/org"
+        org-default-notes-file (expand-file-name "inbox.org" org-directory)
+        org-hide-emphasis-markers t
+        org-return-follows-link t
+        org-confirm-babel-evaluate nil))
+
+(use-package org-roam
+  :ensure t
+  :straight t
   :custom
-  (org-directory "~/org")
-  (org-default-notes-file "~/org/notes.org")
-  (org-agenda-files '("~/org/todo.org" "~/org/notes.org"))
-  (org-capture-templates
-   '(("t" "Todo" entry (file+headline "~/org/todo.org" "Tasks")
-      "* TODO %?\n")
-     ("n" "Note" entry (file+headline "~/org/notes.org" "Notes")
-      "* %^{Note Title} :NOTE:\n<%U>\n%?")))
-  (org-agenda-window-setup 'current-window)
-  (org-agenda-restore-windows-after-quit t)
-  (org-agenda-custom-commands
-   '(("n" "Notes" tags "NOTE" ((org-agenda-overriding-header "All Notes")
-                               (org-agenda-files '("~/org/notes.org")))))))
+  (org-roam-directory (file-truename "~/org/roam"))
+  (org-roam-completion-everywhere t)
+  (org-roam-capture-templates
+   '(("d" "default" plain "%?"
+      :if-new (file+head "%<%Y-%m-%d>.org" "#+title: ${title}\n")
+      :unnarrowed t)))
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n c" . org-roam-capture))
+  :config
+  (org-roam-db-autosync-mode))
 
 (require 'org-tempo)
 (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
