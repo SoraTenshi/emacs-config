@@ -8,6 +8,7 @@
 
 (use-package rustic
   :ensure t
+  :straight t
   :after (rust-mode)
   :custom
   (rustic-rustfmt-args "--edition 2024")
