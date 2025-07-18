@@ -17,6 +17,7 @@
 ;; format all..
 (use-package format-all
   :ensure t
+  :straight t
   :hook (prog-mode . format-all-mode))
 
 ;; setup the font

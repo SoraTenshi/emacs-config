@@ -6,6 +6,7 @@
 (global-set-key (kbd "C-c k") 'ui/show-popup-doc)
 (global-set-key (kbd "C-c d") 'ui/diagnostic-list)
 (global-set-key (kbd "C-c s") 'nav/global-search)
+(global-set-key (kbd "C-c f") 'find-file-at-point)
 
 (provide 'keybinds)
 ;;; keybinds.el ends here

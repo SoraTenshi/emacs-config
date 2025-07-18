@@ -88,20 +88,4 @@
 ;; (load-config "config/keybinds-helix.el")
 (load-config "config/keybinds.el")
 
-;; Of course, not every information has to be seen in the mode line...
-(use-package diminish
-  :ensure t)
-(diminish 'eldoc-mode)
-(diminish 'ivy-mode)
-(diminish 'format-all-mode)
-(diminish 'flycheck-mode)
-(diminish 'evil-collection-unimpaired-mode)
-(diminish 'projectile-mode)
-(diminish 'yas-minor-mode)
-(diminish 'whitespace-mode)
-(diminish 'which-key-mode)
-(diminish 'better-jumper-local-mode)
-(diminish 'helix-normal-mode)
-(diminish 'helix-insert-mode)
-
 ;;; init.el ends here
