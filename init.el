@@ -16,22 +16,16 @@
 (setq custom-file "~/.emacs.d/emacs-custom-file.el")
 (setq ring-bell-function 'ignore)
 
-;; Create directories for autosaves and backups
- (dolist (dir '("backups" "autosaves"))
-   (let ((full-path (expand-file-name dir user-emacs-directory)))
-     (unless (file-exists-p full-path)
-       (make-directory full-path t))))
+(setq mouse-wheel-scroll-amount '(3 ((shift) . 3))
+      mouse-wheel-progressive-speed nil)
+(setq scroll-preserve-screen-position t)
 
 ;; Redirect #file# .file~ to the location at home
-(setq backup-directory-alist
-      `(("." . ,(expand-file-name "backups/" user-emacs-directory)))
-      backup-by-copying t
-      delete-old-versions t
-      kept-new-versions 6
-      kept-old-versions 2
-      version-control t)
-(setq auto-save-file-name-transforms
-      `((".*" ,(expand-file-name "autosaves/" user-emacs-directory) t)))
+(custom-set-variables
+ '(auto-save-file-name-transform '((".*" "~/.emacs.d/autosaves/\\l" t)))
+ '(backup-directory-alist '((".*" . "~/.emacs.d/backups/"))))
+
+(make-directory "~/.emacs.d/autosaves/" t)
 
 (defconst configuration-root
   "The configuration root directory."
@@ -87,5 +81,17 @@
 ;; (load-config "config/keybinds-evil.el")
 ;; (load-config "config/keybinds-helix.el")
 (load-config "config/keybinds.el")
+
+(use-package diminish
+  :ensure t
+  :straight t
+  :config
+  (diminish 'which-key-mode)
+  (diminish 'eldoc-mode)
+  (diminish 'yas-minor-mode)
+  (diminish 'git-gutter-mode)
+  (diminish 'git-gutter+-mode)
+  (diminish 'whitespace-mode)
+  (diminish 'diff-mode))
 
 ;;; init.el ends here
