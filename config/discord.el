@@ -4,6 +4,8 @@
 ;;; Code:
 
 (use-package elcord
-  :straight t)
+  :straight t
+  :config
+  (setq elcord-idle-message "Probably doing something else..."))
 
 ;;; discord.el ends here
