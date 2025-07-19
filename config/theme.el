@@ -14,7 +14,7 @@
                 :box (:line-width -1 :color "#3b4261"))))))
 
 (global-whitespace-mode 1)
- (defun theme/adjustments ()
+(defun theme/adjustments ()
    "Some theme adjustments."
    (set-face-attribute 'whitespace-space nil
                        :foreground "#565f89"
@@ -37,7 +37,7 @@
   :ensure t
   :config
   (load-theme 'doom-tokyo-night-storm t)
-  (advice-add 'load-theme :after (lambda (&rest _) (theme/adjustments))))
+  (run-with-timer 0.1 nil 'theme/adjustments))
 
 (setq whitespace-display-mappings
       '((space-mark 32 [?\u00B7] [46])
