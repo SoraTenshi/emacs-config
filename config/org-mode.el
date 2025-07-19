@@ -44,6 +44,17 @@
                 org-modern-hide-stars nil
                 org-pretty-entities t))
 
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (lisp . t)
+   (python . t)
+   (rust . t)
+   (zig . t)
+   (elixir . t)))
+(org-babel-do-load-languages 'org-babel-load-languages
+                             org-babel-load-languages)
+
 ;; Cheatsheet:
 ;; %?	Cursor position after insertion (usually goes at the end)
 ;; %t	Timestamp (<2025-03-24 Mon>)

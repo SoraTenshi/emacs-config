@@ -11,7 +11,7 @@
 (blink-cursor-mode 0)
 
 (global-display-line-numbers-mode 1)
-(setq display-line-numbers-type 'relative)
+(setopt display-line-numbers-type 'relative)
 
 (setq custom-file "~/.emacs.d/emacs-custom-file.el")
 (setq ring-bell-function 'ignore)
@@ -19,6 +19,10 @@
 (setq mouse-wheel-scroll-amount '(3 ((shift) . 3))
       mouse-wheel-progressive-speed nil)
 (setq scroll-preserve-screen-position t)
+
+(global-display-fill-column-indicator-mode 1)
+(setq display-fill-column-indicator-column 100
+      display-fill-column-indicator-character ?│)
 
 ;; Redirect #file# .file~ to the location at home
 (custom-set-variables
@@ -28,8 +32,8 @@
 (make-directory "~/.emacs.d/autosaves/" t)
 
 (defconst configuration-root
-  "The configuration root directory."
-  (expand-file-name "."))
+  (expand-file-name ".")
+   "The configuration root directory.")
 
 ;; straight for github stuff (basically only the theme for now...
 (defvar bootstrap-version)
@@ -48,7 +52,8 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-(straight-use-package 'use-package)
+(with-no-warnings
+(straight-use-package 'use-package))
 
 ;; setup load paths
 (defun load-config (file)
