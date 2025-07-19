@@ -7,6 +7,17 @@
 ;; (use-package rainbow-delimiters
 ;; :hook (prog-mode . rainbow-delimiters-mode))
 
+(use-package colorful-mode
+  :diminish
+  :ensure t
+  :custom
+  (colorful-use-prefix t)
+  (colorful-prefix-string "■")
+  (colorful-only-strings 'only-prog)
+  (css-fontify-colors nil)
+  :config
+  (global-colorful-mode t)
+  (add-to-list 'global-colorful-modes 'helpful-mode))
 
 (global-hl-line-mode 1)
 (custom-set-faces
@@ -17,13 +28,13 @@
 (defun theme/adjustments ()
    "Some theme adjustments."
    (set-face-attribute 'whitespace-space nil
-                       :foreground "#565f89"
+                       :foreground "#353c5a"
                        :background nil)
    (set-face-attribute 'whitespace-tab nil
-                       :foreground "#565f89"
+                       :foreground "#353c5a"
                        :background nil)
    (set-face-attribute 'whitespace-newline nil
-                       :foreground "#3b4261"
+                       :foreground "#353c5a"
                        :background nil)
    (set-face-attribute 'whitespace-line nil
                        :foreground nil
