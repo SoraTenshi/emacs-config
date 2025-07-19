@@ -60,26 +60,18 @@
           (load-file path))
       (message "Config file %s not found.." path))))
 
-;; (load-config "config/helix.el")
-;; (load-config "config/evil.el")
+(load-config "config/org-mode.el")
 (load-config "config/editing.el")
 (load-config "config/project.el")
 (load-config "config/editor.el")
-;; (load-config "config/buffer-management.el")
 (load-config "config/lsp.el")
 (load-config "config/language-mode.el")
-;; (load-config "config/user.el")
-(load-config "config/org-mode.el")
-;; (load-config "config/templates.el")
-;; (load-config "config/dashboard.el")
 (load-config "config/file-management.el")
 (load-config "config/discord.el")
 ;; (load-config "config/magit.el")
 (load-config "config/theme.el")
 
 ;; now setup all keybinds..
-;; (load-config "config/keybinds-evil.el")
-;; (load-config "config/keybinds-helix.el")
 (load-config "config/keybinds.el")
 
 (use-package diminish

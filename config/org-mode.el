@@ -7,6 +7,7 @@
 
 (use-package org
   :ensure t
+  :straight t
   :config
   (setq org-directory "~/org"
         org-default-notes-file (expand-file-name "inbox.org" org-directory)

@@ -20,3 +20,6 @@ tabsession.el
 .mc-lists.el
 autosaves/
 backups/
+.org-id-locations
+bookmarks
+org-roam.db

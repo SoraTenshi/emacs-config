@@ -12,6 +12,10 @@
 
 (add-hook 'prog-mode-hook #'flymake-mode)
 
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+               '(zig-mode . ("zls"))))
+
 (use-package corfu
   :straight (:files (:defaults "extensions/*"))
   :init
@@ -42,6 +46,11 @@
 (use-package eldoc-box
   :straight t)
 
+(use-package consult-eglot
+  :ensure t
+  :straight t
+  :after (consult eglot))
+
 (defun lsp/corfu-yasnippet-expand ()
   "Expand function for completion hook."
   (when (yas-expand)
@@ -70,10 +79,14 @@
 (defun ui/show-popup-doc ()
   "Show the popup for the symbol under cursor."
   (interactive)
-  (if (bound-and-true-p eglot--managed-mode)
-      (let ((eldoc-display-functions '(eldoc-display-in-echo-area)))
-        (eldoc t))
-    (describe-symbol (symbol-at-point)))
-  (pop-to-buffer "*Help*"))
+  (if (eglot-current-server)
+      (progn
+        (eldoc-doc-buffer)
+        (when (get-buffer "*eldoc*")
+          (pop-to-buffer "*eldoc*")))
+    (progn
+      (describe-symbol (symbol-at-point))
+      (when (get-buffer "*Help*")
+        (pop-to-buffer "*Help*")))))
 
 ;;; lsp.el ends here

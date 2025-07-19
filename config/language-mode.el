@@ -35,4 +35,8 @@
 (make-compile-command rust "nix develop -c cargo check")
 (make-compile-command go "go build")
 (make-compile-command zig "zig build")
+
+(add-hook 'zig-mode-hook #'eglot-ensure)
+(add-hook 'rust-mode-hook #'eglot-ensure)
+
 ;;; language-mode.el ends here
