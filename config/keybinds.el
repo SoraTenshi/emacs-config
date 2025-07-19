@@ -5,9 +5,6 @@
 
 (add-hook 'before-save-hook #'delete-trailing-whitespace)
 
-
-
-
 (global-set-key (kbd "C-c k") 'ui/show-popup-doc)
 (global-set-key (kbd "C-c d") 'ui/diagnostic-list)
 (global-set-key (kbd "C-c s") 'nav/global-search)
@@ -16,6 +13,9 @@
 (global-set-key (kbd "C-c a") 'eglot-code-actions)
 (global-set-key (kbd "C-c p") 'project/switch)
 (global-set-key (kbd "C-.") 'set-mark-command)
+
+(eval-after-load 'sly
+  `(define-key sly-mode-map (kbd "C-c k") nil))
 
 (provide 'keybinds)
 ;;; keybinds.el ends here

@@ -40,8 +40,8 @@
   :straight t)
 
 (setq-local completion-at-point-functions
-      (list (cape-capf-buster #'eglot-completion-at-point)
-            #'cape-yasnippet))
+            (list (cape-capf-buster #'eglot-completion-at-point)
+                  #'cape-yasnippet))
 
 (use-package eldoc-box
   :straight t)
@@ -79,14 +79,20 @@
 (defun ui/show-popup-doc ()
   "Show the popup for the symbol under cursor."
   (interactive)
-  (if (eglot-current-server)
-      (progn
-        (eldoc-doc-buffer)
-        (when (get-buffer "*eldoc*")
-          (pop-to-buffer "*eldoc*")))
-    (progn
-      (describe-symbol (symbol-at-point))
-      (when (get-buffer "*Help*")
-        (pop-to-buffer "*Help*")))))
+  (cond
+   ((eq major-mode 'lisp-mode)
+    (sly-describe-symbol (sly-symbol-at-point))
+    (when (get-buffer "*sly-description*")
+      (pop-to-buffer "*sly-description*")))
+   ((eq major-mode 'emacs-lisp-mode)
+    (describe-symbol (symbol-at-point))
+    (when (get-buffer "*Help*")
+      (pop-to-buffer "*Help*")))
+   ((eglot-current-server)
+    (eldoc-doc-buffer)
+    (when (get-buffer "*eldoc*")
+      (pop-to-buffer "*eldoc*")))
+   (t
+    (message "No clue about the current buffer..."))))
 
 ;;; lsp.el ends here
