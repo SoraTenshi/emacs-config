@@ -52,8 +52,7 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-(with-no-warnings
-(straight-use-package 'use-package))
+(straight-use-package 'use-package)
 
 ;; setup load paths
 (defun load-config (file)

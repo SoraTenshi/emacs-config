@@ -39,22 +39,4 @@
 (add-hook 'zig-mode-hook #'eglot-ensure)
 (add-hook 'rust-mode-hook #'eglot-ensure)
 
-(use-package ob-zig
-  :straight (:type git :host github :repo "jolby/ob-zig.el")
-  :after org
-  :config
-  (add-to-list 'org-babel-load-languages '(zig . t))
-  (org-babel-do-load-languages 'org-babel-load-languages
-                               org-babel-load-languages))
-
-(use-package ob-rust
-  :straight t
-  :after org
-  :config
-  (add-to-list 'org-babel-load-languages '(rust . t))
-  (org-babel-do-load-languages 'org-babel-load-languages
-                               org-babel-load-languages))
-
-(setq org-babel-lisp-eval-fn 'sly-eval)
-
 ;;; language-mode.el ends here

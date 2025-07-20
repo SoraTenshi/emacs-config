@@ -3,6 +3,11 @@
 ;; Blabla.
 ;;; Code:
 
+(use-package surround
+  :ensure t
+  :straight t
+  :bind-keymap ("C-c m" . surround-keymap))
+
 (defun quit/safe-exit ()
 "Delete this window, but don't ever kill EMACS."
 (interactive)
