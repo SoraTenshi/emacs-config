@@ -24,6 +24,7 @@
  '(hl-line ((t (:background nil
                 :box (:line-width -1 :color "#3b4261"))))))
 
+(diminish 'whitespace-mode)
 (global-whitespace-mode 1)
 (defun theme/adjustments ()
    "Some theme adjustments."

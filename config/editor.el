@@ -50,6 +50,7 @@
 
 (use-package which-key
   :ensure t
+  :diminish which-key-mode
   :config
   (setq which-key-idle-delay 0.5)
   (which-key-mode))
