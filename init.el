@@ -70,7 +70,7 @@
 
 ;; (load-config "config/org-mode.el")
 (load-config "config/editing.el")
-(load-config "config/project.el")
+(load-config "config/project-setup.el")
 (load-config "config/editor.el")
 (load-config "config/lsp.el")
 (load-config "config/language-mode.el")
