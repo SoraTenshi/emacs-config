@@ -17,12 +17,6 @@
   :config
   (evil-collection-init))
 
-(use-package which-key
-  :ensure t
-  :config
-  (setq which-key-idle-delay 0.5)
-  (which-key-mode))
-
 (evil-set-initial-state 'org-agenda-mode 'motion)
 
 ;;; modal.el ends here

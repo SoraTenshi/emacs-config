@@ -2,8 +2,9 @@
 ;;; Commentary:
 ;; Project setup or something
 ;;; Code:
-
-(project-remember-projects-under "~/source/repos" nil)
+(require 'project)
+(when (eq system-type 'windows-nt)
+	  (project-remember-projects-under "~/source/repos" nil))
 (project-remember-projects-under "~/dev" nil)
 
 ;; Sets up jj to also be included

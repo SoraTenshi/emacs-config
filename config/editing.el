@@ -6,6 +6,7 @@
 (use-package surround
   :ensure t
   :straight t
+  :diminish
   :bind-keymap ("C-c m" . surround-keymap))
 
 (defun quit/safe-exit ()

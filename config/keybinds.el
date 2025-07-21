@@ -7,7 +7,7 @@
 
 (global-set-key (kbd "C-c k") 'ui/show-popup-doc)
 (global-set-key (kbd "C-c d") 'ui/diagnostic-list)
-(global-set-key (kbd "C-c s") 'nav/global-saerch)
+(global-set-key (kbd "C-c s") 'nav/global-search)
 (global-set-key (kbd "C-c l") 'find-file-at-point)
 (global-set-key (kbd "C-c c") 'compile)
 (global-set-key (kbd "C-c a") 'eglot-code-actions)

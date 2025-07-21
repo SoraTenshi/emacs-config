@@ -6,8 +6,6 @@
 (make-directory "~/org/roam" t)
 
 (use-package org
-  :ensure t
-  :straight t
   :config
   (setq org-directory "~/org"
         org-default-notes-file (expand-file-name "inbox.org" org-directory)
@@ -16,8 +14,6 @@
         org-confirm-babel-evaluate nil))
 
 (use-package org-roam
-  :ensure t
-  :straight t
   :custom
   (org-roam-directory (file-truename "~/org/roam"))
   (org-roam-completion-everywhere t)

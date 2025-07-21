@@ -64,7 +64,11 @@
           (load-file path))
       (message "Config file %s not found.." path))))
 
-(load-config "config/org-mode.el")
+(use-package diminish
+  :ensure t
+  :straight t)
+
+;; (load-config "config/org-mode.el")
 (load-config "config/editing.el")
 (load-config "config/project.el")
 (load-config "config/editor.el")
@@ -77,17 +81,5 @@
 
 ;; now setup all keybinds..
 (load-config "config/keybinds.el")
-
-(use-package diminish
-  :ensure t
-  :straight t
-  :config
-  (diminish 'which-key-mode)
-  (diminish 'eldoc-mode)
-  (diminish 'yas-minor-mode)
-  (diminish 'git-gutter-mode)
-  (diminish 'git-gutter+-mode)
-  (diminish 'whitespace-mode)
-  (diminish 'diff-mode))
 
 ;;; init.el ends here

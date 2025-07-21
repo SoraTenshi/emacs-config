@@ -18,6 +18,7 @@
 (use-package format-all
   :ensure t
   :straight t
+  :diminish format-all-mode
   :hook (prog-mode . format-all-mode))
 
 ;; setup the font
@@ -31,6 +32,7 @@
 (set-frame-font "Lilex Nerd Font Mono-15" nil t)
 (use-package ligature
   :ensure t
+  :straight t
   :config
   ;; Enable all ligatures in programming modes
   (ligature-set-ligatures 'prog-mode
@@ -51,6 +53,5 @@
   :config
   (setq which-key-idle-delay 0.5)
   (which-key-mode))
-
 
 ;;; editor.el ends here

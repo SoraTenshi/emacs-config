@@ -18,6 +18,7 @@
 
 (use-package corfu
   :straight (:files (:defaults "extensions/*"))
+  :diminish corfu-mode
   :init
   (global-corfu-mode)
   (corfu-popupinfo-mode)
@@ -30,6 +31,7 @@
 
 (use-package yasnippet
   :straight t
+  :diminish yas-minor-mode
   :hook (prog-mode . yas-minor-mode))
 
 (use-package yasnippet-snippets

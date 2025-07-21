@@ -8,7 +8,7 @@
 ;; :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package colorful-mode
-  :diminish
+  :diminish colorful-mode
   :ensure t
   :custom
   (colorful-use-prefix t)
@@ -29,7 +29,7 @@
    "Some theme adjustments."
    (set-face-attribute 'whitespace-space nil
                        :foreground "#353c5a"
-                       :background nil)
+                       :background "#24283b")
    (set-face-attribute 'whitespace-tab nil
                        :foreground "#353c5a"
                        :background nil)
@@ -41,11 +41,11 @@
                        :background nil
                        :weight 'normal)
    (set-face-attribute 'fringe nil
-                       :background "#24283b"))
+                       :background nil))
 
 (use-package doom-themes
-  :straight (doom-themes :type git :host github :repo "foster-hangdaan/doom-emacs-themes")
   :ensure t
+  :straight (doom-themes :type git :host github :repo "foster-hangdaan/doom-emacs-themes")
   :config
   (load-theme 'doom-tokyo-night-storm t)
   (run-with-timer 0.1 nil 'theme/adjustments))

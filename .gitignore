@@ -23,3 +23,4 @@ backups/
 .org-id-locations
 bookmarks
 org-roam.db
+tramp
