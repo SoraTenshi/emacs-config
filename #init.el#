@@ -82,4 +82,6 @@
 ;; now setup all keybinds..
 (load-config "config/keybinds.el")
 
+
+
 ;;; init.el ends here

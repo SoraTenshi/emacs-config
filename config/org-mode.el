@@ -6,6 +6,7 @@
 (make-directory "~/org/roam" t)
 
 (use-package org
+  :straight `(org :type built-in)
   :config
   (setq org-directory "~/org"
         org-default-notes-file (expand-file-name "inbox.org" org-directory)
@@ -14,6 +15,7 @@
         org-confirm-babel-evaluate nil))
 
 (use-package org-roam
+  :straight `(org-roam :source melpa)
   :custom
   (org-roam-directory (file-truename "~/org/roam"))
   (org-roam-completion-everywhere t)
@@ -28,54 +30,15 @@
   :config
   (org-roam-db-autosync-mode))
 
-(require 'org-tempo)
-(add-to-list 'org-structure-template-alist '("sh" . "src shell"))
-(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-(add-to-list 'org-structure-template-alist '("cl" . "src common-lisp"))
-
 (use-package org-modern
+  :after org-roam
+  :straight t
   :hook ((org-mode . org-modern-mode)
          (org-agenda-finalize . org-modern-agenda))
   :config (setq org-modern-table nil
                 org-modern-hide-stars nil
                 org-pretty-entities t))
 
-(use-package ob-zig
-  :straight (:type git :host github :repo "jolby/ob-zig.el")
-  :after org
-  :config
-  (add-to-list 'org-babel-load-languages '(zig . t))
-  (org-babel-do-load-languages 'org-babel-load-languages
-                               org-babel-load-languages))
-
-(use-package ob-rust
-  :straight t
-  :after org
-  :config
-  (add-to-list 'org-babel-load-languages '(rust . t))
-  (org-babel-do-load-languages 'org-babel-load-languages
-                               org-babel-load-languages))
-
-(use-package ob-elixir
-  :straight t
-  :after org
-  :config
-  (add-to-list 'org-babel-load-languages '(elixir . t))
-  (org-babel-do-load-languages 'org-babel-load-languages
-			       org-babel-load-languages))
-
-(setq org-babel-lisp-eval-fn 'sly-eval)
-
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((emacs-lisp . t)
-   (lisp . t)
-   (python . t)
-   (rust . t)
-   (zig . t)
-   (elixir . t)))
-(org-babel-do-load-languages 'org-babel-load-languages
-                             org-babel-load-languages)
 
 ;; Cheatsheet:
 ;; %?	Cursor position after insertion (usually goes at the end)

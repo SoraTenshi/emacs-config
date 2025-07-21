@@ -13,6 +13,7 @@
 (load-config "config/language/zig.el")
 (load-config "config/language/nix.el")
 (load-config "config/language/yuck.el")
+(load-config "config/language/docker.el")
 
 (defun lang/display-modes ()
   "Enable `display-line-numbers-mode` and `whitespace-mode`."
@@ -38,5 +39,47 @@
 
 (add-hook 'zig-mode-hook #'eglot-ensure)
 (add-hook 'rust-mode-hook #'eglot-ensure)
+
+;; enable ansi colors
+(use-package ansi-color
+  :ensure t
+  :hook (compilation-filter . ansi-color-compilation-filter))
+
+(use-package ob-zig
+  :straight (:type git :host github :repo "jolby/ob-zig.el")
+  :after org
+  :config
+  (add-to-list 'org-babel-load-languages '(zig . t))
+  (org-babel-do-load-languages 'org-babel-load-languages
+                               org-babel-load-languages))
+
+(use-package ob-rust
+  :straight t
+  :after org
+  :config
+  (add-to-list 'org-babel-load-languages '(rust . t))
+  (org-babel-do-load-languages 'org-babel-load-languages
+                               org-babel-load-languages))
+
+(setq org-babel-lisp-eval-fn 'sly-eval)
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (lisp . t)
+   (python . t)
+   (rust . t)
+   (zig . t)))
+(org-babel-do-load-languages 'org-babel-load-languages
+                             org-babel-load-languages)
+
+(eval-after-load 'org
+  '(progn
+     (require 'org-tempo)
+     (add-to-list 'org-structure-template-alist '("cl" . "src common-lisp"))
+     (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+     (add-to-list 'org-structure-template-alist '("rust" . "src rust"))
+     (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+     (add-to-list 'org-structure-template-alist '("zig" . "src zig"))))
 
 ;;; language-mode.el ends here
