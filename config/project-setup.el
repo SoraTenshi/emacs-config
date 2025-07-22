@@ -1,14 +1,13 @@
-;;; project.el --- Settings for project.el -*- lexical-binding: t; -*-
+;;; project-setup.el --- Settings for project.el -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;; Project setup or something
 ;;; Code:
 
 (require 'project)
 (when (eq system-type 'windows-nt)
-      (project-remember-projects-under "~/source/repos" nil))
+  (project-remember-projects-under "~/source/repos" nil))
 (project-remember-projects-under "~/dev" nil)
 
-;; Sets up jj to also be included
 (setq project-vc-extra-root-markers '(".jj"))
 
-;;; project.el ends here
+;;; project-setup.el ends here

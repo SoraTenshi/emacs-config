@@ -10,6 +10,11 @@
       use-dialog-box nil)
 (blink-cursor-mode 0)
 
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
+
 (global-display-line-numbers-mode 1)
 (setopt display-line-numbers-type 'relative)
 

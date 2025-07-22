@@ -18,7 +18,6 @@
 (defun lang/display-modes ()
   "Enable `display-line-numbers-mode` and `whitespace-mode`."
   (display-line-numbers-mode 1)
-  (font-lock-mode 1)
   (whitespace-mode 1))
 
 (add-hook 'c-mode-hook 'lang/display-modes)
@@ -37,8 +36,8 @@
 (make-compile-command go "go build")
 (make-compile-command zig "zig build")
 
-(add-hook 'zig-mode-hook #'eglot-ensure)
-(add-hook 'rust-mode-hook #'eglot-ensure)
+(global-font-lock-mode t)
+(add-hook 'prog-mode-hook 'font-lock-mode)
 
 ;; enable ansi colors
 (use-package ansi-color

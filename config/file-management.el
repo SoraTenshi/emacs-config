@@ -28,4 +28,9 @@
   (interactive "DDirectory: ")
   (consult-ripgrep dir))
 
+(defun reload-file ()
+  "Reload the current file."
+  (interactive)
+  (revert-buffer :ignore-auto :noconfirm))
+
 ;;; file-management.el ends here

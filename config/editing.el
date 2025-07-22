@@ -9,6 +9,11 @@
   :diminish
   :bind-keymap ("C-c m" . surround-keymap))
 
+(use-package docker
+  :ensure t
+  :straight t
+  :bind ("C-c D" . docker))
+
 (defun quit/safe-exit ()
 "Delete this window, but don't ever kill EMACS."
 (interactive)
