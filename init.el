@@ -10,9 +10,9 @@
       use-dialog-box nil)
 (blink-cursor-mode 0)
 
-(let ((alpha (if (eq system-type 'windows-nt) 98 90)))
-  (set-frame-parameter (selected-frame) 'alpha `(,alpha . ,alpha))
-  (add-to-list 'default-frame-alist '(alpha . (,alpha . ,alpha))))
+(let ((alpha (if (eq system-type 'gnu/linux) 75 98)))
+  (set-frame-parameter (selected-frame) 'alpha-background `,alpha)
+  (add-to-list 'default-frame-alist '(alpha-background ,alpha)))
 
 (require 'package)
 (add-to-list 'package-archives

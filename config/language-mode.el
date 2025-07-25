@@ -39,10 +39,13 @@
 (global-font-lock-mode t)
 (add-hook 'prog-mode-hook 'font-lock-mode)
 
-;; enable ansi colors
-(use-package ansi-color
-  :ensure t
-  :hook (compilation-filter . ansi-color-compilation-filter))
+(use-package fancy-compilation
+  :straight t
+  :custom (fancy-compilation-override-colors)
+  :commands (fancy-compilation-mode))
+
+(with-eval-after-load 'compile
+  (fancy-compilation-mode))
 
 (use-package ob-zig
   :straight (:type git :host github :repo "jolby/ob-zig.el")
