@@ -10,12 +10,27 @@
   :config
   (setq org-directory "~/org"
         org-default-notes-file (expand-file-name "inbox.org" org-directory)
+
         org-hide-emphasis-markers t
+        org-pretty-entities t
+        org-startup-indented t
+        org-startup-with-inline-images t
+        org-startup-folded t
+        org-image-actual-width '(400)
+
         org-return-follows-link t
-        org-confirm-babel-evaluate nil))
+        org-mouse-1-follows-link t
+
+        org-src-fontify-natively t
+        org-src-tab-acts-natively t
+        org-confirm-babel-evaluate nil
+        org-cycle-separator-lines 0
+        org-ellipsis ""))
 
 (use-package org-roam
   :straight `(org-roam :source melpa)
+  :hook ((org-mode . org-modern-mode)
+         (org-agenda-finalize . org-modern-agenda))
   :custom
   (org-roam-directory (file-truename "~/org/roam"))
   (org-roam-completion-everywhere t)
@@ -35,9 +50,57 @@
   :straight t
   :hook ((org-mode . org-modern-mode)
          (org-agenda-finalize . org-modern-agenda))
-  :config (setq org-modern-table nil
-                org-modern-hide-stars nil
-                org-pretty-entities t))
+  :config (setq org-modern-tag nil
+                org-modern-priority nil
+                org-modern-todo nil
+                org-modern-table nil))
+
+(use-package org-superstar
+  :ensure t
+  :straight t
+  :after 'org
+  :hook (org-mode . org-superstar-mode)
+  :config
+  (setq org-superstar-headline-bullets-list '("◉" "○" "✸" "✿" "◆" "◇" "▶" "▷"))
+  (setq org-superstar-leading-bullet " ")
+  (setq org-superstar-special-todo-items t))
+
+(custom-set-faces
+ '(org-level-1 ((t (:height 1.3 :weight bold :foreground "#7aa2f7"))))
+ '(org-level-2 ((t (:height 1.2 :weight bold :foreground "#bb9af7"))))
+ '(org-level-3 ((t (:height 1.2 :weight bold :foreground "#7dcfff"))))
+ '(org-level-4 ((t (:height 1.1 :weight bold :foreground "#9ece6a"))))
+ '(org-level-5 ((t (:height 1.0 :weight bold :foreground "#e0af68"))))
+ '(org-level-6 ((t (:height 1.0 :weight bold :foreground "#f7768e"))))
+ '(org-level-7 ((t (:height 1.0 :weight bold :foreground "#73daca"))))
+ '(org-level-8 ((t (:height 1.0 :weight bold :foreground "#c0caf5"))))
+
+ '(org-document-title ((t (:height 1.3 :weight bold :foreground "#7aa2f7"))))
+
+ '(org-todo ((t (:weight bold :foreground "#f7768e"))))
+ '(org-done ((t (:weight bold :foreground "#9ece6a"))))
+
+ '(org-link ((t (:foreground "#7aa2f7" :underline t))))
+
+ '(org-bold ((t (:weight bold :foreground "#c0caf5"))))
+ '(org-italic ((t (:slant italic :foreground "#9d7cd8"))))
+ '(org-code ((t (:background "#1f2335" :foreground "#e0af68"))))
+ '(org-verbatim ((t (:background "#1f2335" :foreground "#73daca"))))
+
+ '(org-block ((t (:background "#1f2335" :extend t))))
+ '(org-block-begin-line ((t (:background "#24283b" :foreground "#565f89" :italic t))))
+ '(org-block-end-line ((t (:background "#24283b" :foreground "#565f89" :italic t))))
+
+ '(org-special-keyword ((t (:foreground "#565f89"))))
+ '(org-drawer ((t (:foreground "#565f89"))))
+ '(org-date ((t (:foreground "#bb9af7" :underline t))))
+
+ '(org-table ((t (:foreground "#c0caf5"))))
+
+ '(org-agenda-structure ((t (:weight bold :foreground "#7aa2f7" :height 1.2))))
+ '(org-agenda-date ((t (:foreground "#bb9af7" :height 1.1))))
+ '(org-agenda-date-today ((t (:foreground "#f7768e" :weight bold :height 1.1))))
+ '(org-agenda-date-weekend ((t (:foreground "#565f89" :height 1.1)))))
 
 
 ;; Cheatsheet:

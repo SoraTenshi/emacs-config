@@ -55,4 +55,15 @@
   (setq which-key-idle-delay 0.5)
   (which-key-mode))
 
+(use-package highlight-indent-guides
+  :straight t
+  :hook (prog-mode . highlight-indent-guides-mode)
+  :diminish highlight-indent-guides-mode
+  :config
+  (setq highlight-indent-guides-method 'character
+        highlight-indent-guides-character ?\│
+        highlight-indent-guides-responsive 'top
+        highlight-indent-guides-delay 0
+        highlight-indent-guides-suppress-auto-error t))
+
 ;;; editor.el ends here
