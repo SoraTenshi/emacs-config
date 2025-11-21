@@ -25,11 +25,9 @@
 (set-face-attribute 'default nil
                     :family "Lilex Nerd Font Mono"
                     :height 160)
+(set-face-attribute 'italic nil :slant 'italic)
 
-(add-to-list 'default-frame-alist '(width . 157))
-(add-to-list 'default-frame-alist '(height . 37))
-
-(set-frame-font "Lilex Nerd Font Mono-15" nil t)
+(set-frame-font "Lilex Nerd Font Mono-16" t t)
 (use-package ligature
   :ensure t
   :straight t

@@ -11,8 +11,8 @@
 (blink-cursor-mode 0)
 
 (let ((alpha (if (eq system-type 'gnu/linux) 75 98)))
-  (set-frame-parameter (selected-frame) 'alpha-background `,alpha)
-  (add-to-list 'default-frame-alist '(alpha-background ,alpha)))
+  (set-frame-parameter (selected-frame) 'alpha-background alpha)
+  (add-to-list 'default-frame-alist `(alpha-background . ,alpha)))
 
 (require 'package)
 (add-to-list 'package-archives
@@ -29,9 +29,8 @@
       mouse-wheel-progressive-speed nil)
 (setq scroll-preserve-screen-position t)
 
-(global-display-fill-column-indicator-mode 1)
-(setq display-fill-column-indicator-column 100
-      display-fill-column-indicator-character ?│)
+(setq-default display-fill-column-indicator-column 100)
+(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
 
 ;; Redirect #file# .file~ to the location at home
 (custom-set-variables
@@ -63,6 +62,8 @@
 
 (straight-use-package 'use-package)
 
+(setq straight-built-in-package-overrides '((flymake . "30.1")))
+
 ;; setup load paths
 (defun load-config (file)
   "Load a FILE from the base EMACS directory and prints success / failure state."
@@ -79,9 +80,9 @@
 
 (load-config "config/org-mode.el")
 (load-config "config/editing.el")
-(load-config "config/project-setup.el")
 (load-config "config/editor.el")
 (load-config "config/lsp.el")
+(load-config "config/project-setup.el")
 (load-config "config/language-mode.el")
 (load-config "config/file-management.el")
 (load-config "config/discord.el")

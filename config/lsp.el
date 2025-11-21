@@ -27,8 +27,8 @@
   (corfu-auto-prefix 3)
   (corfu-cycle t)
   (corfu-preview-current 'insert)
-  (corfu-auto-delay 2)
-  (corfu-popupinfo-delay 2))
+  (corfu-auto-delay 1)
+  (corfu-popupinfo-delay 1))
 
 (use-package yasnippet
   :straight t
@@ -40,12 +40,11 @@
   :after yasnippet)
 
 (use-package cape
-  :straight t)
-
-(setq-local completion-at-point-functions
-            (list (cape-capf-buster #'eglot-completion-at-point)
-                  #'cape-yasnippet
-                  #'cape-file))
+  :straight t
+  :after yasnippet
+  :config
+  (add-to-list 'completion-at-point-functions #'cape-yasnippet)
+  (add-to-list 'completion-at-point-functions #'cape-file))
 
 (use-package eldoc-box
   :straight t)
