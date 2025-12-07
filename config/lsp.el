@@ -27,8 +27,15 @@
   (corfu-auto-prefix 3)
   (corfu-cycle t)
   (corfu-preview-current 'insert)
-  (corfu-auto-delay 1)
-  (corfu-popupinfo-delay 1))
+  (corfu-auto-delay 0.2)
+  (corfu-popupinfo-delay 1)
+  :bind (:map corfu-map
+              ("TAB"     . corfu-next)
+              ([tab]     . corfu-next)
+              ("S-TAB"   . corfu-previous)
+              ([backtab] . corfu-previous)
+              ("RET"     . corfu-insert)
+              ([return]  . corfu-insert)))
 
 (use-package yasnippet
   :straight t

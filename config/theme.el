@@ -38,6 +38,6 @@
 ;;   (run-with-timer 0.1 nil 'theme/adjustments))
 
 (add-to-list 'custom-theme-load-path "~/.emacs.d/config/themes")
-(load-theme 'sapporo-night t)
+(load-theme 'sapporo-night-rebuilt t)
 
 ;;; theme.el ends here

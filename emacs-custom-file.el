@@ -7,8 +7,8 @@
  '(auto-save-file-name-transform '((".*" "~/.emacs.d/autosaves/\\l" t)))
  '(backup-directory-alist '((".*" . "~/.emacs.d/backups/")))
  '(custom-safe-themes
-   '("09f57051963caa659beff22a00493105952489d57ae3575cc6354be205876e89"
-     "de1484c82439df7ab8f755029db6d1027b99f53f92ea91f7c1da60efefe52413"
+   '("2f8a605bf11ebdb462fed2d896d38b2032a439a7da6e024c87c772c93704ec4d"
+     "66029cdc1fd079d298a0646025f2991809952ee246f0e94c7daa331f731a4320"
      default)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

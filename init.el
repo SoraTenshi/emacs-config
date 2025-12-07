@@ -86,10 +86,11 @@
 (load-config "config/language-mode.el")
 (load-config "config/file-management.el")
 (load-config "config/discord.el")
-;; (load-config "config/magit.el")
+(load-config "config/magit.el")
 (load-config "config/theme.el")
 
 ;; now setup all keybinds..
 (load-config "config/keybinds.el")
 
 ;;; init.el ends here
+(put 'upcase-region 'disabled nil)

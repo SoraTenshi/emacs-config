@@ -64,4 +64,22 @@
         highlight-indent-guides-delay 0
         highlight-indent-guides-suppress-auto-error t))
 
+(use-package gcmh
+  :straight t
+  :diminish
+  :init (gcmh-mode 1))
+
+(use-package helpful
+  :straight t
+  :diminish
+  :bind
+  ([remap describe-function] . helpful-callable)
+  ([remap describe-variable] . helpful-variable)
+  ([remap describe-key] . helpful-key))
+
+(use-package vdiff
+  :straight t
+  :commands (vdiff-files vdiff-buffers vdiff-merge-conflict)
+  :config (setq vdiff-auto-refine t))
+
 ;;; editor.el ends here
