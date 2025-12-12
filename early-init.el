@@ -4,6 +4,7 @@
       gc-cons-percentage 0.6)
 (add-hook 'emacs-startup-hook
           (lambda ()
+            (split-window-right)
             (setq gc-cons-threshold (* 16 1024 1024)
                   gc-cons-percentage 0.1)))
 
