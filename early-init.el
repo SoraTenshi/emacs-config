@@ -1,4 +1,7 @@
-;;; early-init.el -*- lexical-binding: t; -*-
+;;; early-init.el --- early entry into EMACS -*- lexical-binding: t; -*-
+;;; Commentary:
+;; Early Entry ^_^
+;;; Code:
 
 (setq gc-cons-threshold most-positive-fixnum
       gc-cons-percentage 0.6)
@@ -13,3 +16,5 @@
 (push '(menu-bar-lines . 0) default-frame-alist)
 (push '(tool-bar-lines . 0) default-frame-alist)
 (push '(vertical-scroll-bars) default-frame-alist)
+
+;;; early-init.el ends here

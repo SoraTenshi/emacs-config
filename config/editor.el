@@ -24,7 +24,7 @@
 ;; setup the font
 (set-face-attribute 'default nil
                     :family "Lilex Nerd Font Mono"
-                    :height 160)
+                    :height 140)
 (set-face-attribute 'italic nil :slant 'italic)
 
 (set-frame-font "Lilex Nerd Font Mono-15" t t)

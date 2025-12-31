@@ -10,7 +10,7 @@
       use-dialog-box nil)
 (blink-cursor-mode 0)
 
-(let ((alpha (if (eq system-type 'gnu/linux) 75 98)))
+(let ((alpha 98))
   (set-frame-parameter (selected-frame) 'alpha-background alpha)
   (add-to-list 'default-frame-alist `(alpha-background . ,alpha)))
 
@@ -18,9 +18,6 @@
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
-
-(global-display-line-numbers-mode 1)
-(setopt display-line-numbers-type 'relative)
 
 (setq custom-file "~/.emacs.d/emacs-custom-file.el")
 (setq ring-bell-function 'ignore)

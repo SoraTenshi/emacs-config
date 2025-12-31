@@ -294,8 +294,9 @@
    `(tree-sitter-hl-face:label ((,class (:foreground ,type))))
    `(tree-sitter-hl-face:operator ((,class (:foreground ,keyword))))
    `(tree-sitter-hl-face:punctuation ((,class (:foreground ,subtle))))
+   `(tree-sitter-hl-face:tag ((,class (:foreground ,keyword))))
+   `(tree-sitter-hl-face:attribute ((,class (:foreground ,type))))
    ))
 
 (provide-theme 'sapporo-night)
 ;;; sapporo-night-theme.el ends here
-
