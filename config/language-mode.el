@@ -6,7 +6,7 @@
 (load-config "config/language/common-lisp.el")
 ;;(load-config "config/language/elixir.el")
 (load-config "config/language/go.el")
-;;
+(load-config "config/language/odin.el")
 ;;(load-config "config/language/jai.el")
 (load-config "config/language/rust.el")
 ;;(load-config "config/language/scheme.el")
@@ -17,7 +17,6 @@
 
 (defun lang/display-modes ()
   "Enable `display-line-numbers-mode` and `whitespace-mode`."
-  (display-line-numbers-mode 1)
   (whitespace-mode 1))
 
 (add-hook 'c-mode-hook 'lang/display-modes)

@@ -2,9 +2,9 @@
 ;;; Commentary:
 ;; Basic entry point for my EMACS config
 ;;; Code:
-(menu-bar-mode 0)
-(tool-bar-mode 0)
-(scroll-bar-mode 0)
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
 (setq inhibit-startup-screen t
       use-file-dialog nil
       use-dialog-box nil)
@@ -87,7 +87,7 @@
 (load-config "config/language-mode.el")
 (load-config "config/file-management.el")
 (load-config "config/discord.el")
-(load-config "config/magit.el")
+;;(load-config "config/magit.el")
 (load-config "config/theme.el")
 (when (string= (system-name) "navi")
   (progn

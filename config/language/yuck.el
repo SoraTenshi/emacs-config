@@ -5,5 +5,4 @@
 (use-package yuck-mode
   :straight t)
 
-(provide 'yuck)
 ;;; yuck.el ends here

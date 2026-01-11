@@ -37,20 +37,10 @@
               ("RET"     . corfu-insert)
               ([return]  . corfu-insert)))
 
-(use-package yasnippet
-  :straight t
-  :diminish yas-minor-mode
-  :hook (prog-mode . yas-minor-mode))
-
-(use-package yasnippet-snippets
-  :straight t
-  :after yasnippet)
-
 (use-package cape
   :straight t
   :after yasnippet
   :config
-  (add-to-list 'completion-at-point-functions #'cape-yasnippet)
   (add-to-list 'completion-at-point-functions #'cape-file))
 
 (use-package eldoc-box
@@ -86,26 +76,39 @@
                (string-match-p "\\*Flymake diagnostics" (buffer-name buf)))
              (buffer-list))))
 
+(add-hook 'display-buffer-alist
+          '("\\*Help\\*"
+            (display-buffer-reuse-window display-buffer-in-side-window)
+            (side . bottom)
+            (slot . 0)
+            (window-height . 10)))
+
 (defun ui/show-popup-doc ()
-  "Show the popup for the symbol under cursor."
+  "Show documentation popup for the symbol under cursor."
   (interactive)
-  (cond
-   ((eq major-mode 'lisp-mode)
-    (sly-describe-symbol (sly-symbol-at-point))
-    (when (get-buffer "*sly-description*")
-      (pop-to-buffer "*sly-description*")
-      (fit-window-to-buffer nil 10 5)))
-   ((eq major-mode 'emacs-lisp-mode)
-    (describe-symbol (symbol-at-point))
-    (when (get-buffer "*Help*")
-      (pop-to-buffer "*Help*")
-      (fit-window-to-buffer nil 10 5)))
-   ((eglot-current-server)
-    (eldoc-doc-buffer)
-    (when (get-buffer "*eldoc*")
-      (pop-to-buffer "*eldoc*")
-      (fit-window-to-buffer nil 10 5)))
-   (t
-    (message "No clue about the current buffer..."))))
+  (let ((buf nil))
+    (cond
+     ((derived-mode-p 'lisp-mode)
+      (when (fboundp 'sly-describe-symbol)
+        (sly-describe-symbol (sly-symbol-at-point))
+        (setq buf (get-buffer "*sly-description*"))))
+     ((derived-mode-p 'emacs-lisp-mode)
+      (when-let ((sym (symbol-at-point)))
+        (describe-symbol sym)
+        (setq buf (get-buffer "*Help*"))))
+     ((and (boundp 'eglot--managed-mode)
+           eglot--managed-mode
+           (eglot-current-server))
+      (eldoc-doc-buffer)
+      (setq buf (get-buffer "*eldoc*")))
+     (t
+      (message "No documentation available for this buffer.")))
+    (when (buffer-live-p buf)
+      (display-buffer
+       buf
+       '((display-buffer-reuse-window display-buffer-in-side-window)
+         (side . bottom)
+         (slot . 0)
+         (window-height . 10))))))
 
 ;;; lsp.el ends here
