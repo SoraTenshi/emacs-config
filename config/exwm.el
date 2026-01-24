@@ -149,4 +149,14 @@
            now))))
 (display-time-mode 1)
 
+(exwm-input-set-key (kbd "<XF86AudioMute>")
+                    (lambda () (interactive)
+                      (start-process-shell-command "pactl" nil "pactl set-sink-mute @DEFAULT_SINK@ toggle")))
+(exwm-input-set-key (kbd "<XF86AudioLowerVolume>")
+                    (lambda () (interactive)
+                      (start-process-shell-command "pactl" nil "pactl set-sink-volume @DEFAULT_SINK@ -5%")))
+(exwm-input-set-key (kbd "<XF86AudioRaiseVolume>")
+                    (lambda () (interactive)
+                      (start-process-shell-command "pactl" nil "pactl set-sink-volume @DEFAULT_SINK@ +5%")))
+
 ;;; exwm.el ends here
