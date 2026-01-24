@@ -3,9 +3,6 @@
 ;; Blabla.
 ;;; Code:
 
-(use-package jj-mode
-  :straight (:host github :repo "bolivier/jj-mode.el"))
-
 (use-package magit
   :straight t
   :ensure t)

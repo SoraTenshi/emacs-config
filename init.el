@@ -14,10 +14,10 @@
   (set-frame-parameter (selected-frame) 'alpha-background alpha)
   (add-to-list 'default-frame-alist `(alpha-background . ,alpha)))
 
-(require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
+;; (require 'package)
+;; (add-to-list 'package-archives
+;;              '("melpa" . "https://melpa.org/packages/") t)
+;; (package-initialize)
 
 (setq custom-file "~/.emacs.d/emacs-custom-file.el")
 (setq ring-bell-function 'ignore)
@@ -59,6 +59,7 @@
 
 (straight-use-package 'use-package)
 
+(setq straight-use-package-by-default t)
 (setq straight-built-in-package-overrides '((flymake . "30.1")))
 
 ;; setup load paths
@@ -73,7 +74,10 @@
 
 (use-package diminish
   :ensure t
-  :straight t)
+  :straight t
+  :config
+  (diminish 'eldoc-mode)
+  (diminish 'auto-revert-mode))
 
 (load-config "config/org-mode.el")
 (load-config "config/editing.el")
@@ -85,6 +89,10 @@
 (load-config "config/discord.el")
 (load-config "config/magit.el")
 (load-config "config/theme.el")
+(when (string= (system-name) "navi")
+  (progn
+    (load-config "config/exwm.el")
+    (load-config "config/exwm/weather.el")))
 
 ;; now setup all keybinds..
 (load-config "config/keybinds.el")
