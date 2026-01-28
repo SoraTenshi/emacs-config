@@ -11,7 +11,7 @@
 
 (setq erc-prompt
       (lambda ()
-        (format "[%s:%s] "
+        (format "[%s:%s]>"
                 (erc-network-name)
                 (or (erc-default-target) ""))))
 

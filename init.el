@@ -89,6 +89,7 @@
 (load-config "config/discord.el")
 ;;(load-config "config/magit.el")
 (load-config "config/theme.el")
+(load-config "config/irc.el")
 (when (string= (system-name) "navi")
   (progn
     (load-config "config/exwm.el")

@@ -18,5 +18,7 @@
 (global-set-key (kbd "C-c h") 'ff-find-other-file)
 (global-set-key (kbd "C-.")   'set-mark-command)
 
+(define-key eshell-mode-map (kbd "C-c r") #'consult-history)
+
 (provide 'keybinds)
 ;;; keybinds.el ends here
