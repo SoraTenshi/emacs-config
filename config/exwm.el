@@ -42,6 +42,7 @@
         ([?\s-W] . exwm-workspace-move-window)
         ([?\s-p] . exwm/run-app)
         ([?\s-P] . exwm/power-menu)
+        ([?\s-s] . browse/do-browse)
         ([?\s-h] . windmove-left)
         ([?\s-j] . windmove-down)
         ([?\s-k] . windmove-up)
@@ -158,5 +159,26 @@
 (exwm-input-set-key (kbd "<XF86AudioRaiseVolume>")
                     (lambda () (interactive)
                       (start-process-shell-command "pactl" nil "pactl set-sink-volume @DEFAULT_SINK@ +5%")))
+
+(defvar browse/browser "firefox"
+  "Browser command for the searches.")
+
+(defconst browse/search-engines
+  '(("Search on Kagi"      . "https://kagi.com/search?q=%s")
+    ("Search on Crates.io" . "https://crates.io/search?q=%s")
+    ("Search on GitHub"    . "https://github.com/search?q=%s")
+    ("Search on Wikipedia" . "https://en.wikipedia.org/wiki/Special:Search?search=%s")
+    ("Search on YouTube"   . "https://www.youtube.com/results?search_query=%s")
+    ("Browse to URL"       . "%s"))
+  "Alist of different search thingies.")
+
+(defun browse/do-browse ()
+  "Just browses with that specific thing."
+  (interactive)
+  (let* ((engine (completing-read "" browse/search-engines nil t))
+         (query (read-string (format "%s: " engine)))
+         (url-template (cdr (assoc engine browse/search-engines)))
+         (url (format url-template (url-hexify-string query))))
+    (start-process "browser" nil browse/browser url)))
 
 ;;; exwm.el ends here
