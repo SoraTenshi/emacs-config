@@ -30,14 +30,7 @@
 (global-whitespace-mode 1)
 (diminish 'whitespace-mode)
 
-;; (use-package doom-themes
-;;   :ensure t
-;;   :straight (doom-themes :type git :host github :repo "foster-hangdaan/doom-emacs-themes")
-;;   :config
-;;   (load-theme 'doom-tokyo-night-storm t)
-;;   (run-with-timer 0.1 nil 'theme/adjustments))
-
 (add-to-list 'custom-theme-load-path "~/.emacs.d/config/themes")
-(load-theme 'sapporo-night-rebuilt t)
+(load-theme 'sapporo-night t)
 
 ;;; theme.el ends here

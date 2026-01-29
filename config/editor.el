@@ -27,7 +27,7 @@
                     :height 140)
 (set-face-attribute 'italic nil :slant 'italic)
 
-(set-frame-font "Lilex Nerd Font Mono-15" t t)
+(set-frame-font "Lilex Nerd Font Mono-14" t t)
 (use-package ligature
   :ensure t
   :straight t

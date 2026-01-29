@@ -6,12 +6,26 @@
 (defun connect-computer ()
   "Connect to the computer via IRC."
   (interactive)
-  (erc-tls :server "colonq.computer" :port 26697 :nick "soranotenshi")
-  (select-window (get-buffer (current-buffer))))
+  (let ((lcolonq (erc-tls :server "colonq.computer"
+                          :port 26697
+                          :nick "soranotenshi")))
+    (run-with-timer 2 nil
+                    (lambda ()
+                      (when (buffer-live-p lcolonq)
+                        (with-current-buffer lcolonq
+                          (erc-join-channel "#cyberspace")))))
+    (let ((check-timer nil))
+      (setq check-timer
+            (run-with-timer 1 5
+                            (lambda ()
+                              (let ((buf (get-buffer "#cyberspace@LCOLONQ")))
+                                (when buf
+                                  (switch-to-buffer buf)
+                                  (cancel-timer check-timer)))))))))
 
 (setq erc-prompt
       (lambda ()
-        (format "[%s] [%s] <%s> "
+        (format "[%s] [%s] <%s>"
                 (format-time-string "%H:%M")
                 (buffer-name)
                 (erc-current-nick)))

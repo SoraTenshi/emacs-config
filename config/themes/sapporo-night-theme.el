@@ -19,7 +19,7 @@
       (bg-darker "#202037")
       (fg "#a0b7eb")
       (fg-alt "#8bbaf3")
-      (comment "#4a5578")
+      (comment "#5FACF2")
       (keyword "#ab8bf7")
       (function "#9ab1fa")
       (string "#b0d4ff")
