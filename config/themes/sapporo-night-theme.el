@@ -334,6 +334,12 @@
    `(erc-bold-face ((,class (:weight bold))))
    `(erc-inverse-face ((,class (:background ,fg :foreground ,bg))))
    `(erc-match-face ((,class (:background ,line-hl :foreground ,keyword :weight bold))))
+
+   `(hel-normal-state-fake-cursor ((,class (:background ,type))))
+   `(hel-insert-state-fake-cursor ((,class (:background ,type))))
+   `(hel-extend-selection-cursor ((,class (:foreground ,cursor))))
+   `(hel-search-highlight ((,class (:foreground ,cursor))))
+   `(hel-mode-line-cursors-indicator ((,class (:foreground ,cursor))))
    ))
 
 (provide-theme 'sapporo-night)

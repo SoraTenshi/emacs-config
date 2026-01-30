@@ -97,6 +97,8 @@
 
 ;; now setup all keybinds..
 (load-config "config/keybinds.el")
+(load-config "config/helix.el")
+(load-config "config/keybinds-helix.el")
 
 ;;; init.el ends here
 (put 'upcase-region 'disabled nil)

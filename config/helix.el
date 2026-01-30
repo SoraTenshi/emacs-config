@@ -1,27 +1,22 @@
-;;; helix.el --- Description here -*- lexical-binding: t; -*-
+;;; helix.el --- Description here -*- lexical-binding: t; no-byte-compile: t; -*-
 ;;; Commentary:
 ;; Blabla.
 ;;; Code:
 
-(use-package multiple-cursors
-  :ensure t)
+;;; dependencies
+(use-package s :ensure t :straight t)
+(use-package dash :ensure t :straight t)
+(use-package avy :ensure t :straight t)
+(use-package pcre2el :ensure t :straight t)
+(use-package paredit :ensure t :straight t)
 
-(use-package helix
-  :ensure t
-  :defer nil
-  :after multiple-cursors
-  :config
-  (helix-multiple-cursors-setup)
-  (helix-mode))
-
-(use-package better-jumper
-  :ensure t
-  :after helix
-  :config
-  (setq better-jumper-max-length 500)
-  (helix-define-key 'normal (kbd "C-s") #'better-jumper-set-jump)
-  (helix-define-key 'normal (kbd "C-i") #'better-jumper-jump-forward)
-  (helix-define-key 'normal (kbd "C-o") #'better-jumper-jump-backward)
-  (better-jumper-mode +1))
+(use-package hel
+  :straight (hel :type git :host github :repo "anuvyklack/hel")
+  :custom (inhibit-startup-screen t)
+  :init
+  (setq hel-normal-state-cursor 'box
+        hel-insert-state-cursor 'box
+        hel-motion-state-cursor 'box)
+  :config (hel-mode))
 
 ;;; helix.el ends here
