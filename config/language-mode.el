@@ -17,7 +17,9 @@
 
 (defun lang/display-modes ()
   "Enable `display-line-numbers-mode` and `whitespace-mode`."
-  (whitespace-mode 1))
+  (whitespace-mode 1)
+  (setq display-line-numbers-type 'relative)
+  (display-line-numbers-mode 1))
 
 (add-hook 'c-mode-hook 'lang/display-modes)
 (add-hook 'scheme-mode-hook 'lang/display-modes)
