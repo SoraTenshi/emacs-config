@@ -16,6 +16,7 @@
 (global-set-key (kbd "C-c b") 'backward-word)
 (global-set-key (kbd "C-c g") 'xref-goto-xref)
 (global-set-key (kbd "C-c h") 'ff-find-other-file)
+(global-set-key (kbd "C-x b") 'consult-buffer)
 (global-set-key (kbd "C-.")   'set-mark-command)
 
 (add-hook 'eshell-mode-hook

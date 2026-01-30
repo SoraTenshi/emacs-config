@@ -1,10 +1,4 @@
-;; Setting up emacs for the c programming language
-;;; Code:
-
-(use-package cc-mode
-  :hook (c-mode))
-
-;;; c.el ends here
+;;; c.el --- CC mode - for C++ and C -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;; Setting up EMACS for the c programming language
 ;;; Code:

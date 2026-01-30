@@ -49,8 +49,6 @@
 
 (straight-use-package 'use-package)
 
-(setq straight-use-package-by-default t)
-(setq straight-built-in-package-overrides '((flymake . "30.1")))
 (setq straight-use-package-by-default t
       straight-built-in-package-overrides '((flymake . "30.1")))
 
