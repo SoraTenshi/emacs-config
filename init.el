@@ -4,7 +4,7 @@
 ;;; Code:
 (menu-bar-mode -1)
 (tool-bar-mode -1)
-(scroll-bar-mode -1)
+(scroll-bar-mode 1)
 (setq inhibit-startup-screen t
       use-file-dialog nil
       use-dialog-box nil)
@@ -13,11 +13,6 @@
 (let ((alpha 98))
   (set-frame-parameter (selected-frame) 'alpha-background alpha)
   (add-to-list 'default-frame-alist `(alpha-background . ,alpha)))
-
-;; (require 'package)
-;; (add-to-list 'package-archives
-;;              '("melpa" . "https://melpa.org/packages/") t)
-;; (package-initialize)
 
 (setq custom-file "~/.emacs.d/emacs-custom-file.el")
 (setq ring-bell-function 'ignore)
@@ -29,12 +24,7 @@
 (setq-default display-fill-column-indicator-column 100)
 (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
 
-;; Redirect #file# .file~ to the location at home
-(custom-set-variables
- '(auto-save-file-name-transform '((".*" "~/.emacs.d/autosaves/\\l" t)))
- '(backup-directory-alist '((".*" . "~/.emacs.d/backups/"))))
-
-(make-directory "~/.emacs.d/autosaves/" t)
+(setq-default make-backup-files nil)
 
 (defconst configuration-root
   (expand-file-name ".")
@@ -61,6 +51,8 @@
 
 (setq straight-use-package-by-default t)
 (setq straight-built-in-package-overrides '((flymake . "30.1")))
+(setq straight-use-package-by-default t
+      straight-built-in-package-overrides '((flymake . "30.1")))
 
 ;; setup load paths
 (defun load-config (file)

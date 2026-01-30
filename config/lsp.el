@@ -104,11 +104,14 @@
      (t
       (message "No documentation available for this buffer.")))
     (when (buffer-live-p buf)
-      (display-buffer
-       buf
-       '((display-buffer-reuse-window display-buffer-in-side-window)
-         (side . bottom)
-         (slot . 0)
-         (window-height . 10))))))
+      (let ((win
+             (display-buffer
+              buf
+              '((display-buffer-reuse-window display-buffer-in-side-window)
+                (side . bottom)
+                (slot . 0)
+                (window-height . 10)))))
+        (when (window-live-p win)
+          (select-window win))))))
 
 ;;; lsp.el ends here

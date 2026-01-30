@@ -4,8 +4,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(auto-save-file-name-transform '((".*" "~/.emacs.d/autosaves/\\l" t)))
- '(backup-directory-alist '((".*" . "~/.emacs.d/backups/")))
  '(custom-safe-themes
    '("bdc966cf24e51adacf91298922ed981e67309a187887bb8279edcd7236859b1f"
      "766b567ac1feeb79d2792d19523b01e7c558cbad373519fdea0e7481ab91ccf2"
