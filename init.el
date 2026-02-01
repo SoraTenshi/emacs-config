@@ -92,3 +92,4 @@
 
 ;;; init.el ends here
 (put 'upcase-region 'disabled nil)
+(put 'list-timers 'disabled nil)
