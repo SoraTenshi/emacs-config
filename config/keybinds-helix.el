@@ -27,6 +27,8 @@
   "g e" 'hel-end-of-buffer
   "d"   'delete-char-under
   "c"   'change-char-under
+  "C-d" 'scroll-up-command
+  "C-u" 'scroll-down-command
   "G"   nil)
 
 ;;; keybinds-helix.el ends here
