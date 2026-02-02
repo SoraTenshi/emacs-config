@@ -45,9 +45,6 @@
       mouse-wheel-progressive-speed nil
       scroll-preserve-screen-position t)
 
-(setq-default display-fill-column-indicator-column 100)
-(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
-
 (setq-default make-backup-files nil)
 
 (push '(menu-bar-lines . 0) default-frame-alist)
@@ -634,6 +631,24 @@
 ;; IRC (ERC)
 ;; ========================================================================
 
+(defconst irc-server-alist
+  '(("lcolonq" :server "colonq.computer" :port 26697))
+  "A list of IRC servers i use.")
+
+(use-package erc-join
+  :custom (erc-autojoin-channels-alist '(("colonq.computer" "#cyberspace"))))
+
+(defun connect-erc-to-server ()
+  "Connect to an IRC server from the IRC-SERVER-LIST."
+  (interactive)
+  (let* ((server-name (completing-read "Server: " (mapcar #'car irc-server-alist)))
+         (server-plist (cdr (assoc server-name irc-server-alist)))
+         (nick (read-string "Nickname: " "soranotenshi"))
+         (tls-input (read-string "Use TLS (default: yes)? " "y"))
+         (use-tls (not (string-match-p "^\\s-*n" tls-input))))
+    (apply (if use-tls #'erc-tls #'erc)
+           (append server-plist `(:nick ,nick)))))
+
 (defun connect-computer ()
   "Connect to the computer via IRC."
   (interactive)
@@ -660,6 +675,8 @@
                                 (when buf
                                   (switch-to-buffer buf)
                                   (cancel-timer check-timer)))))))))
+
+
 
 (setq erc-prompt
       (lambda ()
