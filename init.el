@@ -573,6 +573,9 @@
   :config (hel-mode 1))
 
 (with-eval-after-load 'hel
+  (add-hook 'eshell-mode-hook
+            (lambda ()
+              (hel-mode -1)))
   (hel-define-command delete-char-under (count)
     "Deletes the character under the cursor."
     :multiple-cursors t

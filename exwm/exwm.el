@@ -21,12 +21,10 @@
         (tool-bar-lines . nil)))
 
 (use-package xelb
-  :ensure t
-  :straight t)
+  :ensure t)
 
 (use-package exwm
-  :ensure t
-  :straight t)
+  :ensure t)
 
 (require 'exwm)
 (setq exwm-workspace-number 10)
