@@ -1087,6 +1087,47 @@
 
    ;; Scroll bars
    `(scroll-bar ((,class (:background ,bg-darker :foreground ,line-hl))))
+
+   ;; Dired (File Management)
+   `(dired-header ((,class (:foreground ,keyword :weight bold))))
+   `(dired-directory ((,class (:foreground ,function :weight bold))))
+   `(dired-symlink ((,class (:foreground ,string :slant italic))))
+   `(dired-mark ((,class (:foreground ,warning))))
+   `(dired-flagged ((,class (:foreground ,error :weight bold))))
+   `(dired-ignored ((,class (:foreground ,subtle))))
+   `(dired-warning ((,class (:foreground ,warning :weight bold))))
+
+   ;; Info / Man Pages
+   `(info-title-1 ((,class (:foreground ,keyword :weight bold :height 1.4))))
+   `(info-title-2 ((,class (:foreground ,function :weight bold :height 1.3))))
+   `(info-title-3 ((,class (:foreground ,type :weight bold :height 1.2))))
+   `(info-title-4 ((,class (:foreground ,constant :weight bold :height 1.1))))
+   `(info-menu-header ((,class (:foreground ,keyword :weight bold))))
+   `(info-menu-star ((,class (:foreground ,warning))))
+   `(info-node ((,class (:foreground ,keyword))))
+   `(info-xref ((,class (:foreground ,builtin :underline t))))
+   `(info-string ((,class (:foreground ,string))))
+   `(info-xref-visited ((,class (:inherit link-visited))))
+   `(Man-overstrike ((,class (:foreground ,keyword :weight bold))))
+   `(Man-underline ((,class (:foreground ,string :underline t))))
+
+   ;; Xref (Navigation)
+   `(xref-file ((,class (:foreground ,string))))
+   `(xref-line-number ((,class (:foreground ,subtle))))
+   `(xref-match ((,class (:foreground ,keyword :weight bold))))
+
+   ;; Which-Key
+   `(which-key-key-face ((,class (:foreground ,variable :weight bold))))
+   `(which-key-separator-face ((,class (:foreground ,subtle))))
+   `(which-key-group-description-face ((,class (:foreground ,function))))
+   `(which-key-command-face ((,class (:foreground ,fg))))
+   `(which-key-highlight-face ((,class (:background ,selection :foreground ,fg))))
+
+   ;; Vundo (Undo Tree)
+   `(vundo-last ((,class (:foreground ,keyword :weight bold))))
+   `(vundo-next ((,class (:foreground ,fg))))
+   `(vundo-save-undo ((,class (:foreground ,warning))))
+   `(vundo-modified ((,class (:foreground ,error))))
    ))
 
 (provide-theme 'sapporo-night)
