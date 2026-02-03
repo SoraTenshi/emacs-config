@@ -290,15 +290,6 @@
   :ensure t
   :functions flymake-show-buffer-diagnostics)
 
-(defun ui/diagnostic-list ()
-  "Open a list of all diagnostics."
-  (interactive)
-  (flymake-show-buffer-diagnostics)
-  (switch-to-buffer-other-window
-   (seq-find (lambda (buf)
-               (string-match-p "\\*Flymake diagnostics" (buffer-name buf)))
-             (buffer-list))))
-
 (add-hook 'display-buffer-alist
           '("\\*Help\\*"
             (display-buffer-reuse-window display-buffer-in-side-window)
@@ -555,7 +546,7 @@
      (add-to-list 'org-structure-template-alist '("zig" . "src zig"))))
 
 ;; ========================================================================
-;; Modal Editing (Helix-style)
+;; Hel mode
 ;; ========================================================================
 
 (use-package s :ensure t)
@@ -582,33 +573,63 @@
             (lambda ()
               (hel-mode -1)))
 
-  (hel-define-command delete-char-under (count)
-    "Deletes the character under the cursor."
-    :multiple-cursors t
-    :merge-selections t
-    (interactive "*p")
+  (defun hel--is-full-line-kill-p ()
+    "Check if the most recent kill was a full line."
+    (let ((text (current-kill 0 t)))
+      (and text (string-suffix-p "\n" text))))
+
+  (defun hel-paste-smart ()
+    "Paste below current line if yanked text was a full line."
+    (interactive)
+    (if (hel--is-full-line-kill-p)
+        (progn
+          (end-of-line)
+          (newline)
+          (yank)
+          (forward-line -1)
+          (end-of-line))
+      (hel-paste-after)))))
+
+(defun hel-paste-smart-above ()
+  "Paste above current line if yanked text was a full line."
+  (interactive)
+  (if (hel--is-full-line-kill-p)
+      (progn
+        (beginning-of-line)
+        (open-line 1)
+        (yank)
+        (beginning-of-line))
+    (hel-paste-before)))
+
+(hel-define-command delete-char-under (count)
+  "Deletes the character under the cursor."
+  :multiple-cursors t
+  :merge-selections t
+  (interactive "*p")
+  (unless (region-active-p)
+    (forward-char 1))
+  (hel-cut count))
+
+(hel-define-command change-char-under ()
+  "Change char under cursor and enters insert mode."
+  :multiple-cursors nil
+  (interactive "*")
+  (hel-with-each-cursor
     (unless (region-active-p)
-      (forward-char 1))
-    (hel-cut count))
+      (forward-char 1)))
+  (hel-change))
 
-  (hel-define-command change-char-under ()
-    "Change char under cursor and enters insert mode."
-    :multiple-cursors nil
-    (interactive "*")
-    (hel-with-each-cursor
-      (unless (region-active-p)
-        (forward-char 1)))
-    (hel-change))
-
-  (hel-keymap-global-set :state 'normal
-    "g h" 'hel-beginning-of-line-command
-    "g s" 'hel-first-non-blank
-    "g e" 'hel-end-of-buffer
-    "d"   'delete-char-under
-    "c"   'change-char-under
-    "C-d" 'scroll-up-command
-    "C-u" 'scroll-down-command
-    "G"   nil))
+(hel-keymap-global-set :state 'normal
+  "g h" 'hel-beginning-of-line-command
+  "g s" 'hel-first-non-blank
+  "g e" 'hel-end-of-buffer
+  "d"   'delete-char-under
+  "c"   'change-char-under
+  "C-d" 'scroll-up-command
+  "C-u" 'scroll-down-command
+  "p"   'hel-paste-smart
+  "P"   'hel-paste-smart-above
+  "G"   nil))
 
 ;; ========================================================================
 ;; Additional Utilities
@@ -709,7 +730,7 @@
 ;; ========================================================================
 
 (global-set-key (kbd "C-c k") 'ui/show-popup-doc)
-(global-set-key (kbd "C-c d") 'ui/diagnostic-list)
+(global-set-key (kbd "C-c d") 'consult-flymake)
 (global-set-key (kbd "C-c s") 'nav/global-search)
 (global-set-key (kbd "C-c l") 'find-file-at-point)
 (global-set-key (kbd "C-c c") 'compile)
