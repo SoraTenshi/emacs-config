@@ -62,20 +62,22 @@
 (package-initialize)
 
 (use-package diminish
-  :ensure t
-  :config
-  (diminish 'eldoc-mode)
-  (diminish 'auto-revert-mode))
+  :ensure t)
 
-;; ========================================================================
-;; Editor Basics
-;; ========================================================================
+(use-package eldoc
+  :ensure t
+  :diminish 'eldoc-mode)
+
+(use-package autorevert
+  :ensure t
+  :diminish 'auto-revert-mode)
 
 (add-hook 'before-save-hook (lambda () (set-buffer-file-coding-system 'utf-8-unix)))
 (add-hook 'before-save-hook #'delete-trailing-whitespace)
 
 (setq-default indent-tabs-mode nil
               tab-width 4)
+
 (add-hook 'prog-mode-hook
           (lambda ()
             (setq indent-tabs-mode nil
@@ -102,6 +104,7 @@
 
 (use-package ligature
   :ensure t
+  :functions ligature-set-ligatures global-ligature-mode
   :config
   (ligature-set-ligatures 'prog-mode
                           '("www" "**" "***" "**/" "*>" "*/" "\\\\" "\\\\\\" "{-" "[]" "::"
@@ -128,8 +131,7 @@
   :hook (prog-mode . highlight-indent-guides-mode)
   :diminish highlight-indent-guides-mode
   :config
-  (setq highlight-indent-guides-method 'character
-        highlight-indent-guides-character ?\│
+  (setq highlight-indent-guides-method 'bitmap
         highlight-indent-guides-responsive 'top
         highlight-indent-guides-delay 0
         highlight-indent-guides-suppress-auto-error t))
@@ -137,7 +139,8 @@
 (use-package gcmh
   :ensure t
   :defer t
-  :diminish
+  :functions gcmh-mode
+  :diminish 'gcmh-mode
   :init (gcmh-mode 1))
 
 (use-package helpful
@@ -165,6 +168,7 @@
 
 (use-package vertico
   :ensure t
+  :functions vertico-mode
   :init (vertico-mode 1))
 
 (use-package orderless
@@ -176,10 +180,12 @@
 
 (use-package marginalia
   :ensure t
+  :functions marginalia-mode
   :init (marginalia-mode 1))
 
 (use-package consult
   :ensure t
+  :functions consult-ripgrep
   :init
   (setq consult-ripgrep-args
         "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --with-filename --line-number --search-zip --no-ignore-dot --no-require-git"))
@@ -225,6 +231,7 @@
 
 (use-package eglot
   :defer t
+  :functions eglot-current-server
   :hook ((go-mode   . eglot-ensure)
          (rust-mode . eglot-ensure)
          (zig-mode  . eglot-ensure))
@@ -241,6 +248,7 @@
 (use-package corfu
   :ensure t
   :defer t
+  :functions global-corfu-mode corfu-popupinfo-mode
   :init
   (global-corfu-mode)
   (corfu-popupinfo-mode)
@@ -278,15 +286,9 @@
 ;; Navigation & Diagnostic Functions
 ;; ========================================================================
 
-(defun nav/next-diagnostic ()
-  "Go to next diagnostic."
-  (interactive)
-  (flymake-goto-next-error))
-
-(defun nav/previous-diagnostic ()
-  "Go to previous diagnostic."
-  (interactive)
-  (flymake-goto-prev-error))
+(use-package flymake
+  :ensure t
+  :functions flymake-show-buffer-diagnostics)
 
 (defun ui/diagnostic-list ()
   "Open a list of all diagnostics."
@@ -346,6 +348,7 @@
 
 (use-package sly
   :defer t
+  :functions sly-symbol-at-point
   :commands sly
   :config
   (setq inferior-lisp-program (executable-find "sbcl")))
@@ -377,7 +380,7 @@
   :defer t
   :after (rust-mode)
   :custom
-  (rustic-rustfmt-args "--edition 2024")
+  (setq rustic-format-on-save-p nil)
   (rustic-analyzer-command '("rustup" "run" "stable" "rust-analyzer")))
 
 (use-package aggressive-indent
@@ -475,6 +478,7 @@
 (use-package org-roam
   :ensure t
   :defer t
+  :functions org-roam-db-autosync-mode
   :hook ((org-mode . org-modern-mode)
          (org-agenda-finalize . org-modern-agenda))
   :custom
@@ -635,6 +639,10 @@
 ;; ========================================================================
 ;; IRC (ERC)
 ;; ========================================================================
+
+(use-package erc
+  :ensure t
+  :functions erc-current-nick erc-insert-timestamp-left)
 
 (defconst irc-server-alist
   '(("lcolonq" :server "colonq.computer" :port 26697))

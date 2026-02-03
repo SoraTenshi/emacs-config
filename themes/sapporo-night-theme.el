@@ -1031,11 +1031,14 @@
    `(erc-inverse-face ((,class (:background ,fg :foreground ,bg))))
    `(erc-match-face ((,class (:background ,line-hl :foreground ,keyword :weight bold))))
 
+   ;; Hel mode
    `(hel-normal-state-fake-cursor ((,class (:background ,type))))
    `(hel-insert-state-fake-cursor ((,class (:background ,type))))
    `(hel-extend-selection-cursor ((,class (:foreground ,cursor))))
    `(hel-search-highlight ((,class (:foreground ,cursor))))
    `(hel-mode-line-cursors-indicator ((,class (:foreground ,cursor))))
+   `(pulse-highlight-face ((,class (:foreground ,bg-darker :background ,comment))))
+   `(pulse-highlight-start-face ((,class (:foreground ,bg-darker :background ,comment))))
 
    ;; Scroll bars
    `(scroll-bar ((,class (:background ,bg-darker :foreground ,line-hl))))
