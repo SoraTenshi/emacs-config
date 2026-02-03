@@ -155,6 +155,10 @@
   :commands (vdiff-files vdiff-buffers vdiff-merge-conflict)
   :config (setq vdiff-auto-refine t))
 
+(use-package vundo
+  :ensure t
+  :bind (("C-c u" . vundo)))
+
 ;; ========================================================================
 ;; File Management & Navigation
 ;; ========================================================================
@@ -221,7 +225,9 @@
 
 (use-package eglot
   :defer t
-  :hook ((go-mode rust-mode zig-mode) . eglot)
+  :hook ((go-mode   . eglot-ensure)
+         (rust-mode . eglot-ensure)
+         (zig-mode  . eglot-ensure))
   :config
   (setq eglot-autoshutdown t
         eglot-confirm-server-initiated-edits nil))
@@ -257,7 +263,6 @@
 (use-package cape
   :ensure t
   :defer t
-  :after yasnippet
   :config
   (add-to-list 'completion-at-point-functions #'cape-file))
 
@@ -268,12 +273,6 @@
   :ensure t
   :defer t
   :after (consult eglot))
-
-(defun lsp/corfu-yasnippet-expand ()
-  "Expand function for completion hook."
-  (when (yas-expand)
-    t))
-(add-hook 'corfu-after-completion-hook #'lsp/corfu-yasnippet-expand)
 
 ;; ========================================================================
 ;; Navigation & Diagnostic Functions
@@ -357,8 +356,7 @@
 
 (use-package go-mode
   :ensure t
-  :defer t
-  :hook (go-mode . lsp))
+  :defer t)
 
 (use-package nix-mode
   :ensure t
@@ -576,6 +574,10 @@
   (add-hook 'eshell-mode-hook
             (lambda ()
               (hel-mode -1)))
+  (add-hook 'vundo-mode-hook
+            (lambda ()
+              (hel-mode -1)))
+
   (hel-define-command delete-char-under (count)
     "Deletes the character under the cursor."
     :multiple-cursors t
@@ -652,35 +654,6 @@
     (apply (if use-tls #'erc-tls #'erc)
            (append server-plist `(:nick ,nick)))))
 
-(defun connect-computer ()
-  "Connect to the computer via IRC."
-  (interactive)
-  (let ((connection (erc-tls :server "colonq.computer"
-                             :port 26697
-                             :nick "soranotenshi")))
-    (run-with-timer 3 nil
-                    (lambda ()
-                      (when (buffer-live-p connection)
-                        (with-current-buffer connection
-                          (erc-join-channel "#cyberspace")))))
-    (let ((check-timer nil))
-      (setq check-timer
-            (run-with-timer 4 1
-                            (lambda ()
-                              (let ((buf (or (get-buffer "#cyberspace")
-                                             (get-buffer (concat "#cyberspace@"
-                                                                 (with-current-buffer connection
-                                                                   (erc-network-name))))
-                                             (cl-find-if (lambda (b)
-                                                           (string-match-p "#cyberspace"
-                                                                           (buffer-name b)))
-                                                         (buffer-list)))))
-                                (when buf
-                                  (switch-to-buffer buf)
-                                  (cancel-timer check-timer)))))))))
-
-
-
 (setq erc-prompt
       (lambda ()
         (format "[%s] [%s] <%s>"
@@ -738,6 +711,9 @@
 (global-set-key (kbd "C-c b") 'backward-word)
 (global-set-key (kbd "C-c g") 'xref-goto-xref)
 (global-set-key (kbd "C-c h") 'ff-find-other-file)
+(global-set-key (kbd "C-c ;") 'comment-region)
+(global-set-key (kbd "C-c :") 'uncomment-region)
+(global-set-key (kbd "C-c =") 'align-regexp)
 (global-set-key (kbd "C-x b") 'consult-buffer)
 (global-set-key (kbd "C-.")   'set-mark-command)
 
