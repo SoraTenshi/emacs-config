@@ -586,50 +586,50 @@
           (end-of-line)
           (newline)
           (yank)
-          (forward-line -1)
-          (end-of-line))
-      (hel-paste-after)))))
+          (delete-char -1))
+      (hel-paste-after)))
 
-(defun hel-paste-smart-above ()
-  "Paste above current line if yanked text was a full line."
-  (interactive)
-  (if (hel--is-full-line-kill-p)
-      (progn
-        (beginning-of-line)
-        (open-line 1)
-        (yank)
-        (beginning-of-line))
-    (hel-paste-before)))
+  (defun hel-paste-smart-above ()
+    "Paste above current line if yanked text was a full line."
+    (interactive)
+    (if (hel--is-full-line-kill-p)
+        (progn
+          (beginning-of-line)
+          (open-line 1)
+          (yank)
+          (delete-char -1)
+          (beginning-of-line))
+      (hel-paste-before)))
 
-(hel-define-command delete-char-under (count)
-  "Deletes the character under the cursor."
-  :multiple-cursors t
-  :merge-selections t
-  (interactive "*p")
-  (unless (region-active-p)
-    (forward-char 1))
-  (hel-cut count))
-
-(hel-define-command change-char-under ()
-  "Change char under cursor and enters insert mode."
-  :multiple-cursors nil
-  (interactive "*")
-  (hel-with-each-cursor
+  (hel-define-command delete-char-under (count)
+    "Deletes the character under the cursor."
+    :multiple-cursors t
+    :merge-selections t
+    (interactive "*p")
     (unless (region-active-p)
-      (forward-char 1)))
-  (hel-change))
+      (forward-char 1))
+    (hel-cut count))
 
-(hel-keymap-global-set :state 'normal
-  "g h" 'hel-beginning-of-line-command
-  "g s" 'hel-first-non-blank
-  "g e" 'hel-end-of-buffer
-  "d"   'delete-char-under
-  "c"   'change-char-under
-  "C-d" 'scroll-up-command
-  "C-u" 'scroll-down-command
-  "p"   'hel-paste-smart
-  "P"   'hel-paste-smart-above
-  "G"   nil))
+  (hel-define-command change-char-under ()
+    "Change char under cursor and enters insert mode."
+    :multiple-cursors nil
+    (interactive "*")
+    (hel-with-each-cursor
+      (unless (region-active-p)
+        (forward-char 1)))
+    (hel-change))
+
+  (hel-keymap-global-set :state 'normal
+    "g h" 'hel-beginning-of-line-command
+    "g s" 'hel-first-non-blank
+    "g e" 'hel-end-of-buffer
+    "d"   'delete-char-under
+    "c"   'change-char-under
+    "C-d" 'scroll-up-command
+    "C-u" 'scroll-down-command
+    "p"   'hel-paste-smart
+    "P"   'hel-paste-smart-above
+    "G"   nil))
 
 ;; ========================================================================
 ;; Additional Utilities
