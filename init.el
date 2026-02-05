@@ -231,7 +231,7 @@
 
 (use-package eglot
   :defer t
-  :functions eglot-current-server
+  :functions eglot-current-server eglot-managed-p
   :hook ((go-mode   . eglot-ensure)
          (rust-mode . eglot-ensure)
          (zig-mode  . eglot-ensure))
@@ -302,16 +302,15 @@
   (interactive)
   (let ((buf nil))
     (cond
-     ((derived-mode-p 'lisp-mode)
-      (when (fboundp 'sly-describe-symbol)
-        (sly-describe-symbol (sly-symbol-at-point))
-        (setq buf (get-buffer "*sly-description*"))))
      ((derived-mode-p 'emacs-lisp-mode)
       (when-let ((sym (symbol-at-point)))
         (describe-symbol sym)
         (setq buf (get-buffer "*Help*"))))
-     ((and (boundp 'eglot--managed-mode)
-           eglot--managed-mode
+     ((derived-mode-p 'lisp-mode)
+      (when (fboundp 'sly-describe-symbol)
+        (sly-describe-symbol (sly-symbol-at-point))
+        (setq buf (get-buffer "*sly-description*"))))
+     ((and (eglot-managed-p)
            (eglot-current-server))
       (eldoc-doc-buffer)
       (setq buf (get-buffer "*eldoc*")))
@@ -366,14 +365,6 @@
   :ensure t
   :defer t)
 
-(use-package rustic
-  :ensure t
-  :defer t
-  :after (rust-mode)
-  :custom
-  (setq rustic-format-on-save-p nil)
-  (rustic-analyzer-command '("rustup" "run" "stable" "rust-analyzer")))
-
 (use-package aggressive-indent
   :ensure t
   :defer t
@@ -406,6 +397,11 @@
 ;; ========================================================================
 ;; Language Display Modes
 ;; ========================================================================
+
+;; This is the weird `LXXX` thingy in the modeline. No need for that
+;; as i'm already using line numbers for programming.
+;; (And for the rest i don't really need line numbers...)
+(line-number-mode -1)
 
 (defun lang/display-modes ()
   "Enable `display-line-numbers-mode` and `whitespace-mode`."
@@ -575,8 +571,9 @@
 
   (defun hel--is-full-line-kill-p ()
     "Check if the most recent kill was a full line."
-    (let ((text (current-kill 0 t)))
-      (and text (string-suffix-p "\n" text))))
+    (let ((text (car kill-ring)))
+      (and text
+           (string-suffix-p "\n" text))))
 
   (defun hel-paste-smart ()
     "Paste below current line if yanked text was a full line."
@@ -587,7 +584,7 @@
           (newline)
           (yank)
           (delete-char -1))
-      (hel-paste-after)))
+      (hel-paste-after nil)))
 
   (defun hel-paste-smart-above ()
     "Paste above current line if yanked text was a full line."
@@ -646,16 +643,6 @@
   (if (one-window-p)
       (message "Saved your startup time ;)")
     (delete-window)))
-
-;; ========================================================================
-;; Discord Rich Presence
-;; ========================================================================
-
-(use-package elcord
-  :ensure t
-  :defer t
-  :config
-  (setq elcord-idle-message "Probably doing something else..."))
 
 ;; ========================================================================
 ;; IRC (ERC)
