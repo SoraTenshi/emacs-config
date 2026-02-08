@@ -652,12 +652,23 @@
   :ensure t
   :functions erc-current-nick erc-insert-timestamp-left)
 
-(defconst irc-server-alist
-  '(("lcolonq" :server "colonq.computer" :port 26697))
+(defvar irc-server-alist
+  '(("lcolonq" :server "colonq.computer" :port 26697)
+    ("libera.chat" :server "irc.libera.chat" :port 6697))
   "A list of IRC servers i use.")
 
 (use-package erc-join
   :custom (erc-autojoin-channels-alist '(("colonq.computer" "#cyberspace"))))
+
+(defun add-irc-server-to-alist ()
+  "Add an IRC server to IRC-SERVER-ALIST."
+  (interactive)
+  (let* ((server-name (read-string "Server name: "))
+         (server-address (read-string "Server address: "))
+         (server-port (read-number "Server port: ")))
+    (push (cons server-name
+                (list :server server-address :port server-port))
+          irc-server-alist)))
 
 (defun connect-erc-to-server ()
   "Connect to an IRC server from the IRC-SERVER-LIST."
