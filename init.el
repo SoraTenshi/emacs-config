@@ -169,7 +169,9 @@
 (use-package vertico
   :ensure t
   :functions vertico-mode
-  :init (vertico-mode 1))
+  :init (vertico-mode 1)
+  :bind (:map vertico-map
+              ("C-k" . kill-line)))
 
 (use-package orderless
   :ensure t
@@ -414,16 +416,6 @@
 ;; ========================================================================
 ;; Compile Commands
 ;; ========================================================================
-
-(defmacro make-compile-command (lang command)
-  "Create hook for LANG to create the compile command COMMAND."
-  `(add-hook ',(intern (concat (symbol-name lang) "-mode-hook"))
-             (lambda ()
-               (set (make-local-variable 'compile-command) ,command))))
-
-(make-compile-command rust "nix develop -c cargo check")
-(make-compile-command go "go build")
-(make-compile-command zig "zig build")
 
 (use-package fancy-compilation
   :ensure t
