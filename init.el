@@ -663,6 +663,7 @@
 ;; Keybindings
 ;; ========================================================================
 
+;; user mode bindings (C-c)
 (global-set-key (kbd "C-c k") 'ui/show-popup-doc)
 (global-set-key (kbd "C-c d") 'consult-flymake)
 (global-set-key (kbd "C-c s") 'nav/global-search)
@@ -676,7 +677,9 @@
 (global-set-key (kbd "C-c ;") 'comment-region)
 (global-set-key (kbd "C-c :") 'uncomment-region)
 (global-set-key (kbd "C-c =") 'align-regexp)
+;; override C-x b to consult
 (global-set-key (kbd "C-x b") 'consult-buffer)
+;; windows requires this. *sigh*
 (global-set-key (kbd "C-.")   'set-mark-command)
 
 (add-hook 'eshell-mode-hook
