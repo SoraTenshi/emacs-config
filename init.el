@@ -83,11 +83,8 @@
             (setq indent-tabs-mode nil
                   tab-width 4)))
 
-(set-face-attribute 'default nil
-                    :family "Lilex Nerd Font Mono"
-                    :height 140)
 (set-face-attribute 'italic nil :slant 'italic)
-(set-frame-font "Lilex Nerd Font Mono-14" t t)
+(set-frame-font (font-spec :name "Lilex Nerd Font Mono-14"))
 
 (global-font-lock-mode t)
 (add-hook 'prog-mode-hook 'font-lock-mode)
@@ -101,23 +98,6 @@
   :defer t
   :diminish format-all-mode
   :hook (prog-mode . format-all-mode))
-
-(use-package ligature
-  :ensure t
-  :functions ligature-set-ligatures global-ligature-mode
-  :config
-  (ligature-set-ligatures 'prog-mode
-                          '("www" "**" "***" "**/" "*>" "*/" "\\\\" "\\\\\\" "{-" "[]" "::"
-                            ":::" ":=" "!!" "!=" "!==" "-}" "--" "---" "-->" "->" "->>"
-                            "-<" "-<<" "-~" "#{" "#[" "##" "###" "####" "#(" "#?" "#_" "#_("
-                            ".-" ".=" ".." "..<" "..." "??" "?:" "?=" "?>" "???" "<-" "<--"
-                            "<->" "<+" "<*>" "<|" "<|>" "<$" "<$>" "<!--" "<#>" "<%" "<&>"
-                            "<@" "<^>" "</" "</>" "<~" "<<-" "<<=" "<<<" "<<" ">>" ">>="
-                            ">>-" ">>>" ">-" ">=" ">>=" ">=>" "<=" "=/=" "=<<" "=="
-                            "===" "==>" "=>" "=>>" "<=>" "<=<" "<==" "<=>" "<==>" "!!" "_|_"
-                            "|||"
-                            "||" "~~" "~~>" "~>" "%%"))
-  (global-ligature-mode t))
 
 (use-package which-key
   :ensure t
@@ -333,10 +313,25 @@
 ;; Language Modes
 ;; ========================================================================
 
-(use-package cc-mode
-  :ensure t
-  :defer t
-  :hook (cc-mode))
+(defvar my/c-custom-types
+  '("s8" "s16" "s32" "s64"
+    "u8" "u16" "u32" "u64"
+    "f32" "f64"
+    "b8" "b32" "bool"))
+
+(defun my/c-add-types ()
+  (font-lock-add-keywords
+   nil
+   `((,(regexp-opt my/c-custom-types 'words) . font-lock-type-face))))
+
+(use-package simpc-mode
+  :vc (:url "https://github.com/rexim/simpc-mode")
+  :mode (("\\.c\\'"   . simpc-mode)
+         ("\\.h\\'"   . simpc-mode)
+         ("\\.hpp\\'" . simpc-mode)
+         ("\\.cpp\\'" . simpc-mode)))
+
+(add-hook 'simpc-mode-hook #'my/c-add-types)
 
 (use-package sly
   :defer t
@@ -373,16 +368,6 @@
   :hook ((lisp-mode
           emacs-lisp-mode
           lisp-interaction-mode) . aggressive-indent-mode))
-
-(use-package geiser
-  :ensure t
-  :defer t
-  :config
-  (setq geiser-active-implementations '(guile racket)))
-
-(use-package yuck-mode
-  :ensure t
-  :defer t)
 
 (use-package zig-mode
   :ensure t
@@ -430,7 +415,8 @@
 ;; Org Mode & Org Babel
 ;; ========================================================================
 
-(make-directory "~/org/roam" t)
+(dolist (dir '("~/org/notes" "~/org/db"))
+  (make-directory dir t))
 
 (use-package org
   :defer t
@@ -452,16 +438,41 @@
         org-src-tab-acts-natively t
         org-confirm-babel-evaluate nil
         org-cycle-separator-lines 0
-        org-ellipsis ""))
+        org-ellipsis "")
+
+  (with-eval-after-load 'ob
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((emacs-lisp . t)
+       (lisp       . t)
+       (python     . t))))
+
+  (setq org-babel-lisp-eval-fn 'sly-eval)
+
+  (require 'org-tempo)
+  (dolist (template '(("cl"   . "src common-lisp")
+                      ("el"   . "src emacs-lisp")
+                      ("sh"   . "src shell")
+                      ("py"   . "src python")))
+    (add-to-list 'org-structure-template-alist template)))
+
+(use-package org-modern
+  :ensure t
+  :defer t
+  :hook ((org-mode            . org-modern-mode)
+         (org-agenda-finalize . org-modern-agenda))
+  :config
+  (setq org-modern-tag      nil
+        org-modern-priority nil
+        org-modern-todo     nil
+        org-modern-table    nil))
 
 (use-package org-roam
   :ensure t
   :defer t
-  :functions org-roam-db-autosync-mode
-  :hook ((org-mode . org-modern-mode)
-         (org-agenda-finalize . org-modern-agenda))
   :custom
-  (org-roam-directory (file-truename "~/org/roam"))
+  (org-roam-directory       (file-truename "~/org/notes/"))
+  (org-roam-db-location     "~/org/db/org-roam.db")
   (org-roam-completion-everywhere t)
   (org-roam-capture-templates
    '(("d" "default" plain "%?"
@@ -473,65 +484,6 @@
          ("C-c n c" . org-roam-capture))
   :config
   (org-roam-db-autosync-mode))
-
-(use-package org-modern
-  :ensure t
-  :defer t
-  :after org-roam
-  :hook ((org-mode . org-modern-mode)
-         (org-agenda-finalize . org-modern-agenda))
-  :config (setq org-modern-tag nil
-                org-modern-priority nil
-                org-modern-todo nil
-                org-modern-table nil))
-
-(use-package org-superstar
-  :ensure t
-  :defer t
-  :after 'org
-  :hook (org-mode . org-superstar-mode)
-  :config
-  (setq org-superstar-headline-bullets-list '("◉" "○" "✸" "✿" "◆" "◇" "▶" "▷"))
-  (setq org-superstar-leading-bullet " ")
-  (setq org-superstar-special-todo-items t))
-
-(use-package ob-zig
-  :ensure t
-  :defer t
-  :vc (:url "https://github.com/jolby/ob-zig.el")
-  :after org
-  :config
-  (add-to-list 'org-babel-load-languages '(zig . t))
-  (org-babel-do-load-languages 'org-babel-load-languages
-                               org-babel-load-languages))
-
-(use-package ob-rust
-  :ensure t
-  :defer t
-  :after org
-  :config
-  (add-to-list 'org-babel-load-languages '(rust . t))
-  (org-babel-do-load-languages 'org-babel-load-languages
-                               org-babel-load-languages))
-
-(setq org-babel-lisp-eval-fn 'sly-eval)
-
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((emacs-lisp . t)
-   (lisp . t)
-   (python . t)
-   (rust . t)
-   (zig . t)))
-
-(eval-after-load 'org
-  '(progn
-     (require 'org-tempo)
-     (add-to-list 'org-structure-template-alist '("cl" . "src common-lisp"))
-     (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-     (add-to-list 'org-structure-template-alist '("rust" . "src rust"))
-     (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
-     (add-to-list 'org-structure-template-alist '("zig" . "src zig"))))
 
 ;; ========================================================================
 ;; Hel mode
@@ -556,10 +508,10 @@
 (with-eval-after-load 'hel
   (add-hook 'eshell-mode-hook
             (lambda ()
-              (hel-mode -1)))
+              (setq-local hel-mode -1)))
   (add-hook 'vundo-mode-hook
             (lambda ()
-              (hel-mode -1)))
+              (setq-local hel-mode -1)))
 
   (defun hel--is-full-line-kill-p ()
     "Check if the most recent kill was a full line."
