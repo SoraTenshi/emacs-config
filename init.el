@@ -4,19 +4,6 @@
 ;;; Code:
 
 ;; ========================================================================
-;; Early Initialization & Performance
-;; ========================================================================
-
-(setq gc-cons-threshold most-positive-fixnum
-      gc-cons-percentage 0.6)
-
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (split-window-right)
-            (setq gc-cons-threshold (* 16 1024 1024)
-                  gc-cons-percentage 0.1)))
-
-;; ========================================================================
 ;; UI Configuration
 ;; ========================================================================
 
@@ -25,6 +12,10 @@
 (scroll-bar-mode 1)
 (blink-cursor-mode 0)
 (global-hl-line-mode 1)
+
+(savehist-mode 1)
+(save-place-mode 1)
+(recentf-mode 1)
 
 (setq inhibit-startup-screen t
       use-file-dialog nil
@@ -46,10 +37,11 @@
       scroll-preserve-screen-position t)
 
 (setq-default make-backup-files nil)
+;; i only have one instance of emacs running as daemon, so this is not required
+(setq create-lockfiles nil)
 
 (push '(menu-bar-lines . 0) default-frame-alist)
 (push '(tool-bar-lines . 0) default-frame-alist)
-(push '(vertical-scroll-bars) default-frame-alist)
 
 ;; ========================================================================
 ;; Package Management
@@ -66,11 +58,11 @@
 
 (use-package eldoc
   :ensure t
-  :diminish 'eldoc-mode)
+  :diminish eldoc-mode)
 
 (use-package autorevert
   :ensure t
-  :diminish 'auto-revert-mode)
+  :diminish auto-revert-mode)
 
 (add-hook 'before-save-hook (lambda () (set-buffer-file-coding-system 'utf-8-unix)))
 (add-hook 'before-save-hook #'delete-trailing-whitespace)
@@ -678,8 +670,7 @@
 (global-set-key (kbd "C-c c") 'compile)
 (global-set-key (kbd "C-c a") 'eglot-code-actions)
 (global-set-key (kbd "C-c p") 'project-switch-project)
-(global-set-key (kbd "C-c f") 'forward-word)
-(global-set-key (kbd "C-c b") 'backward-word)
+(global-set-key (kbd "C-c f") 'project-find-file)
 (global-set-key (kbd "C-c g") 'xref-goto-xref)
 (global-set-key (kbd "C-c h") 'ff-find-other-file)
 (global-set-key (kbd "C-c ;") 'comment-region)
