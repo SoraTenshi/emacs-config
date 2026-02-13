@@ -7,8 +7,9 @@
  '(package-selected-packages
    '(aggressive-indent avy cape colorful-mode consult consult-eglot corfu
                        diminish docker dockerfile-mode eldoc-box
-                       fancy-compilation format-all gcmh go-mode hel
-                       helpful highlight-indent-guides magit
+                       embark embark-consult fancy-compilation
+                       format-all gcmh go-mode hel helpful
+                       highlight-indent-guides kind-icon magit
                        marginalia nix-mode odin-mode orderless
                        org-modern org-roam paredit pcre2el rust-mode
                        simpc-mode vdiff vertico vundo zig-mode))

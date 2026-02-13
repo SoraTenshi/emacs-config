@@ -76,7 +76,8 @@
                   tab-width 4)))
 
 (set-face-attribute 'italic nil :slant 'italic)
-(set-frame-font (font-spec :name "Lilex Nerd Font Mono-14"))
+(set-frame-font (font-spec :name "Lilex Nerd Font Mono"
+                           :size 14))
 
 (global-font-lock-mode t)
 (add-hook 'prog-mode-hook 'font-lock-mode)
@@ -112,7 +113,7 @@
   :ensure t
   :defer t
   :functions gcmh-mode
-  :diminish 'gcmh-mode
+  :diminish gcmh-mode
   :init (gcmh-mode 1))
 
 (use-package helpful
@@ -163,6 +164,17 @@
   :init
   (setq consult-ripgrep-args
         "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --with-filename --line-number --search-zip --no-ignore-dot --no-require-git"))
+
+(use-package embark
+  :ensure t
+  :bind (("C-," . embark-act)
+         ("C-;" . embark-dwim))
+  :config
+  (setq prefix-help-command #'embark-prefix-help-command))
+
+(use-package embark-consult
+  :ensure t
+  :after (embark consult))
 
 (defun nav/global-search (dir)
   "Search a DIR for a matching regex."
@@ -241,6 +253,15 @@
               ([backtab] . corfu-previous)
               ("RET"     . corfu-insert)
               ([return]  . corfu-insert)))
+
+(use-package kind-icon
+  :ensure t
+  :after corfu
+  :custom
+  (kind-icon-default-face 'corfu-default)
+  (kind-icon-default-style '(:padding 0 :stroke 0 :margin 0 :radius 0 :height 0.8 :scale 0.8))
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
 (use-package cape
   :ensure t
@@ -562,6 +583,8 @@
     "C-u" 'scroll-down-command
     "p"   'hel-paste-smart
     "P"   'hel-paste-smart-above
+    "] d" 'flymake-goto-next-error
+    "[ d" 'flymake-goto-prev-error
     "G"   nil))
 
 ;; ========================================================================
@@ -667,7 +690,6 @@
 (global-set-key (kbd "C-c k") 'ui/show-popup-doc)
 (global-set-key (kbd "C-c d") 'consult-flymake)
 (global-set-key (kbd "C-c s") 'nav/global-search)
-(global-set-key (kbd "C-c l") 'find-file-at-point)
 (global-set-key (kbd "C-c c") 'compile)
 (global-set-key (kbd "C-c a") 'eglot-code-actions)
 (global-set-key (kbd "C-c p") 'project-switch-project)
@@ -681,6 +703,7 @@
 (global-set-key (kbd "C-x b") 'consult-buffer)
 ;; windows requires this. *sigh*
 (global-set-key (kbd "C-.")   'set-mark-command)
+(global-set-key (kbd "C-=")   'format-all-buffer)
 
 (add-hook 'eshell-mode-hook
           (lambda ()
@@ -705,5 +728,11 @@
 
 (put 'upcase-region 'disabled nil)
 (put 'list-timers 'disabled nil)
+
+;; ========================================================================
+;; Experimental stuff
+;; ========================================================================
+
+(use-package mpv :defer t)
 
 ;;; init.el ends here
