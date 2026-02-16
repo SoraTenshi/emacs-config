@@ -75,9 +75,17 @@
             (setq indent-tabs-mode nil
                   tab-width 4)))
 
+(defconst font-size
+  (if (string= system-type "darwin") 18 16)
+  "The font size of EMACS.")
+
 (set-face-attribute 'italic nil :slant 'italic)
-(set-frame-font (font-spec :name "Lilex Nerd Font Mono"
-                           :size 14))
+(set-frame-font (font-spec :name "Iosevka Custom"
+                           :size font-size))
+
+(when (and (eq system-type 'windows-nt)
+           (member "Segoe UI Emoji" (font-family-list)))
+  (set-fontset-font t '(#x1F600 . #x1F64F) "Segoe UI Emoji" nil 'prepend))
 
 (global-font-lock-mode t)
 (add-hook 'prog-mode-hook 'font-lock-mode)
@@ -268,9 +276,6 @@
   :defer t
   :config
   (add-to-list 'completion-at-point-functions #'cape-file))
-
-(use-package eldoc-box
-  :ensure t)
 
 (use-package consult-eglot
   :ensure t
@@ -472,19 +477,25 @@
 (use-package org-modern
   :ensure t
   :defer t
-  :hook ((org-mode            . org-modern-mode)
+  :hook ((org-mode . org-modern-mode)
          (org-agenda-finalize . org-modern-agenda))
   :config
-  (setq org-modern-tag      nil
+  (setq org-modern-star '("◉" "○" "✸" "✿" "✤" "✜" "◆" "▶")
+        org-modern-hide-stars 'leading
+        org-modern-tag nil          ; keep off if you prefer
         org-modern-priority nil
-        org-modern-todo     nil
-        org-modern-table    nil))
+        org-modern-todo t           ; enable this
+        org-modern-table t))        ; and this
+
+(defvar org-roam-notes
+  (file-truename "~/org/notes/")
+  "The directory for all kinds of notes.")
 
 (use-package org-roam
   :ensure t
   :defer t
   :custom
-  (org-roam-directory       (file-truename "~/org/notes/"))
+  (org-roam-directory       org-roam-notes)
   (org-roam-db-location     "~/org/db/org-roam.db")
   (org-roam-completion-everywhere t)
   (org-roam-capture-templates
@@ -497,6 +508,97 @@
          ("C-c n c" . org-roam-capture))
   :config
   (org-roam-db-autosync-mode))
+
+(with-eval-after-load 'org
+  (defun org-worklog-file ()
+    "Return the current year's work log file path."
+    (expand-file-name (format "worklog-%s.org" (format-time-string "%Y"))
+                      org-roam-notes))
+
+  (defun org-worklog-update-agenda-files ()
+    "Update org-agenda-files to include all worklog files."
+    (interactive)
+    (setq org-agenda-files
+          (directory-files org-roam-notes t "^worklog-[0-9]\\{4\\}\\.org$")))
+
+  (org-worklog-update-agenda-files)
+  (setq org-capture-templates
+        '(("w" "Work Log" plain
+           (file+function (lambda () (org-worklog-file)) org-worklog-goto-day)
+           "- %?"
+           :empty-lines 0
+           :unnarrowed t)))
+
+  (defun org-worklog-goto-month ()
+    "Go to or create the current month heading."
+    (let ((month-heading (format-time-string "* %B %Y")))
+      (goto-char (point-min))
+      (unless (re-search-forward "^\\* Summary" nil t)
+        (insert "* Summary\n\n")
+        (goto-char (point-min)))
+      (goto-char (point-min))
+      (unless (re-search-forward (concat "^" (regexp-quote month-heading)) nil t)
+        (goto-char (point-max))
+        (insert "\n" month-heading "\n"))
+      (re-search-forward (concat "^" (regexp-quote month-heading)) nil t)
+      (end-of-line)))
+
+  (defun org-worklog-goto-day ()
+    "Go to or create today's heading under the current month."
+    (org-worklog-goto-month)
+    (let ((day-heading (format-time-string "** %Y-%m-%d %A"))
+          (timestamp (format-time-string "<%Y-%m-%d %a>")))
+      (forward-line 1)
+      (let ((month-end (save-excursion
+                         (if (re-search-forward "^\\* " nil t)
+                             (line-beginning-position)
+                           (point-max)))))
+        (if (re-search-forward (concat "^" (regexp-quote day-heading)) month-end t)
+            (progn
+              (forward-line 1)
+              (when (not (looking-at-p "<[0-9]\\{4\\}-"))
+                (insert timestamp "\n"))
+              (goto-char (line-end-position)))
+          (goto-char month-end)
+          (insert "\n" day-heading "\n" timestamp)
+          (end-of-line)))))
+
+  (defun org-worklog-goto-specific-day ()
+    "Navigate to a specific day in the work log."
+    (interactive)
+    (let* ((date (org-read-date nil t nil "Go to date: "))
+           (year (format-time-string "%Y" date))
+           (month (format-time-string "%B %Y" date))
+           (day (format-time-string "%Y-%m-%d %A" date))
+           (file (expand-file-name (format "worklog-%s.org" year) org-roam-notes)))
+      (if (file-exists-p file)
+          (progn
+            (find-file file)
+            (goto-char (point-min))
+            (if (re-search-forward (concat "^\\*\\* " (regexp-opt (list day))) nil t)
+                (progn
+                  (org-show-context)
+                  (recenter-top-bottom))
+              (message "Day %s not found in worklog" day)))
+        (message "Worklog file %s does not exist" file))))
+
+  (defun org-worklog-capture ()
+    "Capture an entry for the current work day."
+    (interactive)
+    (org-capture nil "w"))
+
+  (setq org-agenda-custom-commands
+        '(("w" . "Work Log Views")
+          ("ww" "Last 7 days" agenda ""
+           ((org-agenda-span 7)
+            (org-agenda-start-day "-7d")))
+          ("wm" "This month" agenda ""
+           ((org-agenda-span 'month)
+            (org-agenda-start-day "1")))
+          ("wy" "This year" agenda ""
+           ((org-agenda-span 365)
+            (org-agenda-start-day "-365d")))
+          ("ws" "Search all work logs" search ""))))
 
 ;; ========================================================================
 ;; Hel mode
@@ -613,7 +715,8 @@
 
 (defvar irc-server-alist
   '(("lcolonq" :server "colonq.computer" :port 26697)
-    ("libera.chat" :server "irc.libera.chat" :port 6697))
+    ("libera.chat" :server "irc.libera.chat" :port 6697)
+    ("Digital Grove" :server "irc.dgtlgrove.com" :port 6697))
   "A list of IRC servers i use.")
 
 (use-package erc-join
@@ -654,6 +757,12 @@
             (whitespace-mode -1)
             (show-paren-mode -1)))
 
+(use-package erc-image
+  :ensure t)
+
+(add-to-list 'erc-modules 'image)
+(erc-update-modules)
+
 ;; ========================================================================
 ;; Theme Configuration
 ;; ========================================================================
@@ -687,23 +796,26 @@
 ;; ========================================================================
 
 ;; user mode bindings (C-c)
-(global-set-key (kbd "C-c k") 'ui/show-popup-doc)
-(global-set-key (kbd "C-c d") 'consult-flymake)
-(global-set-key (kbd "C-c s") 'nav/global-search)
-(global-set-key (kbd "C-c c") 'compile)
-(global-set-key (kbd "C-c a") 'eglot-code-actions)
-(global-set-key (kbd "C-c p") 'project-switch-project)
-(global-set-key (kbd "C-c f") 'project-find-file)
-(global-set-key (kbd "C-c g") 'xref-goto-xref)
-(global-set-key (kbd "C-c h") 'ff-find-other-file)
-(global-set-key (kbd "C-c ;") 'comment-region)
-(global-set-key (kbd "C-c :") 'uncomment-region)
-(global-set-key (kbd "C-c =") 'align-regexp)
+(global-set-key (kbd "C-c k")   'ui/show-popup-doc)
+(global-set-key (kbd "C-c d")   'consult-flymake)
+(global-set-key (kbd "C-c s")   'nav/global-search)
+(global-set-key (kbd "C-c c")   'compile)
+(global-set-key (kbd "C-c a")   'eglot-code-actions)
+(global-set-key (kbd "C-c p")   'project-switch-project)
+(global-set-key (kbd "C-c f")   'project-find-file)
+(global-set-key (kbd "C-c g")   'xref-goto-xref)
+(global-set-key (kbd "C-c h")   'ff-find-other-file)
+(global-set-key (kbd "C-c ;")   'comment-region)
+(global-set-key (kbd "C-c :")   'uncomment-region)
+(global-set-key (kbd "C-c =")   'align-regexp)
+(global-set-key (kbd "C-c w c") 'org-worklog-capture)
+(global-set-key (kbd "C-c w W") 'org-worklog-goto-specific-day)
+(global-set-key (kbd "C-c w a") 'org-agenda)
 ;; override C-x b to consult
-(global-set-key (kbd "C-x b") 'consult-buffer)
+(global-set-key (kbd "C-x b")   'consult-buffer)
 ;; windows requires this. *sigh*
-(global-set-key (kbd "C-.")   'set-mark-command)
-(global-set-key (kbd "C-=")   'format-all-buffer)
+(global-set-key (kbd "C-.")     'set-mark-command)
+(global-set-key (kbd "C-=")     'format-all-buffer)
 
 (add-hook 'eshell-mode-hook
           (lambda ()
