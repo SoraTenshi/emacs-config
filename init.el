@@ -233,8 +233,6 @@
   (setq eglot-autoshutdown t
         eglot-confirm-server-initiated-edits nil))
 
-(add-hook 'prog-mode-hook #'flymake-mode)
-
 (with-eval-after-load 'eglot
   (add-to-list 'eglot-server-programs
                '(zig-mode . ("zls"))))
@@ -282,13 +280,29 @@
   :defer t
   :after (consult eglot))
 
+(use-package devdocs
+  :ensure t
+  :defer t)
+
 ;; ========================================================================
 ;; Navigation & Diagnostic Functions
 ;; ========================================================================
 
-(use-package flymake
+;; (use-package flymake
+;;   :ensure t
+;;   :functions flymake-show-buffer-diagnostics)
+;; (add-hook 'prog-mode-hook #'flymake-mode)
+
+(use-package flycheck
   :ensure t
-  :functions flymake-show-buffer-diagnostics)
+  :config
+  (add-hook 'after-init-hook #'global-flycheck-mode))
+
+(use-package flycheck-eglot
+  :ensure t
+  :after (flycheck eglot)
+  :config
+  (global-flycheck-eglot-mode 1))
 
 (add-hook 'display-buffer-alist
           '("\\*Help\\*"
@@ -685,8 +699,9 @@
     "C-u" 'scroll-down-command
     "p"   'hel-paste-smart
     "P"   'hel-paste-smart-above
-    "] d" 'flymake-goto-next-error
-    "[ d" 'flymake-goto-prev-error
+    "] d" 'flycheck-next-error
+    "[ d" 'flycheck-previous-error
+    "v"   'hel-extend-selection
     "G"   nil))
 
 ;; ========================================================================
@@ -754,11 +769,11 @@
 (add-hook 'erc-mode-hook
           (lambda ()
             (setq-local buffer-display-table nil)
+            (erc-nickbar-mode 1)
             (whitespace-mode -1)
             (show-paren-mode -1)))
 
-(use-package erc-image
-  :ensure t)
+(use-package erc-image)
 
 (add-to-list 'erc-modules 'image)
 (erc-update-modules)
