@@ -304,6 +304,10 @@
   :config
   (global-flycheck-eglot-mode 1))
 
+(use-package consult-flycheck
+  :ensure t
+  :after (flycheck consult))
+
 (add-hook 'display-buffer-alist
           '("\\*Help\\*"
             (display-buffer-reuse-window display-buffer-in-side-window)
@@ -340,6 +344,36 @@
                 (window-height . 10)))))
         (when (window-live-p win)
           (select-window win))))))
+
+(defun ui/show-current-error ()
+  "Show the flycheck error at point."
+  (interactive)
+  (if-let* ((errors (flycheck-overlay-errors-at (point)))
+            (err    (car errors))
+            (msg    (flycheck-error-message err))
+            (level  (flycheck-error-level err))
+            (buf    (get-buffer-create "*current-error*")))
+      (progn
+        (with-current-buffer buf
+          (read-only-mode -1)
+          (erase-buffer)
+          (insert (propertize (symbol-name level)
+                              'face (pcase level
+                                      ('error   'flycheck-error)
+                                      ('warning 'flycheck-warning)
+                                      (_        'flycheck-info)))
+                  "\n\n"
+                  msg)
+          (read-only-mode 1))
+        (let ((win (display-buffer
+                    buf
+                    '((display-buffer-reuse-window display-buffer-in-side-window)
+                      (side . bottom)
+                      (slot . 2)
+                      (window-height . 6)))))
+          (when (window-live-p win)
+            (select-window win))))
+    (message "No flycheck error at point.")))
 
 ;; ========================================================================
 ;; Language Modes
@@ -768,7 +802,8 @@
 
 (add-hook 'erc-mode-hook
           (lambda ()
-            (setq-local buffer-display-table nil)
+            (setq-local buffer-display-table nil
+                        show-trailing-whitespace nil)
             (erc-nickbar-mode 1)
             (whitespace-mode -1)
             (show-paren-mode -1)))
@@ -812,7 +847,8 @@
 
 ;; user mode bindings (C-c)
 (global-set-key (kbd "C-c k")   'ui/show-popup-doc)
-(global-set-key (kbd "C-c d")   'consult-flymake)
+(global-set-key (kbd "C-c d")   'consult-flycheck)
+(global-set-key (kbd "C-c i")   'ui/show-current-error)
 (global-set-key (kbd "C-c s")   'nav/global-search)
 (global-set-key (kbd "C-c c")   'compile)
 (global-set-key (kbd "C-c a")   'eglot-code-actions)

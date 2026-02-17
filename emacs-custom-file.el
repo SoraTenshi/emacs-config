@@ -5,8 +5,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(aggressive-indent avy cape colorful-mode consult-eglot corfu devdocs
-                       diminish docker dockerfile-mode embark-consult
+   '(aggressive-indent avy cape colorful-mode consult-eglot
+                       consult-flycheck corfu devdocs diminish docker
+                       dockerfile-mode easy-align embark-consult
                        erc-image fancy-compilation flycheck
                        flycheck-eglot format-all gcmh go-mode hel
                        helpful highlight-indent-guides kind-icon magit
