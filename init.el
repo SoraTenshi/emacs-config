@@ -76,9 +76,10 @@
                   tab-width 4)))
 
 (defconst font-size
-  (if (string= system-type "darwin") 18 16)
+  (if (string= system-type "darwin") 18 14)
   "The font size of EMACS.")
 
+(set-face-attribute 'default nil :font "Iosevka Custom" :height (* 10 font-size))
 (set-face-attribute 'italic nil :slant 'italic)
 (set-frame-font (font-spec :name "Iosevka Custom"
                            :size font-size))
