@@ -432,6 +432,13 @@
    `(vundo-next ((,class (:foreground ,fg))))
    `(vundo-save-undo ((,class (:foreground ,warning))))
    `(vundo-modified ((,class (:foreground ,error))))
+
+   ;; Ace-window
+   `(aw-leading-char-face ((,class (:foreground ,cursor :weight bold :height 2.0))))
+   `(aw-background-face ((,class (:foreground ,faded))))
+   `(aw-minibuffer-leading-char-face ((,class (:foreground ,cursor :weight bold))))
+   `(aw-mode-line-face ((,class (:foreground ,keyword :weight bold))))
+   `(aw-key-face ((,class (:foreground ,cursor :weight bold))))
    ))
 
 (provide-theme 'sapporo-night)

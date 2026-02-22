@@ -81,12 +81,6 @@
 
 (set-face-attribute 'default nil :font "Iosevka Custom" :height (* 10 font-size))
 (set-face-attribute 'italic nil :slant 'italic)
-(set-frame-font (font-spec :name "Iosevka Custom"
-                           :size font-size))
-
-(when (and (eq system-type 'windows-nt)
-           (member "Segoe UI Emoji" (font-family-list)))
-  (set-fontset-font t '(#x1F600 . #x1F64F) "Segoe UI Emoji" nil 'prepend))
 
 (global-font-lock-mode t)
 (add-hook 'prog-mode-hook 'font-lock-mode)
@@ -544,8 +538,8 @@
   :ensure t
   :defer t
   :custom
-  (org-roam-directory       org-roam-notes)
-  (org-roam-db-location     "~/org/db/org-roam.db")
+  (org-roam-directory             org-roam-notes)
+  (org-roam-db-location           "~/org/db/org-roam.db")
   (org-roam-completion-everywhere t)
   (org-roam-capture-templates
    '(("d" "default" plain "%?"
@@ -820,7 +814,8 @@
 (use-package erc-image)
 
 (add-to-list 'erc-modules 'image)
-(erc-update-modules)
+(with-eval-after-load 'erc
+  (erc-update-modules))
 
 ;; ========================================================================
 ;; Theme Configuration

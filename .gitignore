@@ -27,3 +27,8 @@ tramp
 server/server
 hel-multiple-cursors
 history
+devdocs/
+flycheck_init.el
+places
+tree-sitter/
+url/
