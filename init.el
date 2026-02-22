@@ -279,6 +279,14 @@
   :ensure t
   :defer t)
 
+(use-package breadcrumb
+  :ensure t
+  :functions (breadcrumb-mode)
+  :config
+  (breadcrumb-mode 1)
+  (setq breadcrumb-imenu-max-length 0.3)
+  (set-face-attribute 'header-line nil :height 0.8 :inherit 'default))
+
 ;; ========================================================================
 ;; Navigation & Diagnostic Functions
 ;; ========================================================================

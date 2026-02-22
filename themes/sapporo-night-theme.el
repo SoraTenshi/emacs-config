@@ -439,6 +439,13 @@
    `(aw-minibuffer-leading-char-face ((,class (:foreground ,cursor :weight bold))))
    `(aw-mode-line-face ((,class (:foreground ,keyword :weight bold))))
    `(aw-key-face ((,class (:foreground ,cursor :weight bold))))
+
+   ;; Breadcrumb
+   `(breadcrumb-face ((,class (:foreground ,fg))))
+   `(breadcrumb-project-crumb-face ((,class (:foreground ,subtle :slant italic))))
+   `(breadcrumb-project-leaf-face ((,class (:foreground ,fg :weight bold))))
+   `(breadcrumb-imenu-crumb-face ((,class (:foreground ,comment :slant italic))))
+   `(breadcrumb-imenu-leaf-face ((,class (:foreground ,keyword :weight bold))))
    ))
 
 (provide-theme 'sapporo-night)
