@@ -389,6 +389,7 @@
 (defvar my/c-custom-types
   '("s8" "s16" "s32" "s64"
     "u8" "u16" "u32" "u64"
+    "usize" "ssize"
     "f32" "f64"
     "b8" "b32" "bool"))
 
@@ -465,6 +466,7 @@
 
 (defun lang/display-modes ()
   "Enable `display-line-numbers-mode` and `whitespace-mode`."
+  (whitespace-mode 1)
   (setq display-line-numbers-type 'relative)
   (display-line-numbers-mode 1))
 
@@ -889,18 +891,20 @@
 ;; Load EXWM Configuration (if applicable)
 ;; ========================================================================
 
-(when (string= (system-name) "navi")
-  (defun load-config (file)
-    "Load a FILE from the base EMACS directory."
-    (let ((path (expand-file-name file user-emacs-directory)))
-      (if (file-exists-p path)
-          (progn
-            (message "Loading file %s..." path)
-            (load-file path))
-        (message "Config file %s not found.." path))))
+(defun load-config (file)
+  "Load a FILE from the base EMACS directory."
+  (let ((path (expand-file-name file user-emacs-directory)))
+    (if (file-exists-p path)
+        (progn
+          (message "Loading file %s..." path)
+          (load-file path))
+      (message "Config file %s not found.." path))))
 
+(when (string= (system-name) "navi")
   (load-config "exwm/exwm.el")
   (load-config "exwm/weather.el"))
+
+(load-config "city.el")
 
 (put 'upcase-region 'disabled nil)
 (put 'list-timers 'disabled nil)
