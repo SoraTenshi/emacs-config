@@ -563,96 +563,96 @@
   :config
   (org-roam-db-autosync-mode))
 
-(with-eval-after-load 'org
-  (defun org-worklog-file ()
-    "Return the current year's work log file path."
-    (expand-file-name (format "worklog-%s.org" (format-time-string "%Y"))
-                      org-roam-notes))
+(defun org-worklog-file ()
+  "Return the current year's work log file path."
+  (expand-file-name (format "worklog-%s.org" (format-time-string "%Y"))
+                    org-roam-notes))
 
-  (defun org-worklog-update-agenda-files ()
-    "Update org-agenda-files to include all worklog files."
-    (interactive)
-    (setq org-agenda-files
-          (directory-files org-roam-notes t "^worklog-[0-9]\\{4\\}\\.org$")))
+(defun org-worklog-update-agenda-files ()
+  "Update org-agenda-files to include all worklog files."
+  (interactive)
+  (setq org-agenda-files
+        (directory-files org-roam-notes t "^worklog-[0-9]\\{4\\}\\.org$")))
 
-  (org-worklog-update-agenda-files)
-  (setq org-capture-templates
-        '(("w" "Work Log" plain
-           (file+function (lambda () (org-worklog-file)) org-worklog-goto-day)
-           "- %?"
-           :empty-lines 0
-           :unnarrowed t)))
+(org-worklog-update-agenda-files)
+(setq org-capture-templates
+      '(("w" "Work Log" plain
+         (file+function (lambda () (org-worklog-file)) org-worklog-goto-day)
+         "- %?"
+         :empty-lines 0
+         :unnarrowed t)))
 
-  (defun org-worklog-goto-month ()
-    "Go to or create the current month heading."
-    (let ((month-heading (format-time-string "* %B %Y")))
-      (goto-char (point-min))
-      (unless (re-search-forward "^\\* Summary" nil t)
-        (insert "* Summary\n\n")
-        (goto-char (point-min)))
-      (goto-char (point-min))
-      (unless (re-search-forward (concat "^" (regexp-quote month-heading)) nil t)
-        (goto-char (point-max))
-        (insert "\n" month-heading "\n"))
-      (re-search-forward (concat "^" (regexp-quote month-heading)) nil t)
-      (end-of-line)))
+(defun org-worklog-goto-month ()
+  "Go to or create the current month heading."
+  (let ((month-heading (format-time-string "* %B %Y")))
+    (goto-char (point-min))
+    (unless (re-search-forward "^\\* Summary" nil t)
+      (insert "* Summary\n\n")
+      (goto-char (point-min)))
+    (goto-char (point-min))
+    (unless (re-search-forward (concat "^" (regexp-quote month-heading)) nil t)
+      (goto-char (point-max))
+      (insert "\n" month-heading "\n"))
+    (re-search-forward (concat "^" (regexp-quote month-heading)) nil t)
+    (end-of-line)))
 
-  (defun org-worklog-goto-day ()
-    "Go to or create today's heading under the current month."
-    (org-worklog-goto-month)
-    (let ((day-heading (format-time-string "** %Y-%m-%d %A"))
-          (timestamp (format-time-string "<%Y-%m-%d %a>")))
-      (forward-line 1)
-      (let ((month-end (save-excursion
-                         (if (re-search-forward "^\\* " nil t)
-                             (line-beginning-position)
-                           (point-max)))))
-        (if (re-search-forward (concat "^" (regexp-quote day-heading)) month-end t)
-            (progn
-              (forward-line 1)
-              (when (not (looking-at-p "<[0-9]\\{4\\}-"))
-                (insert timestamp "\n"))
-              (goto-char (line-end-position)))
-          (goto-char month-end)
-          (insert "\n" day-heading "\n" timestamp)
-          (end-of-line)))))
-
-  (defun org-worklog-goto-specific-day ()
-    "Navigate to a specific day in the work log."
-    (interactive)
-    (let* ((date (org-read-date nil t nil "Go to date: "))
-           (year (format-time-string "%Y" date))
-           (month (format-time-string "%B %Y" date))
-           (day (format-time-string "%Y-%m-%d %A" date))
-           (file (expand-file-name (format "worklog-%s.org" year) org-roam-notes)))
-      (if (file-exists-p file)
+(defun org-worklog-goto-day ()
+  "Go to or create today's heading under the current month."
+  (org-worklog-goto-month)
+  (let ((day-heading (format-time-string "** %Y-%m-%d %A"))
+        (timestamp (format-time-string "<%Y-%m-%d %a>")))
+    (forward-line 1)
+    (let ((month-end (save-excursion
+                       (if (re-search-forward "^\\* " nil t)
+                           (line-beginning-position)
+                         (point-max)))))
+      (if (re-search-forward (concat "^" (regexp-quote day-heading)) month-end t)
           (progn
-            (find-file file)
-            (goto-char (point-min))
-            (if (re-search-forward (concat "^\\*\\* " (regexp-opt (list day))) nil t)
-                (progn
-                  (org-show-context)
-                  (recenter-top-bottom))
-              (message "Day %s not found in worklog" day)))
-        (message "Worklog file %s does not exist" file))))
+            (forward-line 1)
+            (when (not (looking-at-p "<[0-9]\\{4\\}-"))
+              (insert timestamp "\n"))
+            (goto-char (line-end-position)))
+        (goto-char month-end)
+        (insert "\n" day-heading "\n" timestamp)
+        (end-of-line)))))
 
-  (defun org-worklog-capture ()
-    "Capture an entry for the current work day."
-    (interactive)
-    (org-capture nil "w"))
+(defun org-worklog-goto-specific-day ()
+  "Navigate to a specific day in the work log."
+  (interactive)
+  (let* ((date (org-read-date nil t nil "Go to date: "))
+         (year (format-time-string "%Y" date))
+         (month (format-time-string "%B %Y" date))
+         (day (format-time-string "%Y-%m-%d %A" date))
+         (file (expand-file-name (format "worklog-%s.org" year) org-roam-notes)))
+    (if (file-exists-p file)
+        (progn
+          (find-file file)
+          (goto-char (point-min))
+          (if (re-search-forward (concat "^\\*\\* " (regexp-opt (list day))) nil t)
+              (progn
+                (org-show-context)
+                (recenter-top-bottom))
+            (message "Day %s not found in worklog" day)))
+      (message "Worklog file %s does not exist" file))))
 
-  (setq org-agenda-custom-commands
-        '(("w" . "Work Log Views")
-          ("ww" "Last 7 days" agenda ""
-           ((org-agenda-span 7)
-            (org-agenda-start-day "-7d")))
-          ("wm" "This month" agenda ""
-           ((org-agenda-span 'month)
-            (org-agenda-start-day "1")))
-          ("wy" "This year" agenda ""
-           ((org-agenda-span 365)
-            (org-agenda-start-day "-365d")))
-          ("ws" "Search all work logs" search ""))))
+(defun org-worklog-capture ()
+  "Capture an entry for the current work day."
+  (interactive)
+  (org-capture nil "w"))
+
+(setq org-agenda-custom-commands
+      '(("w" . "Work Log Views")
+        ("ww" "Last 7 days (incl. today)" agenda ""
+         ((org-agenda-span 7)
+          (org-agenda-start-day "-6d")))
+        ("wm" "This month" agenda ""
+         ((org-agenda-span 'month)
+          (org-agenda-start-day (format-time-string "%Y-%m-01"))
+          (org-agenda-start-on-weekday nil)))
+        ("wy" "This year" agenda ""
+         ((org-agenda-span 365)
+          (org-agenda-start-day "-365d")))
+        ("ws" "Search all work logs" search "")))
 
 ;; ========================================================================
 ;; Language Modes
