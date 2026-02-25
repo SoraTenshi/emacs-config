@@ -226,7 +226,7 @@
    `(compilation-mode-line-exit ((,class (:foreground ,success))))
 
    ;; UI bits
-   `(header-line ((,class (:background ,bg-bright :foreground ,fg :box nil))))
+   `(header-line ((,class (:background ,bg-darker :foreground ,fg :box nil :height 0.8))))
    `(tooltip ((,class (:background ,bg-darker :foreground ,fg))))
    `(button ((,class (:foreground ,keyword :underline t))))
    `(next-error ((,class (:background ,line-hl :foreground ,fg))))
@@ -441,10 +441,10 @@
    `(aw-key-face ((,class (:foreground ,cursor :weight bold))))
 
    ;; Breadcrumb
-   `(breadcrumb-face ((,class (:foreground ,fg))))
-   `(breadcrumb-project-crumb-face ((,class (:foreground ,subtle :slant italic))))
+   `(breadcrumb-face ((,class (:foreground ,info))))
+   `(breadcrumb-project-crumb-face ((,class (:foreground ,subtle))))
    `(breadcrumb-project-leaf-face ((,class (:foreground ,fg :weight bold))))
-   `(breadcrumb-imenu-crumb-face ((,class (:foreground ,comment :slant italic))))
+   `(breadcrumb-imenu-crumb-face ((,class (:foreground ,subtle :slant italic))))
    `(breadcrumb-imenu-leaf-face ((,class (:foreground ,keyword :weight bold))))
    ))
 

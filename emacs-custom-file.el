@@ -5,24 +5,11 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("011fa19868867fb5e2e12f0b2b99a43ad81edaa7f1b16d5e6aae016272b1d7a9"
-     "289c474ad4d50a9924625a374e0ac0315ea61d6dcbe5af3876f09a90c1575338"
-     default))
- '(package-selected-packages
-   '(ace-window aggressive-indent breadcrumb cape cl-format colorful-mode
-                consult-eglot consult-flycheck corfu devdocs diminish
-                docker dockerfile-mode embark-consult erc-image
-                fancy-compilation flycheck-eglot format-all gcmh
-                go-mode hel helpful highlight-indent-guides htmlize
-                kind-icon magit marginalia nix-mode odin-mode
-                orderless org-modern org-roam paredit pcre2el plz
-                rust-mode simpc-mode vdiff vertico vundo zig-mode))
- '(safe-local-variable-values
-   '((eval setq-local compile-command
-           (format "%s --batch -l build.el -f build/all"
-                   (shell-quote-argument
-                    (expand-file-name invocation-name
-                                      invocation-directory)))))))
+   '("f6b3d765af311d00ac60b79946af7000c5863aab9d4f200e04a741bdaa9b64e6"
+     "661c193d6df74dc6c3ffd0904a3e0a411fbd8967c7de1df5c5f7a3406cf8ba16"
+     "86a533dbae25ddf12e4252f6977b1a082cc14c00cfb9b10cc8005bcef1837868"
+     "5aafcd5c3d0fb3d2c425ea411e06f63448c9ff3db44f8e1a9f595e0c691fdd6c"
+     default)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -7,6 +7,12 @@
 ;; UI Configuration
 ;; ========================================================================
 
+(prefer-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(setq-default buffer-file-coding-system 'utf-8)
+
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode 1)
@@ -81,6 +87,8 @@
 
 (set-face-attribute 'default nil :font "Iosevka Custom" :height (* 10 font-size))
 (set-face-attribute 'italic nil :slant 'italic)
+;; Pray that this shit does something
+(add-to-list 'default-frame-alist `(font . ,(format "Iosevka Custom-%d" font-size)))
 
 (global-font-lock-mode t)
 (add-hook 'prog-mode-hook 'font-lock-mode)
@@ -108,6 +116,7 @@
   :diminish highlight-indent-guides-mode
   :config
   (setq highlight-indent-guides-method 'bitmap
+        highlight-indent-guides-bitmap-function 'highlight-indent-guides--bitmap-line
         highlight-indent-guides-responsive 'top
         highlight-indent-guides-delay 0
         highlight-indent-guides-suppress-auto-error t))
@@ -275,26 +284,21 @@
   :defer t
   :after (consult eglot))
 
-(use-package devdocs
-  :ensure t
-  :defer t)
+(use-package devdocs :ensure t :defer t)
 
 (use-package breadcrumb
   :ensure t
-  :functions (breadcrumb-mode)
+  :functions breadcrumb-mode
   :config
   (breadcrumb-mode 1)
   (setq breadcrumb-imenu-max-length 0.3)
   (set-face-attribute 'header-line nil :height 0.8 :inherit 'default))
 
+(use-package dape :ensure t :defer t)
+
 ;; ========================================================================
 ;; Navigation & Diagnostic Functions
 ;; ========================================================================
-
-;; (use-package flymake
-;;   :ensure t
-;;   :functions flymake-show-buffer-diagnostics)
-;; (add-hook 'prog-mode-hook #'flymake-mode)
 
 (use-package flycheck
   :ensure t
@@ -461,7 +465,6 @@
 
 (defun lang/display-modes ()
   "Enable `display-line-numbers-mode` and `whitespace-mode`."
-  (whitespace-mode 1)
   (setq display-line-numbers-type 'relative)
   (display-line-numbers-mode 1))
 
@@ -819,10 +822,9 @@
             (whitespace-mode -1)
             (show-paren-mode -1)))
 
-(use-package erc-image)
-
-(add-to-list 'erc-modules 'image)
+(use-package erc-image :ensure t)
 (with-eval-after-load 'erc
+  (add-to-list 'erc-modules 'image)
   (erc-update-modules))
 
 ;; ========================================================================
@@ -847,7 +849,6 @@
         (newline-mark 10 [?\u21B5 10] [?$ 10])
         (tab-mark 9 [187 9] [92 9])))
 
-(global-whitespace-mode 1)
 (diminish 'whitespace-mode)
 
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
