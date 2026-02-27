@@ -94,6 +94,74 @@
 (add-hook 'prog-mode-hook 'font-lock-mode)
 
 ;; ========================================================================
+;; Language Modes
+;; ========================================================================
+
+(defvar my/c-custom-types
+  '("s8" "s16" "s32" "s64"
+    "u8" "u16" "u32" "u64"
+    "usize" "ssize"
+    "f32" "f64"
+    "b8" "b32" "bool"))
+
+(defun my/c-add-types ()
+  (font-lock-add-keywords
+   nil
+   `((,(regexp-opt my/c-custom-types 'words) . font-lock-type-face))))
+
+(use-package simpc-mode
+  :vc (:url "https://github.com/rexim/simpc-mode")
+  :mode (("\\.c\\'"   . simpc-mode)
+         ("\\.h\\'"   . simpc-mode)
+         ("\\.hpp\\'" . simpc-mode)
+         ("\\.cpp\\'" . simpc-mode)))
+
+(add-hook 'simpc-mode-hook #'my/c-add-types)
+
+(use-package sly
+  :defer t
+  :functions sly-symbol-at-point
+  :commands sly
+  :config
+  (setq inferior-lisp-program (executable-find "sbcl")))
+
+(use-package dockerfile-mode
+  :ensure t
+  :defer t)
+
+(use-package go-mode
+  :ensure t
+  :defer t)
+
+(use-package nix-mode
+  :ensure t
+  :defer t
+  :mode "\\.nix\\'")
+
+(use-package odin-mode
+  :ensure t
+  :defer t
+  :vc (:url "https://github.com/mattt-b/odin-mode"))
+
+(use-package rust-mode
+  :ensure t
+  :defer t)
+
+(use-package aggressive-indent
+  :ensure t
+  :defer t
+  :hook ((lisp-mode
+          emacs-lisp-mode
+          lisp-interaction-mode) . aggressive-indent-mode))
+
+(use-package zig-mode
+  :ensure t
+  :defer t)
+
+(use-package markdown-mode
+  :ensure t)
+
+;; ========================================================================
 ;; Essential Packages
 ;; ========================================================================
 
@@ -161,7 +229,7 @@
 (use-package orderless
   :ensure t
   :custom
-  (completion-styles '(orderless basic))
+  (completion-styles '(orderless partial-completion basic))
   (completion-category-defaults nil)
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
@@ -224,22 +292,8 @@
 (setq project-vc-extra-root-markers '(".jj"))
 
 ;; ========================================================================
-;; LSP & Completion
+;; Completion
 ;; ========================================================================
-
-(use-package eglot
-  :defer t
-  :functions eglot-current-server eglot-managed-p
-  :hook ((go-mode   . eglot-ensure)
-         (rust-mode . eglot-ensure)
-         (zig-mode  . eglot-ensure))
-  :config
-  (setq eglot-autoshutdown t
-        eglot-confirm-server-initiated-edits nil))
-
-(with-eval-after-load 'eglot
-  (add-to-list 'eglot-server-programs
-               '(zig-mode . ("zls"))))
 
 (use-package corfu
   :ensure t
@@ -253,8 +307,6 @@
   (corfu-auto-prefix 3)
   (corfu-cycle t)
   (corfu-preview-current 'insert)
-  (corfu-auto-delay 0.2)
-  (corfu-popupinfo-delay 1)
   :diminish corfu-mode
   :bind (:map corfu-map
               ("TAB"     . corfu-next)
@@ -279,22 +331,63 @@
   :config
   (add-to-list 'completion-at-point-functions #'cape-file))
 
-(use-package consult-eglot
+(use-package devdocs :ensure t :defer t)
+
+;; ========================================================================
+;; LSP
+;; ========================================================================
+
+(use-package lsp-mode
+  :ensure t
+  :init
+  (defun my/lsp-mode-setup-completion ()
+    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+          '(orderless)))
+  :hook ((go-mode   . lsp-deferred)
+         (rust-mode . lsp-deferred)
+         (zig-mode  . lsp-deferred)
+         (lsp-mode  . lsp-enable-which-key-integration)
+         (lsp-completion-mode . my/lsp-mode-setup-completion))
+  :custom
+  (lsp-keymap-prefix "C-c l")
+  (lsp-auto-guess-root t)
+  (lsp-server-shutdown-timeout 10)
+  (lsp-inhibit-message nil)
+  (lsp-headerline-breadcrumb-enable t)
+  (lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+  (lsp-log-io nil)
+  (read-process-output-max (* 1024 1024))
+  :config
+  (with-eval-after-load 'lsp-mode
+    (add-to-list 'lsp-language-id-configuration '(zig-mode . "zig"))
+    (lsp-register-client
+     (make-lsp-client
+      :new-connection (lsp-stdio-connection "zls")
+      :activation-fn (lsp-activate-on "zig")
+      :server-id 'zls))))
+
+(use-package lsp-treemacs
+  :ensure t)
+
+(use-package consult-lsp
   :ensure t
   :defer t
-  :after (consult eglot))
+  :after (consult lsp-mode))
 
-(use-package devdocs :ensure t :defer t)
+(use-package dap-mode
+  :ensure t
+  :defer t
+  :after (lsp-mode))
 
 (use-package breadcrumb
   :ensure t
-  :functions breadcrumb-mode
   :config
-  (breadcrumb-mode 1)
-  (setq breadcrumb-imenu-max-length 0.3)
-  (set-face-attribute 'header-line nil :height 0.8 :inherit 'default))
-
-(use-package dape :ensure t :defer t)
+  (defun my/maybe-enable ()
+    (when (and (derived-mode-p 'prog-mode)
+               (not (and (bound-and-true-p lsp-mode)
+                         (lsp-workspaces))))
+      (breadcrumb-local-mode 1)))
+  (add-hook 'after-change-major-mode-hook #'my/maybe-enable))
 
 ;; ========================================================================
 ;; Navigation & Diagnostic Functions
@@ -322,35 +415,57 @@
             (slot . 0)
             (window-height . 10)))
 
+(defun ui/write-to-docs-buffer (content mode)
+  "Write CONTENT into *docs* buffer with MODE active."
+  (let ((buf (get-buffer-create "*docs*")))
+    (with-current-buffer buf
+      (let ((inhibit-read-only t))
+        (erase-buffer)
+        (insert content)
+        (funcall mode)
+        (goto-char (point-min))))
+    (let ((win (display-buffer
+                buf
+                '((display-buffer-reuse-window display-buffer-in-side-window)
+                  (side          . bottom)
+                  (slot          . 0)
+                  (window-height . 15)))))
+      (when (window-live-p win)
+        (select-window win)))))
+
 (defun ui/show-popup-doc ()
   "Show documentation popup for the symbol under cursor."
   (interactive)
-  (let ((buf nil))
-    (cond
-     ((derived-mode-p 'emacs-lisp-mode)
-      (when-let ((sym (symbol-at-point)))
-        (describe-symbol sym)
-        (setq buf (get-buffer "*Help*"))))
-     ((derived-mode-p 'lisp-mode)
-      (when (fboundp 'sly-describe-symbol)
-        (sly-describe-symbol (sly-symbol-at-point))
-        (setq buf (get-buffer "*sly-description*"))))
-     ((and (eglot-managed-p)
-           (eglot-current-server))
-      (eldoc-doc-buffer)
-      (setq buf (get-buffer "*eldoc*")))
-     (t
-      (message "No documentation available for this buffer.")))
-    (when (buffer-live-p buf)
-      (let ((win
-             (display-buffer
-              buf
-              '((display-buffer-reuse-window display-buffer-in-side-window)
-                (side . bottom)
-                (slot . 0)
-                (window-height . 10)))))
-        (when (window-live-p win)
-          (select-window win))))))
+  (cond
+   ;; ELisp
+   ((derived-mode-p 'emacs-lisp-mode)
+    (when-let ((sym (symbol-at-point)))
+      (describe-symbol sym)
+      (when-let ((buf (get-buffer "*Help*")))
+        (ui/write-to-docs-buffer
+         (with-current-buffer buf (buffer-string)) 'help-mode))))
+   ;; LSP
+   ((and (bound-and-true-p lsp-mode)
+         (lsp-workspaces))
+    (lsp-request-async
+     "textDocument/hover"
+     (lsp--text-document-position-params)
+     (lambda (hover)
+       (when hover
+         (ui/write-to-docs-buffer
+          (lsp--render-on-hover-content (gethash "contents" hover) t)
+          'markdown-mode)))
+     :error-handler (lambda (err)
+                      (message "LSP Hover errored with: '%s'" err))))
+   ;; Sly
+   ((and (derived-mode-p 'lisp-mode)
+         (fboundp 'sly-eval-async))
+    (when-let ((sym (sly-symbol-at-point)))
+      (sly-eval-async
+       `(slynk:describe-symbol ,sym)
+       (lambda (content)
+         (ui/write-to-docs-buffer content 'lisp-mode)))))
+   (t (message "No docs available."))))
 
 (defun ui/show-current-error ()
   "Show the flycheck error at point."
@@ -381,71 +496,6 @@
           (when (window-live-p win)
             (select-window win))))
     (message "No flycheck error at point.")))
-
-;; ========================================================================
-;; Language Modes
-;; ========================================================================
-
-(defvar my/c-custom-types
-  '("s8" "s16" "s32" "s64"
-    "u8" "u16" "u32" "u64"
-    "usize" "ssize"
-    "f32" "f64"
-    "b8" "b32" "bool"))
-
-(defun my/c-add-types ()
-  (font-lock-add-keywords
-   nil
-   `((,(regexp-opt my/c-custom-types 'words) . font-lock-type-face))))
-
-(use-package simpc-mode
-  :vc (:url "https://github.com/rexim/simpc-mode")
-  :mode (("\\.c\\'"   . simpc-mode)
-         ("\\.h\\'"   . simpc-mode)
-         ("\\.hpp\\'" . simpc-mode)
-         ("\\.cpp\\'" . simpc-mode)))
-
-(add-hook 'simpc-mode-hook #'my/c-add-types)
-
-(use-package sly
-  :defer t
-  :functions sly-symbol-at-point
-  :commands sly
-  :config
-  (setq inferior-lisp-program (executable-find "sbcl")))
-
-(use-package dockerfile-mode
-  :ensure t
-  :defer t)
-
-(use-package go-mode
-  :ensure t
-  :defer t)
-
-(use-package nix-mode
-  :ensure t
-  :defer t
-  :mode "\\.nix\\'")
-
-(use-package odin-mode
-  :ensure t
-  :defer t
-  :vc (:url "https://github.com/mattt-b/odin-mode"))
-
-(use-package rust-mode
-  :ensure t
-  :defer t)
-
-(use-package aggressive-indent
-  :ensure t
-  :defer t
-  :hook ((lisp-mode
-          emacs-lisp-mode
-          lisp-interaction-mode) . aggressive-indent-mode))
-
-(use-package zig-mode
-  :ensure t
-  :defer t)
 
 ;; ========================================================================
 ;; Magit
@@ -657,7 +707,7 @@
         ("ws" "Search all work logs" search "")))
 
 ;; ========================================================================
-;; Language Modes
+;; Better stuff
 ;; ========================================================================
 
 (use-package ace-window
@@ -914,5 +964,12 @@
 ;; ========================================================================
 
 (use-package mpv :defer t)
+
+(defun insert-new-category (name)
+  "Insert a new category block on point named NAME."
+  (interactive "sName: ")
+  (insert "\n;; ========================================================================\n"
+          ";; " name "\n"
+          ";; ========================================================================\n\n"))
 
 ;;; init.el ends here
