@@ -963,80 +963,18 @@
           ";; " name "\n"
           ";; ========================================================================\n\n"))
 
-(defun fun--disable-scroll (buf win)
-  "Disable all scrolling for BUF/WIN."
-  (with-current-buffer buf
-    (setq-local scroll-bar-mode nil
-                vertical-scroll-bar nil)
-    (set-window-scroll-bars win 0 nil 0 nil)
-    (dolist (key '([wheel-up] [wheel-down]
-                   [double-wheel-up] [double-wheel-down]
-                   [triple-wheel-up] [triple-wheel-down]))
-      (local-set-key key #'ignore))))
+(auto-insert-mode 1)
+(define-auto-insert
+  '("\\.el\\'" . "ELisp template")
+  '(nil
+    ";; " (file-name-nondirectory buffer-file-name) " --- " _ " -*- lexical-binding: t; -*-\n"
+    ";;; Commentary:\n"
+    ";; bla bla\n"
+    ";;; Code:\n"
+    "\n"
+    "\n"
+    ";;; " (file-name-nondirectory buffer-file-name) " ends here\n"))
 
-(defun fun/display-cat ()
-  "Cat... we need more CATS!!!!"
-  (interactive)
-  (url-retrieve
-   "https://cataas.com/cat"
-   (lambda (_)
-     (goto-char (point-min))
-     (re-search-forward "\n\n")
-     (let* ((data (buffer-substring-no-properties (point) (point-max)))
-            (buf  (get-buffer-create "*cat*"))
-            (win  (display-buffer buf))
-            (w    (window-pixel-width win))
-            (h    (window-pixel-height win))
-            (img  (create-image (encode-coding-string data 'binary) nil t
-                                :max-width w :max-height h)))
-       (with-current-buffer buf
-         (let ((inhibit-read-only t))
-           (erase-buffer)
-           (insert-image img)
-           (goto-char (point-min)))
-         (fun--disable-scroll buf win))))))
-
-(defun fun/display-kitsune ()
-  "Because... Foxgirls have fluffy tail!"
-  (interactive)
-  (fun--fetch-anime-image "kitsune"))
-
-(defun fun/display-waifu ()
-  "Classical Waifu image.  No much to say there."
-  (interactive)
-  (fun--fetch-anime-image "waifu"))
-
-(defun fun/display-neko ()
-  "What's better than girls? Girls with tails and cat ears!"
-  (interactive)
-  (fun--fetch-anime-image "neko"))
-
-(defun fun--fetch-anime-image (type)
-  "Fetches anime themed image TYPE from nekos.best API."
-  (url-retrieve
-   (format "https://nekos.best/api/v2/%s" type)
-   (lambda (_)
-     (goto-char (point-min))
-     (re-search-forward "\n\n")
-     (let* ((json    (json-parse-buffer))
-            (img-url (gethash "url" (aref (gethash "results" json) 0))))
-       (url-retrieve
-        img-url
-        (lambda (_)
-          (goto-char (point-min))
-          (re-search-forward "\n\n")
-          (let* ((data (buffer-substring-no-properties (point) (point-max)))
-                 (buf  (get-buffer-create (format "*%s*" type)))
-                 (win  (display-buffer buf))
-                 (w    (window-pixel-width win))
-                 (h    (window-pixel-height win))
-                 (img  (create-image (encode-coding-string data 'binary) nil t
-                                     :max-width w :max-height h)))
-            (with-current-buffer buf
-              (let ((inhibit-read-only t))
-                (erase-buffer)
-                (insert-image img)
-                (goto-char (point-min)))
-              (fun--disable-scroll buf win)))))))))
+(load-config "fun.el")
 
 ;;; init.el ends here
