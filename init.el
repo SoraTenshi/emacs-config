@@ -876,6 +876,15 @@
 ;; Theme Configuration
 ;; ========================================================================
 
+(defun theme/disable-loaded-themes (theme &optional no-confirm no-enable)
+  "Disable any loaded themes before enabling a new THEME.
+This prevents overlapping themes; something I would rarely want.
+THEME, NO-CONFIRM, and NO-ENABLE are ignored in this advice function."
+  (dolist (theme custom-enabled-themes)
+    (disable-theme theme)))
+
+(advice-add 'load-theme :before 'theme/disable-loaded-themes)
+
 (use-package colorful-mode
   :ensure t
   :defer t

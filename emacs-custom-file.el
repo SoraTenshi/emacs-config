@@ -4,12 +4,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(safe-local-variable-values
-   '((eval setq-local compile-command
-           (format "%s --batch -l build.el -f build/all"
-                   (shell-quote-argument
-                    (expand-file-name invocation-name
-                                      invocation-directory)))))))
+ '(custom-safe-themes
+   '("9157e4e886fdf5f8886ff0c63551527b4c3be0d34dc44da97ce6501eae4f918c"
+     default)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
