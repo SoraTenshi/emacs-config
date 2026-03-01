@@ -110,5 +110,12 @@
                          (fact (gethash "fact" json)))
                     (message "%s" fact)))))
 
+(defun fun/display-ragdoll ()
+  "Ragdolls are the best cats, change my mind."
+  (interactive)
+  (fun--fetch-image "https://api.thecatapi.com/v1/images/search?breed_ids=ragd"
+                    (lambda (json) (gethash "url" (aref json 0)))
+                    "ragdoll"))
+
 (provide 'fun)
 ;;; fun.el ends here

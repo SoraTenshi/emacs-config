@@ -445,6 +445,54 @@
    `(breadcrumb-project-leaf-face ((,class (:foreground ,fg :weight bold))))
    `(breadcrumb-imenu-crumb-face ((,class (:foreground ,subtle :slant italic))))
    `(breadcrumb-imenu-leaf-face ((,class (:foreground ,keyword :weight bold))))
+
+   ;; Embark
+   `(embark-target ((,class (:background ,line-hl :foreground ,fg))))
+   `(embark-selected ((,class (:background ,selection :foreground ,fg))))
+   `(embark-collect-candidate ((,class (:foreground ,fg))))
+   `(embark-collect-marked ((,class (:foreground ,keyword :weight bold))))
+   `(embark-collect-group-title ((,class (:foreground ,type :weight bold :slant italic))))
+   `(embark-verbose-indicator-title ((,class (:foreground ,keyword :weight bold))))
+   `(embark-verbose-indicator-documentation ((,class (:foreground ,comment :slant italic))))
+
+   ;; Org Modern
+   `(org-modern-label ((,class (:background ,bg-bright :foreground ,fg :height 0.85))))
+   `(org-modern-todo ((,class (:background ,error :foreground ,bg :weight bold :height 0.85))))
+   `(org-modern-done ((,class (:background ,success :foreground ,bg :weight bold :height 0.85))))
+   `(org-modern-date-active ((,class (:background ,line-hl :foreground ,builtin :height 0.85))))
+   `(org-modern-date-inactive ((,class (:background ,bg-darker :foreground ,subtle :height 0.85))))
+   `(org-modern-time-active ((,class (:background ,selection :foreground ,fg :height 0.85))))
+   `(org-modern-time-inactive ((,class (:background ,bg-darker :foreground ,faded :height 0.85))))
+   `(org-modern-statistics ((,class (:foreground ,info))))
+   `(org-modern-tag ((,class (:background ,bg-bright :foreground ,keyword :height 0.85))))
+   `(org-modern-block-name ((,class (:foreground ,subtle :height 0.85))))
+   `(org-modern-horizontal-rule ((,class (:strike-through ,border :foreground ,border))))
+   `(org-modern-priority ((,class (:background ,bg-bright :foreground ,warning :height 0.85))))
+
+   ;; LSP
+   `(lsp-face-highlight-textual ((,class (:background ,line-hl :foreground ,fg))))
+   `(lsp-face-highlight-read ((,class (:background ,line-hl :foreground ,fg :underline t))))
+   `(lsp-face-highlight-write ((,class (:background ,selection :foreground ,fg :underline t))))
+   `(lsp-headerline-breadcrumb-path-face ((,class (:foreground ,subtle))))
+   `(lsp-headerline-breadcrumb-path-error-face ((,class (:foreground ,error :underline t))))
+   `(lsp-headerline-breadcrumb-path-warning-face ((,class (:foreground ,warning :underline t))))
+   `(lsp-headerline-breadcrumb-separator-face ((,class (:foreground ,faded))))
+   `(lsp-headerline-breadcrumb-symbols-face ((,class (:foreground ,fg :weight bold))))
+   `(lsp-headerline-breadcrumb-symbols-error-face ((,class (:foreground ,error))))
+   `(lsp-headerline-breadcrumb-symbols-warning-face ((,class (:foreground ,warning))))
+
+   ;; Helpful
+   `(helpful-heading ((,class (:foreground ,keyword :weight bold :height 1.2))))
+
+   ;; Vdiff
+   `(vdiff-added-face ((,class (:background "#1e3a2a" :foreground ,success))))
+   `(vdiff-changed-face ((,class (:background "#2a2a1e" :foreground ,warning))))
+   `(vdiff-removed-face ((,class (:background "#3a1e2a" :foreground ,error))))
+   `(vdiff-refine-added ((,class (:background "#2a5a3a" :foreground ,success :weight bold))))
+   `(vdiff-refine-changed ((,class (:background "#4a4a1e" :foreground ,warning :weight bold))))
+   `(vdiff-subtraction-face ((,class (:background "#3a1e2a" :foreground ,faded))))
+   `(vdiff-open-fold-face ((,class (:background ,bg-bright :foreground ,subtle))))
+   `(vdiff-closed-fold-face ((,class (:background ,bg-darker :foreground ,comment))))
    ))
 
 (provide-theme 'sapporo-night)
