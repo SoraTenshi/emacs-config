@@ -79,6 +79,7 @@
               (fun--disable-scroll buf win)))))))))
 
 (defun fun--fetch-anime-image (type)
+  "Fetch image from nekos.best api and extract image TYPE to buffer."
   (fun--fetch-image (format "https://nekos.best/api/v2/%s" type)
                     (lambda (json)
                       (gethash "url" (aref (gethash "results" json) 0)))

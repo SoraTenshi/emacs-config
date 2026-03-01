@@ -222,7 +222,6 @@
   (completion-styles '(orderless partial-completion basic))
   (completion-category-defaults nil)
   (completion-category-overrides '((file (styles basic partial-completion)))))
-
 (use-package marginalia
   :ensure t
   :functions marginalia-mode
@@ -319,7 +318,8 @@
   :ensure t
   :defer t
   :config
-  (add-to-list 'completion-at-point-functions #'cape-file))
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev))
 
 (use-package devdocs :ensure t :defer t)
 
@@ -337,8 +337,9 @@
   :hook ((go-mode   . lsp-deferred)
          (rust-mode . lsp-deferred)
          (zig-mode  . lsp-deferred)
-         (lsp-mode  . lsp-enable-which-key-integration)
-         (lsp-completion-mode . my/lsp-mode-setup-completion))
+         (lsp-mode  . lsp-enable-which-key-integration))
+  ;; if i want to have corfu completions...
+  ;; (lsp-completion-mode . my/lsp-mode-setup-completion))
   :custom
   (lsp-keymap-prefix "C-c l")
   (lsp-auto-guess-root t)
@@ -784,6 +785,7 @@
     "g h" 'hel-beginning-of-line-command
     "g s" 'hel-first-non-blank
     "g e" 'hel-end-of-buffer
+    "g r" 'xref-find-references
     "d"   'delete-char-under
     "c"   'change-char-under
     "C-d" 'scroll-up-command
@@ -912,6 +914,7 @@
 (global-set-key (kbd "C-c f")   'project-find-file)
 (global-set-key (kbd "C-c g")   'xref-goto-xref)
 (global-set-key (kbd "C-c h")   'ff-find-other-file)
+(global-set-key (kbd "C-c l")   'find-file-at-point)
 (global-set-key (kbd "C-c ;")   'comment-region)
 (global-set-key (kbd "C-c :")   'uncomment-region)
 (global-set-key (kbd "C-c =")   'align-regexp)
@@ -942,8 +945,7 @@
       (message "Config file %s not found.." path))))
 
 (when (string= (system-name) "navi")
-  (load-config "exwm/exwm.el")
-  (load-config "exwm/weather.el"))
+  (load-config "exwm/exwm.el"))
 
 (load-config "city.el")
 
@@ -954,7 +956,10 @@
 ;; Experimental stuff
 ;; ========================================================================
 
-(use-package mpv :defer t)
+(use-package weather
+  :load-path "."
+  :config (when (string= (system-name) "navi")
+            (weather-mode 1)))
 
 (defun insert-new-category (name)
   "Insert a new category block on point named NAME."
