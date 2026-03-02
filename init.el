@@ -908,6 +908,24 @@ THEME, NO-CONFIRM, and NO-ENABLE are ignored in this advice function."
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (load-theme 'sapporo-night t)
 
+;; in case people are annoyed by my own theme.
+(use-package doom-themes
+  :ensure t)
+
+;; because i'm annoyed by emacs asking me...
+(defun theme/load-doom-theme (theme)
+  "Load a THEME from all available doom-* themes."
+  (interactive
+   (list (intern
+          (completing-read "Doom theme: "
+                           (cl-remove-if-not
+                            (lambda (th)
+                              (string-prefix-p "doom-" (symbol-name th)))
+                            (custom-available-themes))))))
+  (mapc #'disable-theme custom-enabled-themes)
+  (let ((custom-safe-themes t))
+    (load-theme theme t)))
+
 ;; ========================================================================
 ;; Keybindings
 ;; ========================================================================
